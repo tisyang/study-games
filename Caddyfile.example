@@ -1,0 +1,21 @@
+# Caddyfile 配置参考示例
+# 部署至服务器时，将域名替换为您的实际域名，路径指向本代码所在目录即可
+
+kids.yourdomain.com {
+    # 静态网页根目录
+    root * /mnt/Priv/web-study
+
+    # 启用静态文件伺服
+    file_server
+
+    # 启用现代压缩算法（加速网页与样式加载）
+    encode gzip zstd
+
+    # 安全与缓存响应头
+    header {
+        # 允许音频上下文顺畅执行与跨域隔离
+        Cross-Origin-Opener-Policy same-origin
+        # 静态资源缓存控制
+        Cache-Control "public, max-age=3600"
+    }
+}
