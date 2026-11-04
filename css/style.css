@@ -363,6 +363,8 @@ body {
   text-align: center;
   width: 100%;
   line-height: 1.5;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 .enlighten-bubble.glow {
@@ -370,9 +372,36 @@ body {
 }
 
 .enlighten-bubble.pulse {
-  animation: gentlePulse 0.4s ease 2;
+  animation: gentlePulse 0.5s ease 2;
   background: #fef08a;
   border-color: #eab308;
+}
+
+/* 跳过/下一题轻量按键 */
+.btn-skip-anim {
+  background: #f59e0b;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-left: 8px;
+  box-shadow: 0 2px 5px rgba(245, 158, 11, 0.3);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-skip-anim:hover {
+  background: #d97706;
+  transform: scale(1.06);
+}
+
+.btn-skip-anim:active {
+  transform: scale(0.94);
 }
 
 /* 1. 加法舞台 */

@@ -1,6 +1,6 @@
 /**
  * 乐学萌岛 - 数学启蒙具象化渲染与动态演算引擎
- * 将加减乘除转化为儿童可见、可感、富有现实意义的生动动画过程
+ * 专为小学二年级小朋友调试的舒适慢节奏演算，让思考与观察更充分
  */
 
 class VisualEnlightenmentEngine {
@@ -8,12 +8,14 @@ class VisualEnlightenmentEngine {
     this.container = document.getElementById(containerId);
     this.narration = document.getElementById(narrationId);
     this.activeTimers = [];
+    this.currentCallback = null;
   }
 
   // 清除旧动画和定时器
   clear() {
     this.activeTimers.forEach(t => clearTimeout(t));
     this.activeTimers = [];
+    this.currentCallback = null;
     if (this.container) this.container.innerHTML = '';
   }
 
@@ -21,6 +23,15 @@ class VisualEnlightenmentEngine {
     const t = setTimeout(fn, delay);
     this.activeTimers.push(t);
     return t;
+  }
+
+  // 快捷跳过当前演算
+  skipAnimation() {
+    if (this.currentCallback) {
+      const cb = this.currentCallback;
+      this.clear();
+      cb();
+    }
   }
 
   // 根据题目类型与数据渲染初始动画舞台
@@ -51,8 +62,13 @@ class VisualEnlightenmentEngine {
     }
   }
 
-  // ================= 答对后触发全流程动画演播 =================
+  // ================= 答对后触发慢速全流程动态演算 =================
   playProcessAnimation(q, callback) {
+    this.currentCallback = callback;
+
+    // 在舞台角隅增加贴心的“下一题 ⏩”微按钮，防止已经完全看懂的小朋友觉得等待时间长
+    this._attachSkipButton();
+
     switch (q.type) {
       case 'add':
         this._animateAdditionProcess(q, callback);
@@ -71,7 +87,21 @@ class VisualEnlightenmentEngine {
     }
   }
 
-  // ================= 1. ➕ 加法舞台与动画 =================
+  _attachSkipButton() {
+    const notice = document.getElementById('enlighten-notice');
+    if (!notice) return;
+    const skipBtn = document.createElement('button');
+    skipBtn.className = 'btn-skip-anim';
+    skipBtn.innerHTML = '下一题 ⏩';
+    skipBtn.title = '我已经看懂啦，直接进入下一题';
+    skipBtn.onclick = (e) => {
+      e.stopPropagation();
+      this.skipAnimation();
+    };
+    notice.appendChild(skipBtn);
+  }
+
+  // ================= 1. ➕ 加法舞台与慢速演算 =================
   _renderAdditionInitial(q) {
     const tens1 = Math.floor(q.num1 / 10);
     const ones1 = q.num1 % 10;
@@ -101,7 +131,7 @@ class VisualEnlightenmentEngine {
       </div>
 
       <div id="enlighten-notice" class="enlighten-bubble ${isCarry ? 'glow' : ''}">
-        ${isCarry ? '✨ 仔细观察：散装苹果加起来超过 10 个啦！答对后看它们怎么【满十打包】！' : '💡 十位加十位，个位加个位，合并在一起！'}
+        ${isCarry ? '✨ 仔细观察：散装苹果加起来超过 10 个啦！答对后看小松鼠怎么【慢速满十打包】！' : '💡 十位加十位，个位加个位，合并在一起！'}
       </div>
     `;
   }
@@ -116,20 +146,29 @@ class VisualEnlightenmentEngine {
     const finalTens = Math.floor(q.answer / 10);
     const finalOnes = q.answer % 10;
 
-    // 步骤 1: 两堆向中间合并
+    // 步骤 1 (0ms): 两堆苹果温和向中间靠拢汇聚
     if (stage) stage.classList.add('merging');
-    if (notice) notice.innerHTML = `✨ <strong>两堆汇聚！</strong> 苹果滚到了一起...`;
+    if (notice) notice.innerHTML = `✨ <strong>两堆汇聚！</strong> 苹果慢慢滚到了一起...`;
 
-    // 步骤 2: 若进位，进行满十聚拢与封箱动效
+    // 步骤 2 (1100ms): 聚拢散装苹果
     this._registerTimer(() => {
       if (isCarry) {
         if (notice) {
-          notice.innerHTML = `📦 <strong>满十封箱！</strong> 10个散装苹果自动打包成 1 个新整箱！`;
+          notice.innerHTML = `📦 <strong>散装满十！</strong> 散装苹果一共有 ${totalOnes} 个，数出 10 个准备封箱...`;
+          notice.classList.add('pulse');
+        }
+      }
+    }, 1100);
+
+    // 步骤 3 (2200ms): 正式打包封箱并出箱
+    this._registerTimer(() => {
+      if (isCarry) {
+        if (notice) {
+          notice.innerHTML = `✨ <strong>满十进一打包成功！</strong> 10个散装封成 1 个新整箱，多出 ${finalOnes} 个散装！`;
           notice.classList.add('pulse');
         }
         if (window.soundEngine) window.soundEngine.playPackBox();
 
-        // 重新渲染为合并后的清晰布局（包含金色新包装）
         stage.innerHTML = `
           <div class="merged-pile">
             <div class="pile-title" style="color:#16a34a; font-weight:800;">🎉 仓库装箱大合并 (${q.answer}个)</div>
@@ -138,7 +177,7 @@ class VisualEnlightenmentEngine {
                 ${this._renderBoxes(finalTens - 1)}
                 <div class="tens-box new-packed" title="新打包的整箱">📦<span class="box-label">新10</span></div>
               </div>
-              <div class="ones-items" style="margin-top:6px;">
+              <div class="ones-items" style="margin-top:10px;">
                 ${this._renderItems('🍎', finalOnes)}
               </div>
             </div>
@@ -150,28 +189,30 @@ class VisualEnlightenmentEngine {
             <div class="pile-title" style="color:#16a34a; font-weight:800;">🎉 苹果合聚在一起 (${q.answer}个)</div>
             <div class="item-group">
               <div class="tens-boxes">${this._renderBoxes(finalTens)}</div>
-              <div class="ones-items" style="margin-top:6px;">${this._renderItems('🍎', finalOnes)}</div>
+              <div class="ones-items" style="margin-top:10px;">${this._renderItems('🍎', finalOnes)}</div>
             </div>
           </div>
         `;
       }
-    }, 600);
+      this._attachSkipButton();
+    }, 2200);
 
-    // 步骤 3: 揭晓最终总结
+    // 步骤 4 (3500ms): 总结清晰呈现
     this._registerTimer(() => {
       if (notice) {
         notice.innerHTML = `🌟 <strong>打包完毕！</strong> 共有 <strong>${finalTens}</strong> 个整箱 + <strong>${finalOnes}</strong> 个散装 = <strong>${q.answer}</strong> 个苹果！`;
         notice.classList.add('glow');
+        this._attachSkipButton();
       }
-    }, 1200);
+    }, 3500);
 
-    // 步骤 4: 播放完成后进入下一题 (给孩子充裕时间领会)
+    // 步骤 5 (4800ms): 留出充裕时间让孩子消化理解，然后进入下一题
     this._registerTimer(() => {
       if (callback) callback();
-    }, 2200);
+    }, 4800);
   }
 
-  // ================= 2. ➖ 减法舞台与动画 =================
+  // ================= 2. ➖ 减法舞台与慢速演算 =================
   _renderSubtractionInitial(q) {
     const tens1 = Math.floor(q.num1 / 10);
     const ones1 = q.num1 % 10;
@@ -195,7 +236,7 @@ class VisualEnlightenmentEngine {
       </div>
 
       <div id="enlighten-notice" class="enlighten-bubble ${isBorrow ? 'glow' : ''}">
-        ${isBorrow ? `🌰 散装只有 ${ones1} 颗不够拿！答对后看小松鼠怎么【拆开整箱借一当十】！` : `🌰 散装够拿，轻松减掉！`}
+        ${isBorrow ? `🌰 散装只有 ${ones1} 颗不够拿！看小松鼠怎么【慢速撬开整箱借一当十】！` : `🌰 散装够拿，轻松减掉！`}
       </div>
     `;
   }
@@ -211,40 +252,37 @@ class VisualEnlightenmentEngine {
     const subBoxes = document.getElementById('sub-boxes');
     const subOnes = document.getElementById('sub-ones');
 
-    // 步骤 1: 若退位，动态拆开 1 整箱
+    // 步骤 1 (0ms): 撬开整箱前摇晃预备
     if (isBorrow) {
       if (notice) {
-        notice.innerHTML = `💥 <strong>拆箱！</strong> 撬开 1 个整箱变成 10 颗散装松果...`;
+        notice.innerHTML = `💥 <strong>准备拆箱！</strong> 撬棍就位，准备把 1 个整箱拆开...`;
         notice.classList.add('pulse');
       }
-      if (window.soundEngine) window.soundEngine.playUnpackBox();
-
-      // 视觉上将最后一个箱子拆开
       if (subBoxes && subBoxes.lastElementChild) {
         subBoxes.lastElementChild.classList.add('unpacking');
       }
 
+      // 步骤 2 (1100ms): 箱子爆开，10颗散装缓缓滚出
       this._registerTimer(() => {
-        // 箱子减1，散装增加10颗
+        if (window.soundEngine) window.soundEngine.playUnpackBox();
         if (subBoxes) subBoxes.innerHTML = this._renderBoxes(tens1 - 1);
         if (subOnes) {
           subOnes.innerHTML = this._renderItems('🌰', ones1 + 10);
           subOnes.classList.add('bounce-items');
         }
         if (notice) {
-          notice.innerHTML = `🌰 散装变成了 <strong>${ones1 + 10}</strong> 颗！现在足够拿走 ${ones2} 颗啦！`;
+          notice.innerHTML = `🌰 <strong>借一当十成功！</strong> 散装变成了 <strong>${ones1 + 10}</strong> 颗！现在足够拿走 ${ones2} 颗啦！`;
         }
-      }, 600);
+      }, 1100);
     }
 
-    // 步骤 2: 移走松果
+    // 步骤 3 (2300ms): 移走拿掉的松果与箱子
     this._registerTimer(() => {
       if (notice) {
-        notice.innerHTML = `💨 <strong>移走消耗：</strong> 成功拿走 ${q.num2} 颗松果！`;
+        notice.innerHTML = `💨 <strong>正在移走：</strong> 成功搬走 ${q.num2} 颗松果！`;
       }
       if (window.soundEngine) window.soundEngine.playDealFruit();
 
-      // 展现剩余的箱子和散装
       const stage = document.getElementById('sub-stage-box');
       if (stage) {
         stage.innerHTML = `
@@ -252,28 +290,30 @@ class VisualEnlightenmentEngine {
             <div class="pile-title" style="color:#15803d; font-weight:800;">🎉 仓库还剩下 (${q.answer}颗)</div>
             <div class="item-group">
               <div class="tens-boxes">${this._renderBoxes(finalTens)}</div>
-              <div class="ones-items" style="margin-top:6px;">${this._renderItems('🌰', finalOnes)}</div>
+              <div class="ones-items" style="margin-top:10px;">${this._renderItems('🌰', finalOnes)}</div>
             </div>
           </div>
         `;
       }
-    }, isBorrow ? 1300 : 600);
+      this._attachSkipButton();
+    }, isBorrow ? 2300 : 1100);
 
-    // 步骤 3: 揭晓答案
+    // 步骤 4 (3600ms): 结果总结揭晓
     this._registerTimer(() => {
       if (notice) {
-        notice.innerHTML = `🌟 <strong>计算完成：</strong> 剩下 <strong>${finalTens}</strong> 箱 + <strong>${finalOnes}</strong> 颗 = <strong>${q.answer}</strong> 颗！`;
+        notice.innerHTML = `🌟 <strong>计算完成：</strong> 仓库还剩下 <strong>${finalTens}</strong> 箱 + <strong>${finalOnes}</strong> 颗 = <strong>${q.answer}</strong> 颗！`;
         notice.classList.add('glow');
+        this._attachSkipButton();
       }
-    }, isBorrow ? 1900 : 1200);
+    }, isBorrow ? 3600 : 2300);
 
-    // 步骤 4: 结束转场
+    // 步骤 5 (4900ms): 结束转场
     this._registerTimer(() => {
       if (callback) callback();
-    }, isBorrow ? 2800 : 2000);
+    }, isBorrow ? 4900 : 3600);
   }
 
-  // ================= 3. ✖️ 乘法舞台与动画 =================
+  // ================= 3. ✖️ 乘法舞台与慢速演算 =================
   _renderMultiplicationInitial(q) {
     const rows = q.num1;
     const cols = q.num2;
@@ -298,7 +338,7 @@ class VisualEnlightenmentEngine {
         </div>
       </div>
       <div id="enlighten-notice" class="enlighten-bubble glow">
-        ⚡ <strong>乘法思维：</strong> 不用一个个去数！一行一行成倍叠加，一句口诀秒算！
+        ⚡ <strong>乘法思维：</strong> 不用一个个去数！排队方阵一行一行算，一句口诀秒出！
       </div>
     `;
   }
@@ -308,8 +348,8 @@ class VisualEnlightenmentEngine {
     const cols = q.num2;
     const notice = document.getElementById('enlighten-notice');
     const rhyme = q.hint ? (q.hint.match(/「(.*?)」/)?.[1] || '') : '';
+    const intervalMs = 650; // 较原先 300ms 延长一倍以上，逐行亮起非常从容舒适
 
-    // 逐排扫描亮起动画，音调递进
     for (let r = 0; r < rows; r++) {
       this._registerTimer(() => {
         const rowEl = document.getElementById(`mul-row-${r}`);
@@ -318,36 +358,38 @@ class VisualEnlightenmentEngine {
 
         const currentTotal = (r + 1) * cols;
         if (notice) {
-          notice.innerHTML = `🍪 扫描第 <strong>${r + 1}</strong> 排（+${cols}块）... 已经有 <strong>${currentTotal}</strong> 块！`;
+          notice.innerHTML = `🍪 扫描第 <strong>${r + 1}</strong> 排（+${cols}块）... 已经数到 <strong>${currentTotal}</strong> 块！`;
+          this._attachSkipButton();
         }
-      }, r * 300);
+      }, r * intervalMs);
     }
 
     // 所有排扫描完毕，全体金光出炉
-    const completeTime = rows * 300 + 150;
+    const completeTime = rows * intervalMs + 300;
     this._registerTimer(() => {
       const tray = document.getElementById('mul-tray');
       if (tray) tray.classList.add('tray-baked');
 
       const cookies = this.container.querySelectorAll('.cookie-item');
       cookies.forEach((c, idx) => {
-        setTimeout(() => c.classList.add('baked'), idx * 15);
+        setTimeout(() => c.classList.add('baked'), idx * 25);
       });
 
       if (window.soundEngine) window.soundEngine.playPackBox();
       if (notice) {
-        notice.innerHTML = `✨ <strong>乘法口诀：「${rhyme}」</strong>！整盘共有 <strong>${q.answer}</strong> 块曲奇出炉！`;
+        notice.innerHTML = `✨ <strong>乘法口诀：「${rhyme}」</strong>！整盘共有 <strong>${q.answer}</strong> 块香喷喷的曲奇出炉！`;
         notice.classList.add('pulse');
+        this._attachSkipButton();
       }
     }, completeTime);
 
-    // 结束转场
+    // 留出 1800ms 阅读理解时间
     this._registerTimer(() => {
       if (callback) callback();
-    }, completeTime + 1200);
+    }, completeTime + 1800);
   }
 
-  // ================= 4. ➗ 除法舞台与动画 =================
+  // ================= 4. ➗ 除法舞台与慢速演算 =================
   _renderDivisionInitial(q) {
     const total = q.num1;
     const animalCount = q.num2;
@@ -379,7 +421,7 @@ class VisualEnlightenmentEngine {
         <div class="animal-plates-row">${platesHtml}</div>
       </div>
       <div id="enlighten-notice" class="enlighten-bubble glow">
-        ⚖️ <strong>除法就是公平分发：</strong> 答对后看草莓怎么公平飞入每个人的盘子！
+        ⚖️ <strong>除法就是公平分发：</strong> 答对后看草莓怎么从容飞入每个人的盘子！
       </div>
     `;
   }
@@ -389,8 +431,8 @@ class VisualEnlightenmentEngine {
     const share = q.answer;
     const notice = document.getElementById('enlighten-notice');
     const animals = ['🐰 小兔', '🐻 小熊', '🦊 小狐', '🐼 熊猫', '🐵 小猴', '🐯 小虎', '🐶 小狗', '🐱 小猫'];
+    const intervalMs = 680; // 从 320ms 调至 680ms，每一只小动物收草莓的细节都看得真真切切
 
-    // 轮流把草莓分发给各个小动物
     for (let i = 0; i < animalCount; i++) {
       this._registerTimer(() => {
         const plate = document.getElementById(`plate-${i}`);
@@ -404,28 +446,30 @@ class VisualEnlightenmentEngine {
 
         if (notice) {
           notice.innerHTML = `🍓 分给 <strong>${animals[i % animals.length]}</strong> <strong>${share}</strong> 颗草莓...`;
+          this._attachSkipButton();
         }
-      }, i * 320);
+      }, i * intervalMs);
     }
 
     // 全部发完后
-    const completeTime = animalCount * 320 + 200;
+    const completeTime = animalCount * intervalMs + 300;
     this._registerTimer(() => {
       const table = document.getElementById('div-table');
       if (table) {
         table.innerHTML = `<div class="table-title" style="color:#16a34a; font-weight:800;">🎉 桌上草莓全部平均分完啦！</div>`;
       }
       if (notice) {
-        notice.innerHTML = `❤️ <strong>人人平等！</strong> 每只小动物都分到了相等的 <strong>${share}</strong> 颗草莓！`;
+        notice.innerHTML = `❤️ <strong>人人平等！</strong> 每只小动物都分到了相等的 <strong>${share}</strong> 颗草莓！不多也不少！`;
         notice.classList.add('pulse');
+        this._attachSkipButton();
       }
       if (window.soundEngine) window.soundEngine.playVictory();
     }, completeTime);
 
-    // 结束转场
+    // 留出 1900ms 观察时间
     this._registerTimer(() => {
       if (callback) callback();
-    }, completeTime + 1300);
+    }, completeTime + 1900);
   }
 
   // 工具方法：渲染整箱 (10个/箱)
