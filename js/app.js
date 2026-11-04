@@ -201,16 +201,18 @@ document.addEventListener('DOMContentLoaded', () => {
       // 播放清脆上升和弦
       window.soundEngine.playCorrect(state.currentCombo);
 
-      // 触发启蒙动画庆祝效果
+      // 启动演算过程动画，演播完成后自然切入下一题
       if (window.visualEngine) {
-        window.visualEngine.celebrateCorrect(state.currentQuestion);
+        window.visualEngine.playProcessAnimation(state.currentQuestion, () => {
+          state.currentIndex++;
+          loadNextQuestion();
+        });
+      } else {
+        setTimeout(() => {
+          state.currentIndex++;
+          loadNextQuestion();
+        }, 800);
       }
-
-      // 0.8秒后切入下一题
-      setTimeout(() => {
-        state.currentIndex++;
-        loadNextQuestion();
-      }, 750);
 
     } else {
       // ===== 答错 =====

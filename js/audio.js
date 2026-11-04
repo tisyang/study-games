@@ -178,6 +178,58 @@ class SoundEngine {
     });
   }
 
+  // 动画音效：满十打包封箱 (欢快金币合成音)
+  playPackBox() {
+    if (!this.sfxEnabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+    // 快速三连升调
+    [523.25, 659.25, 1046.50].forEach((f, idx) => {
+      this.playTone(f, 0.18, 'triangle', now + idx * 0.06, this.sfxGainNode);
+    });
+  }
+
+  // 动画音效：拆箱找零/借一当十 (生动咔嚓开箱音)
+  playUnpackBox() {
+    if (!this.sfxEnabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+    // 模拟木箱打开的脆响
+    this.playTone(400, 0.08, 'square', now, this.sfxGainNode);
+    this.playTone(600, 0.15, 'sine', now + 0.06, this.sfxGainNode);
+  }
+
+  // 动画音效：乘法方阵扫描 (步进音阶)
+  playRowScan(step = 0) {
+    if (!this.sfxEnabled) return;
+    this.init();
+    const notes = ['C5', 'D5', 'E5', 'G5', 'A5', 'C6', 'D6', 'E6', 'G6'];
+    const note = notes[step % notes.length];
+    this.playTone(this.freqMap[note], 0.2, 'triangle', null, this.sfxGainNode);
+  }
+
+  // 动画音效：分发水果/草莓飞入盘中 (轻快水滴啵声)
+  playDealFruit() {
+    if (!this.sfxEnabled) return;
+    this.init();
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, t);
+    osc.frequency.exponentialRampToValueAtTime(1100, t + 0.08);
+
+    gain.gain.setValueAtTime(0.25, t);
+    gain.gain.linearRampToValueAtTime(0.01, t + 0.08);
+
+    osc.connect(gain);
+    gain.connect(this.sfxGainNode);
+
+    osc.start(t);
+    osc.stop(t + 0.08);
+  }
+
   // 关卡胜利/通关欢呼号角
   playVictory() {
     if (!this.sfxEnabled) return;
