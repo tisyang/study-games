@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>乐学萌岛 - 二年级数学趣味大冒险</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 顶部导航与成就状态栏 -->
+    <header class="top-navbar">
+      <div class="nav-left">
+        <button id="btn-home" class="icon-btn" title="返回主页" style="display: none;">🏠</button>
+        <div class="brand-badge">🏝️ <span>乐学萌岛</span></div>
+      </div>
+      <div class="nav-right">
+        <div class="badge-item star" title="收集到的星星">⭐ <span id="star-count">0</span></div>
+        <div id="combo-badge" class="badge-item combo" style="display: none;" title="连续答对">🔥 <span id="combo-count">0</span>连击</div>
+        <button id="btn-toggle-sfx" class="icon-btn" title="开关音效">🔔</button>
+        <button id="btn-toggle-bgm" class="icon-btn" title="开关背景音乐">🎵</button>
+      </div>
+    </header>
+
+    <!-- 视图 1: 学习乐园大厅 -->
+    <main id="view-lobby" class="view">
+      <div class="hero-banner">
+        <h1>二年级数学大冒险 🧮</h1>
+        <p>快乐点击玩算术，每天进步一点点！</p>
+      </div>
+
+      <div class="portal-grid">
+        <!-- 100以内加法 -->
+        <div class="portal-card add" data-mode="add">
+          <span class="card-icon">➕</span>
+          <div class="card-title">进位加法森林</div>
+          <div class="card-desc">100以内两位数加法，攻克满十进一！</div>
+          <span class="card-tag">10道精选</span>
+        </div>
+
+        <!-- 100以内减法 -->
+        <div class="portal-card sub" data-mode="sub">
+          <span class="card-icon">➖</span>
+          <div class="card-title">退位减法溪流</div>
+          <div class="card-desc">个位不够借一当十，轻松掌握破十法！</div>
+          <span class="card-tag">10道精选</span>
+        </div>
+
+        <!-- 表内乘法 -->
+        <div class="portal-card mul" data-mode="mul">
+          <span class="card-icon">✖️</span>
+          <div class="card-title">九九乘法城堡</div>
+          <div class="card-desc">一一得一到九九八十一，口诀滚瓜烂熟！</div>
+          <span class="card-tag">10道精选</span>
+        </div>
+
+        <!-- 表内除法 -->
+        <div class="portal-card div" data-mode="div">
+          <span class="card-icon">➗</span>
+          <div class="card-title">算术除法海湾</div>
+          <div class="card-desc">乘除好伙伴，想乘法口诀快速求商！</div>
+          <span class="card-tag">10道精选</span>
+        </div>
+
+        <!-- 综合大挑战 -->
+        <div class="portal-card mix" data-mode="mix">
+          <span class="card-icon">🌈</span>
+          <div class="card-title">全能算术大挑战</div>
+          <div class="card-desc">加减乘除随机出题，快来看看你能得几颗星！</div>
+          <span class="card-tag">小勇士首选</span>
+        </div>
+
+        <!-- 未来学科预留 (锁定展示) -->
+        <div class="portal-card locked">
+          <span class="card-icon">📖</span>
+          <div class="card-title">语文识字岛</div>
+          <div class="card-desc">看图识字与趣味成语</div>
+          <span class="card-tag">筹备中 🚧</span>
+        </div>
+
+        <div class="portal-card locked">
+          <span class="card-icon">🔤</span>
+          <div class="card-title">英语单词乐园</div>
+          <div class="card-desc">自然拼读与动物单词</div>
+          <span class="card-tag">筹备中 🚧</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- 视图 2: 答题挑战舞台 -->
+    <main id="view-quiz" class="view hidden">
+      <div class="quiz-header">
+        <div class="quiz-mode-title" id="quiz-title">
+          <span>➕ 进位加法森林</span>
+        </div>
+        <div class="badge-item" id="quiz-progress">第 1 / 10 题</div>
+      </div>
+
+      <!-- 倒计时进度条 -->
+      <div class="timer-bar-container">
+        <div id="timer-bar" class="timer-bar-fill"></div>
+      </div>
+
+      <!-- 算式展示台 -->
+      <div class="question-stage">
+        <div id="streak-cheer" class="streak-cheer">连中三元！🎉</div>
+        <div id="question-formula" class="question-formula">38 + 27 = ?</div>
+      </div>
+
+      <!-- 4 选 1 糖果按键 -->
+      <div class="options-grid">
+        <button class="option-btn btn-0" data-idx="0">65</button>
+        <button class="option-btn btn-1" data-idx="1">55</button>
+        <button class="option-btn btn-2" data-idx="2">64</button>
+        <button class="option-btn btn-3" data-idx="3">75</button>
+      </div>
+    </main>
+
+    <!-- 弹窗 1: 智慧小锦囊 (错多或超时触发) -->
+    <div id="modal-hint" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="hint-icon">🦉</div>
+        <div class="hint-title">智慧小锦囊</div>
+        <div id="hint-text" class="hint-content">
+          别灰心！想一想乘法口诀：「六八四十八」！
+        </div>
+        <button id="btn-close-hint" class="btn-primary">我知道啦，继续答题！✨</button>
+      </div>
+    </div>
+
+    <!-- 弹窗 2: 关卡通关结算 -->
+    <div id="modal-summary" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="hint-icon">🏆</div>
+        <div class="hint-title">挑战完成！</div>
+        <div id="summary-stars" class="result-stars">⭐⭐⭐</div>
+        <p id="summary-encourage" style="font-weight: 700; color: #4b5563; margin-bottom: 12px;">太神啦！你简直是数学小天才！</p>
+        
+        <div class="result-stat-row">
+          <div class="stat-item">
+            <span class="val" id="summary-correct">10/10</span>
+            <span class="lbl">答对题数</span>
+          </div>
+          <div class="stat-item">
+            <span class="val" id="summary-combo">5</span>
+            <span class="lbl">最高连击</span>
+          </div>
+          <div class="stat-item">
+            <span class="val" id="summary-score">+30</span>
+            <span class="lbl">赢得金星</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
+          <button id="btn-replay" class="btn-primary" style="background: #10b981; border-color: #047857;">再玩一次 🔁</button>
+          <button id="btn-back-lobby" class="btn-primary">返回大厅 🏝️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入脚本 -->
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

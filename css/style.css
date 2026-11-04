@@ -1,0 +1,569 @@
+/* ========================================================
+   乐学萌岛 (Kids Learn Island) - 样式表
+   风格：圆润糖果风、低刺激暖色调、超大触控靶心、弹性动效
+   ======================================================== */
+
+:root {
+  --primary-bg: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  --panel-bg: rgba(255, 255, 255, 0.95);
+  --text-main: #2d3748;
+  --text-muted: #718096;
+  --accent-color: #ff7675;
+  --star-color: #f1c40f;
+  --green-correct: #2ed573;
+  --red-wrong: #ff6b6b;
+  --shadow-candy: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
+  --shadow-btn: 0 6px 0 rgba(0, 0, 0, 0.15);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--primary-bg);
+  min-height: 100vh;
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  overflow-x: hidden;
+}
+
+/* 主容器 */
+.app-container {
+  width: 100%;
+  max-width: 860px;
+  min-height: 640px;
+  background: var(--panel-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-candy);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 4px solid #ffffff;
+}
+
+/* 顶部状态栏 */
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: #ffffff;
+  border-bottom: 2px solid #edf2f7;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-badge {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.badge-item.star {
+  color: #d97706;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.badge-item.combo {
+  color: #e11d48;
+  background: #fff1f2;
+  border-color: #fecdd3;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.badge-item.combo.bump {
+  transform: scale(1.25);
+}
+
+/* 通用按钮 */
+.icon-btn {
+  background: #f1f5f9;
+  border: none;
+  font-size: 1.2rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+}
+
+.icon-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+/* 视图容器 */
+.view {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.view.hidden {
+  display: none !important;
+}
+
+/* ================== 主页大厅视图 ================== */
+.hero-banner {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.hero-banner h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #1e3a8a;
+  letter-spacing: 1px;
+}
+
+.hero-banner p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-top: 6px;
+}
+
+/* 关卡/学科网格 */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.portal-card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border: 3px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.portal-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-candy);
+}
+
+.portal-card:active {
+  transform: scale(0.96);
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.card-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.card-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+/* 各卡片主题色 */
+.portal-card.add {
+  border-color: #fed7aa;
+  background: linear-gradient(180deg, #fffaf5 0%, #fff 100%);
+}
+.portal-card.add .card-title { color: #ea580c; }
+.portal-card.add .card-tag { background: #ffedd5; color: #c2410c; }
+
+.portal-card.sub {
+  border-color: #bbf7d0;
+  background: linear-gradient(180deg, #f0fdf4 0%, #fff 100%);
+}
+.portal-card.sub .card-title { color: #16a34a; }
+.portal-card.sub .card-tag { background: #dcfce7; color: #15803d; }
+
+.portal-card.mul {
+  border-color: #ddd6fe;
+  background: linear-gradient(180deg, #faf5ff 0%, #fff 100%);
+}
+.portal-card.mul .card-title { color: #7c3aed; }
+.portal-card.mul .card-tag { background: #f3e8ff; color: #6d28d9; }
+
+.portal-card.div {
+  border-color: #bae6fd;
+  background: linear-gradient(180deg, #f0f9ff 0%, #fff 100%);
+}
+.portal-card.div .card-title { color: #0284c7; }
+.portal-card.div .card-tag { background: #e0f2fe; color: #0369a1; }
+
+.portal-card.mix {
+  border-color: #fbcfe8;
+  background: linear-gradient(180deg, #fff1f2 0%, #fff 100%);
+  grid-column: 1 / -1;
+}
+.portal-card.mix .card-title { color: #db2777; }
+.portal-card.mix .card-tag { background: #fce7f3; color: #be185d; }
+
+.portal-card.locked {
+  opacity: 0.65;
+  filter: grayscale(40%);
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+/* ================== 答题舞台视图 ================== */
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.quiz-mode-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 进度条与倒计时条 */
+.timer-bar-container {
+  width: 100%;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.timer-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
+  background-size: 200% 100%;
+  border-radius: 10px;
+  transition: width 0.1s linear;
+}
+
+/* 题目展示区 */
+.question-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 180px;
+  position: relative;
+}
+
+.question-formula {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #1e293b;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #cbd5e1;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.streak-cheer {
+  position: absolute;
+  top: -10px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ff4757;
+  background: #ffeaa7;
+  padding: 4px 16px;
+  border-radius: 20px;
+  transform: rotate(-3deg);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: none;
+}
+
+/* 4选1 糖果选项区 */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.option-btn {
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  border-bottom-width: 8px;
+  border-radius: var(--radius-md);
+  padding: 22px 10px;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #1e293b;
+  cursor: pointer;
+  transition: transform 0.1s ease, border-color 0.1s ease, background 0.1s ease;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.option-btn:hover {
+  transform: translateY(-2px);
+  border-color: #94a3b8;
+}
+
+.option-btn:active {
+  transform: translateY(4px);
+  border-bottom-width: 4px;
+}
+
+/* 选项按键状态 */
+.option-btn.btn-0 { border-color: #93c5fd; background: #eff6ff; color: #1d4ed8; }
+.option-btn.btn-1 { border-color: #fde047; background: #fefce8; color: #a16207; }
+.option-btn.btn-2 { border-color: #86efac; background: #f0fdf4; color: #15803d; }
+.option-btn.btn-3 { border-color: #f9a8d4; background: #fdf2f8; color: #be185d; }
+
+.option-btn.correct {
+  background: #22c55e !important;
+  color: #ffffff !important;
+  border-color: #15803d !important;
+  animation: jelly 0.4s ease;
+}
+
+.option-btn.wrong {
+  background: #f87171 !important;
+  color: #ffffff !important;
+  border-color: #b91c1c !important;
+  animation: shake 0.4s ease;
+}
+
+/* ================== 弹窗体系 (锦囊/结算) ================== */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  text-align: center;
+  border: 4px solid #fed7aa;
+  animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hint-icon {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+}
+
+.hint-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ea580c;
+  margin-bottom: 12px;
+}
+
+.hint-content {
+  background: #fff7ed;
+  border: 2px dashed #fdba74;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  color: #9a3412;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin-bottom: 20px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-bottom: 5px solid #1d4ed8;
+  border-radius: 30px;
+  padding: 14px 32px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:active {
+  transform: translateY(3px);
+  border-bottom-width: 2px;
+}
+
+/* ================== 结算面板 ================== */
+.result-stars {
+  font-size: 3.2rem;
+  letter-spacing: 8px;
+  margin: 16px 0;
+  color: #f59e0b;
+}
+
+.result-stat-row {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  background: #f8fafc;
+  padding: 14px;
+  border-radius: var(--radius-md);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-item .val {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #1e293b;
+}
+
+.stat-item .lbl {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ================== 动画定义 ================== */
+@keyframes popIn {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes modalScale {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+@keyframes jelly {
+  0% { transform: scale(1, 1); }
+  30% { transform: scale(1.15, 0.85); }
+  40% { transform: scale(0.85, 1.15); }
+  50% { transform: scale(1.05, 0.95); }
+  65% { transform: scale(0.98, 1.02); }
+  75% { transform: scale(1.02, 0.98); }
+  100% { transform: scale(1, 1); }
+}
+
+/* 手机和平板横竖屏适配 */
+@media (max-width: 640px) {
+  body {
+    padding: 8px;
+  }
+  .app-container {
+    min-height: 94vh;
+    border-radius: var(--radius-md);
+  }
+  .top-navbar {
+    padding: 12px 16px;
+  }
+  .brand-badge {
+    font-size: 1.05rem;
+  }
+  .hero-banner h1 {
+    font-size: 1.6rem;
+  }
+  .portal-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .question-formula {
+    font-size: 2.8rem;
+  }
+  .options-grid {
+    gap: 12px;
+  }
+  .option-btn {
+    font-size: 1.8rem;
+    padding: 16px 8px;
+  }
+}
