@@ -135,16 +135,17 @@ body {
   transform: scale(0.92);
 }
 
+/* 通用隐藏类 */
+.hidden {
+  display: none !important;
+}
+
 /* 视图容器 */
 .view {
   flex: 1;
   padding: 24px;
   display: flex;
   flex-direction: column;
-}
-
-.view.hidden {
-  display: none !important;
 }
 
 /* ================== 主页大厅视图 ================== */
@@ -407,6 +408,10 @@ body {
   z-index: 50;
   backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.hidden {
+  display: none !important;
 }
 
 .modal-card {
