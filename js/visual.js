@@ -39,10 +39,12 @@ class VisualEnlightenmentEngine {
     this.clear();
     if (!this.container || !this.narration) return;
 
-    // 更新故事叙述
+    // 更新故事叙述，将所有数字自动包裹醒目大字号鲜艳药丸胶囊
+    const formattedStory = (q.story || '').replace(/(\d+)/g, '<span class="hl-num">$1</span>');
+
     this.narration.innerHTML = `
       <span class="story-tag">${q.storyTag || '数学启蒙'}</span>
-      <span class="story-text">${q.story || ''}</span>
+      <span class="story-text">${formattedStory}</span>
     `;
 
     // 路由至不同运算的初始展示
@@ -112,7 +114,7 @@ class VisualEnlightenmentEngine {
     this.container.innerHTML = `
       <div class="add-stage" id="add-stage-box">
         <div class="pile pile-left" id="add-pile-1">
-          <div class="pile-title">树上摘的 (${q.num1}个)</div>
+          <div class="pile-title">树上摘的 (<span class="hl-num">${q.num1}</span>个)</div>
           <div class="item-group">
             <div class="tens-boxes" id="add-boxes-1">${this._renderBoxes(tens1)}</div>
             <div class="ones-items" id="add-ones-1">${this._renderItems('🍎', ones1)}</div>
@@ -122,7 +124,7 @@ class VisualEnlightenmentEngine {
         <div class="op-symbol-stage" id="add-op-sym">+</div>
 
         <div class="pile pile-right" id="add-pile-2">
-          <div class="pile-title">小鹿运来 (${q.num2}个)</div>
+          <div class="pile-title">小鹿运来 (<span class="hl-num">${q.num2}</span>个)</div>
           <div class="item-group">
             <div class="tens-boxes" id="add-boxes-2">${this._renderBoxes(tens2)}</div>
             <div class="ones-items" id="add-ones-2">${this._renderItems('🍎', ones2)}</div>
@@ -223,7 +225,7 @@ class VisualEnlightenmentEngine {
     this.container.innerHTML = `
       <div class="sub-stage" id="sub-stage-box">
         <div class="pile pile-total" id="sub-pile-total">
-          <div class="pile-title">仓库原有松果 (${q.num1}颗)</div>
+          <div class="pile-title">仓库原有松果 (<span class="hl-num">${q.num1}</span>颗)</div>
           <div class="item-group">
             <div class="tens-boxes" id="sub-boxes">${this._renderBoxes(tens1)}</div>
             <div class="ones-items" id="sub-ones">${this._renderItems('🌰', ones1)}</div>
@@ -231,7 +233,7 @@ class VisualEnlightenmentEngine {
         </div>
 
         <div class="sub-action-indicator" id="sub-indicator">
-          <span>松鼠宝宝要拿走 <strong>${q.num2}</strong> 颗（${tens2}箱 + ${ones2}颗散装）</span>
+          <span>松鼠宝宝要拿走 <span class="hl-num">${q.num2}</span> 颗（${tens2}箱 + ${ones2}颗散装）</span>
         </div>
       </div>
 
@@ -332,7 +334,7 @@ class VisualEnlightenmentEngine {
       <div class="mul-stage">
         <div class="baking-tray" id="mul-tray">
           <div class="tray-header">
-            <span class="badge-accent">一共 ${rows} 排，每排整齐放 ${cols} 块</span>
+            <span class="badge-accent">一共 <span class="hl-num">${rows}</span> 排，每排整齐放 <span class="hl-num">${cols}</span> 块</span>
           </div>
           <div class="cookie-grid">${gridHtml}</div>
         </div>
@@ -410,13 +412,13 @@ class VisualEnlightenmentEngine {
     this.container.innerHTML = `
       <div class="div-stage">
         <div class="picnic-table" id="div-table">
-          <div class="table-title">🍓 桌上一共有 <strong>${total}</strong> 颗草莓</div>
+          <div class="table-title">🍓 桌上一共有 <span class="hl-num">${total}</span> 颗草莓</div>
           <div class="strawberry-pool" id="strawberry-pool">
             ${this._renderItems('🍓', Math.min(total, 24))}
           </div>
         </div>
 
-        <div class="div-action-divider">平均分给 ${animalCount} 位小动物：</div>
+        <div class="div-action-divider">平均分给 <span class="hl-num">${animalCount}</span> 位小动物：</div>
 
         <div class="animal-plates-row">${platesHtml}</div>
       </div>
