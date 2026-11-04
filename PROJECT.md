@@ -37,8 +37,9 @@
 
 ## 三、 功能开发状态
 
-- [x] 项目架构设计与文档建立
-- [ ] 纯 Web Audio 声音与背景音乐引擎 (`js/audio.js`)
-- [ ] 智能题库引擎与提示算法 (`js/game.js`)
-- [ ] 卡通糖果风大厅与响应式舞台 (`index.html`, `css/style.css`)
-- [ ] 游戏主流程控制与即时反馈系统 (`js/app.js`)
+- [x] 项目架构设计与文档建立 (`README.md`, `PROJECT.md`, `CHANGELOG.md`)
+- [x] 纯 Web Audio 声音与背景音乐引擎 (`js/audio.js`)
+- [x] 智能题库引擎与提示算法 (`js/game.js`)
+- [x] 卡通糖果风大厅与响应式舞台 (`index.html`, `css/style.css`)
+- [x] 游戏主流程控制与即时反馈系统 (`js/app.js`)
+- [x] 核心题库算法单元测试验证（500次加减乘除随机全样本验证）
