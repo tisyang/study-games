@@ -160,6 +160,11 @@ document.addEventListener('DOMContentLoaded', () => {
     el.quizProgress.textContent = `第 ${state.currentIndex + 1} / ${state.totalQuestions} 题`;
     el.questionFormula.textContent = state.currentQuestion.prompt;
 
+    // 渲染现实生活情境与启蒙动画
+    if (window.visualEngine) {
+      window.visualEngine.render(state.currentQuestion);
+    }
+
     // 渲染4个选项按键
     state.currentQuestion.options.forEach((optValue, idx) => {
       const btn = el.optionBtns[idx];
@@ -195,6 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 播放清脆上升和弦
       window.soundEngine.playCorrect(state.currentCombo);
+
+      // 触发启蒙动画庆祝效果
+      if (window.visualEngine) {
+        window.visualEngine.celebrateCorrect(state.currentQuestion);
+      }
 
       // 0.8秒后切入下一题
       setTimeout(() => {
@@ -288,6 +298,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function backToLobby() {
     stopTimer();
     window.soundEngine.playClick();
+    if (window.visualEngine) {
+      window.visualEngine.clear();
+    }
     el.modalSummary.classList.add('hidden');
     el.modalHint.classList.add('hidden');
     el.viewQuiz.classList.add('hidden');
