@@ -1445,11 +1445,11 @@ rt {
 }
 
 .english-speech-balloon .speech-quote {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.28rem;
+  font-weight: 800;
   color: #1e293b;
-  font-style: italic;
   letter-spacing: 0.3px;
+  line-height: 1.4;
 }
 
 .english-speech-balloon.balloon-cheer {

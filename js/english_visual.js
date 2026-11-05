@@ -277,7 +277,7 @@ class EnglishVisualEngine {
       <div class="english-theater-stage">
         ${theaterHtml}
         <div class="english-interactive-tip">
-          🎯 <strong>Hero Rescue:</strong> What tool can save the day?
+          🎯 <strong>Hero Rescue:</strong> What can help? Pick a tool below!
         </div>
       </div>
     `;

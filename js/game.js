@@ -344,7 +344,7 @@ class MathGameEngine {
       ...target,
       answer: target.correctTool,
       options,
-      prompt: `🆘 ${target.title} - Pick the helper tool!`,
+      prompt: `🆘 Help ${target.actor} - Pick a tool!`,
       hint: `💡 Listen and watch:\n"${target.crisisSpeech}"`
     };
   }
