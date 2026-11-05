@@ -1,227 +1,145 @@
 /**
- * 乐学萌岛 - 健壮型儿童中文语音朗读引擎
- * 支持：
- * 1. 原生 Web Speech API（针对 Chrome/Safari/Edge/iPad 深度调优）
- * 2. 纯前端高保真音频流无缝降级回退（解决部分 Linux 桌面系统缺失本地普通话语音包的问题）
- * 3. 伴随按键声波反馈与防截断机制
+ * 乐学萌岛 - 离线高保真语音播放引擎
+ * 架构：
+ * 1. 优先调用本地高品质预生成 MP3 静态音频资源（零网络延迟、零合成器 TTS 兼容性问题、100% 跨平台浏览器兼容）
+ * 2. 备选 Web Speech API（若有即兴未收录文本）
+ * 3. 伴随按键状态联动与防截断机制
  */
 
 class SpeechEngine {
   constructor() {
     this.synth = window.speechSynthesis || null;
-    this.voices = [];
-    this.preferredVoice = null;
-    this.preferredEnglishVoice = null;
     this.enabled = true;
+    this.currentAudio = null;
     this.currentUtterance = null;
-    this.fallbackAudio = null;
     this.isSpeakingNow = false;
+    this.audioIndex = null;
+  }
 
-    if (this.synth) {
-      this._loadVoices();
-      if (this.synth.onvoiceschanged !== undefined) {
-        this.synth.onvoiceschanged = () => this._loadVoices();
-      }
+  // 延迟建立文本到本地 MP3 资源路径的快速映射索引
+  _getAudioIndex() {
+    if (this.audioIndex) return this.audioIndex;
+    this.audioIndex = new Map();
+
+    // 1. 英语故事题库音频映射
+    if (window.englishData && Array.isArray(window.englishData.stories)) {
+      window.englishData.stories.forEach(s => {
+        if (s.crisisSpeech) this.audioIndex.set(this._normalizeText(s.crisisSpeech), `assets/audio/english/${s.id}_crisis.mp3`);
+        if (s.thankYouSpeech) this.audioIndex.set(this._normalizeText(s.thankYouSpeech), `assets/audio/english/${s.id}_thanks.mp3`);
+      });
+    }
+
+    // 2. 语文成语题库音频映射
+    if (window.chineseData && Array.isArray(window.chineseData.idioms)) {
+      window.chineseData.idioms.forEach(q => {
+        if (q.story) this.audioIndex.set(this._normalizeText(q.story), `assets/audio/chinese/${q.id}_story.mp3`);
+        if (q.word && q.meaning) this.audioIndex.set(this._normalizeText(`${q.word}。${q.meaning}`), `assets/audio/chinese/${q.id}_meaning.mp3`);
+      });
+    }
+
+    // 3. 语文古诗题库音频映射
+    if (window.chineseData && Array.isArray(window.chineseData.poems)) {
+      window.chineseData.poems.forEach(q => {
+        if (q.title && q.author && q.line) this.audioIndex.set(this._normalizeText(`${q.title}。${q.author}。${q.line}`), `assets/audio/chinese/${q.id}_poem.mp3`);
+        if (q.line && q.meaning) this.audioIndex.set(this._normalizeText(`${q.line}。${q.meaning}`), `assets/audio/chinese/${q.id}_meaning.mp3`);
+      });
+    }
+
+    return this.audioIndex;
+  }
+
+  // 统一去除标点与 HTML 标签进行归一化匹配
+  _normalizeText(str) {
+    if (!str) return '';
+    return str.replace(/<[^>]+>/g, '').replace(/[\s\r\n，。？！；：“”"'.!?,]/g, '').trim().toLowerCase();
+  }
+
+  // 核心：直接播放本地静态 MP3 文件
+  playAudioFile(filePath, onEndCallback = null) {
+    this.stop();
+    this.isSpeakingNow = true;
+
+    // 播放一声清脆按键点击音
+    if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+      window.soundEngine.playClick();
+    }
+
+    try {
+      const audio = new Audio(filePath);
+      this.currentAudio = audio;
+
+      let finished = false;
+      const handleDone = () => {
+        if (!finished) {
+          finished = true;
+          this.currentAudio = null;
+          this.isSpeakingNow = false;
+          if (onEndCallback) onEndCallback();
+        }
+      };
+
+      audio.onended = handleDone;
+      audio.onerror = (e) => {
+        console.warn('Audio play failed:', filePath, e);
+        handleDone();
+      };
+
+      audio.play().catch(e => {
+        console.warn('Audio play blocked:', e);
+        handleDone();
+      });
+
+      // 6秒超时保底
+      setTimeout(handleDone, 6000);
+
+    } catch (e) {
+      console.warn('playAudioFile exception:', e);
+      this.isSpeakingNow = false;
+      if (onEndCallback) onEndCallback();
     }
   }
 
-  // 寻找系统内最佳普通话与英文语音包
-  _loadVoices() {
-    if (!this.synth) return;
-    this.voices = this.synth.getVoices() || [];
-
-    // 优先匹配标准普通话女声或清晰声音
-    this.preferredVoice = this.voices.find(v =>
-      (v.lang === 'zh-CN' || v.lang === 'cmn-Hans-CN') &&
-      (v.name.includes('Xiaoxiao') || v.name.includes('Natural') || v.name.includes('Female') || v.name.includes('普通话') || v.name.includes('Chinese'))
-    ) || this.voices.find(v => v.lang.startsWith('zh')) || null;
-
-    // 优先匹配标准美式/英式清晰英语女声/童声
-    this.preferredEnglishVoice = this.voices.find(v =>
-      (v.lang === 'en-US' || v.lang === 'en_US') &&
-      (v.name.includes('Jenny') || v.name.includes('Natural') || v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google US English'))
-    ) || this.voices.find(v => v.lang === 'en-US' || v.lang === 'en_US')
-      || this.voices.find(v => v.lang.startsWith('en')) || null;
-  }
-
-  // 朗读指定中文文本
+  // 朗读指定中文文本（优先本地 MP3 资源）
   speak(text, onEndCallback = null) {
     if (!this.enabled || !text) {
       if (onEndCallback) onEndCallback();
       return;
     }
 
-    // 播放一声清脆提示音，确保点击有即时听觉反馈
-    if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
-      window.soundEngine.playClick();
+    const index = this._getAudioIndex();
+    const normalized = this._normalizeText(text);
+    const localFile = index.get(normalized);
+
+    if (localFile) {
+      this.playAudioFile(localFile, onEndCallback);
+      return;
     }
 
-    // 清理文本中的 HTML 标签，提纯文字
-    const cleanText = text.replace(/<[^>]+>/g, '').replace(/[，。？！；：]/g, '，').trim();
-
-    // 停止正在播放的语音或回退音频
-    this.stop();
-    this.isSpeakingNow = true;
-
-    // 重新检测可用声音
-    if (this.voices.length === 0) {
-      this._loadVoices();
-    }
-
-    // 检查 Web Speech API 是否有可用的中文语音包
-    const hasChineseVoice = this.voices.some(v => v.lang.startsWith('zh'));
-
-    if (this.synth && (hasChineseVoice || this.voices.length > 0)) {
-      this._speakWithWebSpeech(cleanText, () => {
-        this.isSpeakingNow = false;
-        if (onEndCallback) onEndCallback();
-      });
-    } else {
-      // 若系统（如部分 Linux 桌面）没有预装中文本地语音包，无缝启用高保真普通话发音音频流
-      this._speakWithAudioFallback(cleanText, () => {
-        this.isSpeakingNow = false;
-        if (onEndCallback) onEndCallback();
-      });
-    }
+    // 若无预生成静态资源，使用原生 Web Speech API 备选保底
+    this._speakWithWebSpeechFallback(text, 'zh-CN', onEndCallback);
   }
 
-  // 方案 A: 浏览器原生 Web Speech API
-  _speakWithWebSpeech(cleanText, onDone) {
-    try {
-      // 唤醒可能处于 paused 挂起状态的 Chrome synth
-      if (this.synth.paused) {
-        this.synth.resume();
-      }
-      this.synth.cancel();
-
-      // 延迟 50ms 规避 Chrome 立即 cancel 导致丢包的 bug
-      setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        this.currentUtterance = utterance; // 防止 Chrome GC 垃圾回收导致截断
-
-        utterance.lang = 'zh-CN';
-        if (this.preferredVoice) {
-          utterance.voice = this.preferredVoice;
-        }
-
-        utterance.rate = 0.85; // 稍慢语速，适合儿童
-        utterance.pitch = 1.05;
-        utterance.volume = 1.0;
-
-        let finished = false;
-        let started = false;
-
-        const handleDone = () => {
-          if (!finished) {
-            finished = true;
-            this.currentUtterance = null;
-            if (onDone) onDone();
-          }
-        };
-
-        utterance.onstart = () => {
-          started = true;
-        };
-
-        utterance.onend = handleDone;
-        utterance.onerror = (err) => {
-          console.warn('WebSpeech error, fallback to audio stream:', err);
-          if (!finished) {
-            finished = true;
-            this.currentUtterance = null;
-            this._speakWithAudioFallback(cleanText, onDone);
-          }
-        };
-
-        this.synth.speak(utterance);
-
-        // Linux/Firefox 假死探测机制：800ms 内未实际开始发音（缺少 speech-dispatcher），立即无缝转入网络音频流
-        setTimeout(() => {
-          if (!started && !finished) {
-            console.warn('Chinese WebSpeech did not start within 800ms, activating audio fallback');
-            finished = true;
-            try { this.synth.cancel(); } catch (e) {}
-            this.currentUtterance = null;
-            this._speakWithAudioFallback(cleanText, onDone);
-          }
-        }, 800);
-
-        // 超时保底（防止个别浏览器既不触发 onend 也不触发 onerror）
-        const maxWaitMs = Math.max(3000, cleanText.length * 400);
-        setTimeout(handleDone, maxWaitMs);
-      }, 50);
-
-    } catch (e) {
-      console.warn('WebSpeech exception, fallback:', e);
-      this._speakWithAudioFallback(cleanText, onDone);
+  // 朗读指定英文文本（优先本地 MP3 资源）
+  speakEnglish(text, onEndCallback = null) {
+    if (!this.enabled || !text) {
+      if (onEndCallback) onEndCallback();
+      return;
     }
+
+    const index = this._getAudioIndex();
+    const normalized = this._normalizeText(text);
+    const localFile = index.get(normalized);
+
+    if (localFile) {
+      this.playAudioFile(localFile, onEndCallback);
+      return;
+    }
+
+    // 若无预生成静态资源，使用原生 Web Speech API 备选保底
+    this._speakWithWebSpeechFallback(text, 'en-US', onEndCallback);
   }
 
-  // 方案 B: 高保真中文语音流回退（解决系统无 TTS 语音包问题）
-  _speakWithAudioFallback(cleanText, onDone) {
-    try {
-      // 使用有道标准普通话发音流（儿童古诗成语极度清晰标准）
-      const encoded = encodeURIComponent(cleanText.substring(0, 80));
-      const audioUrl = `https://dict.youdao.com/dictvoice?audio=${encoded}&le=zh`;
-
-      if (this.fallbackAudio) {
-        this.fallbackAudio.pause();
-        this.fallbackAudio = null;
-      }
-
-      const audio = new Audio(audioUrl);
-      this.fallbackAudio = audio;
-
-      let finished = false;
-      const handleDone = () => {
-        if (!finished) {
-          finished = true;
-          this.fallbackAudio = null;
-          if (onDone) onDone();
-        }
-      };
-
-      audio.onended = handleDone;
-      audio.onerror = () => {
-        console.warn('Audio stream failed, play hint tone');
-        if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
-          window.soundEngine.playHint();
-        }
-        handleDone();
-      };
-
-      audio.play().catch(e => {
-        console.warn('Audio play blocked:', e);
-        if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
-          window.soundEngine.playHint();
-        }
-        handleDone();
-      });
-
-      // 5秒超时保底
-      setTimeout(handleDone, 5000);
-
-    } catch (e) {
-      console.warn('Fallback error:', e);
-      if (onDone) onDone();
-    }
-  }
-
-  // 停止朗读
-  stop() {
-    this.isSpeakingNow = false;
-    if (this.synth) {
-      try { this.synth.cancel(); } catch (e) {}
-    }
-    if (this.fallbackAudio) {
-      try {
-        this.fallbackAudio.pause();
-        this.fallbackAudio = null;
-      } catch (e) {}
-    }
-  }
-
-  // 朗读并在按钮上展示文字与声波状态
+  // 按钮交互联动（带 🔊 朗读中... 动态状态与声波）
   speakWithButton(btnEl, text) {
     if (!btnEl) {
       this.speak(text);
@@ -238,171 +156,6 @@ class SpeechEngine {
     });
   }
 
-  // 朗读指定英文文本 (纯正原声浸润)
-  speakEnglish(text, onEndCallback = null) {
-    if (!this.enabled || !text) {
-      if (onEndCallback) onEndCallback();
-      return;
-    }
-
-    if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
-      window.soundEngine.playClick();
-    }
-
-    const cleanText = text.replace(/<[^>]+>/g, '').trim();
-
-    this.stop();
-    this.isSpeakingNow = true;
-
-    if (this.voices.length === 0) {
-      this._loadVoices();
-    }
-
-    const hasEnglishVoice = this.voices.some(v => v.lang.startsWith('en'));
-
-    if (this.synth && (hasEnglishVoice || (this.preferredEnglishVoice !== null))) {
-      this._speakEnglishWithWebSpeech(cleanText, () => {
-        this.isSpeakingNow = false;
-        if (onEndCallback) onEndCallback();
-      });
-    } else {
-      this._speakEnglishWithAudioFallback(cleanText, () => {
-        this.isSpeakingNow = false;
-        if (onEndCallback) onEndCallback();
-      });
-    }
-  }
-
-  // 方案 A: 浏览器原生 Web Speech API (英文美音)
-  _speakEnglishWithWebSpeech(cleanText, onDone) {
-    try {
-      if (this.synth.paused) {
-        this.synth.resume();
-      }
-      this.synth.cancel();
-
-      setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        this.currentUtterance = utterance;
-
-        utterance.lang = 'en-US';
-        if (this.preferredEnglishVoice) {
-          utterance.voice = this.preferredEnglishVoice;
-        }
-
-        utterance.rate = 0.85; // 稍慢语速，清晰自然适合二年级
-        utterance.pitch = 1.05;
-        utterance.volume = 1.0;
-
-        let finished = false;
-        let started = false;
-
-        const handleDone = () => {
-          if (!finished) {
-            finished = true;
-            this.currentUtterance = null;
-            if (onDone) onDone();
-          }
-        };
-
-        utterance.onstart = () => {
-          started = true;
-        };
-
-        utterance.onend = handleDone;
-        utterance.onerror = (err) => {
-          console.warn('English WebSpeech error, fallback to audio stream:', err);
-          if (!finished) {
-            finished = true;
-            this.currentUtterance = null;
-            this._speakEnglishWithAudioFallback(cleanText, onDone);
-          }
-        };
-
-        this.synth.speak(utterance);
-
-        // Linux/Firefox 假死探测机制：800ms 内未实际开始发音（缺少 speech-dispatcher），立即无缝转入网络音频流
-        setTimeout(() => {
-          if (!started && !finished) {
-            console.warn('English WebSpeech did not start within 800ms, activating audio fallback');
-            finished = true;
-            try { this.synth.cancel(); } catch (e) {}
-            this.currentUtterance = null;
-            this._speakEnglishWithAudioFallback(cleanText, onDone);
-          }
-        }, 800);
-
-        // 超时保底
-        const maxWaitMs = Math.max(3500, cleanText.length * 300);
-        setTimeout(handleDone, maxWaitMs);
-      }, 50);
-
-    } catch (e) {
-      console.warn('English WebSpeech exception, fallback:', e);
-      this._speakEnglishWithAudioFallback(cleanText, onDone);
-    }
-  }
-
-  // 方案 B: 高保真美式英语流回退 (双通道网络音频流，解决 Linux 缺失 TTS 问题)
-  _speakEnglishWithAudioFallback(cleanText, onDone) {
-    try {
-      if (this.fallbackAudio) {
-        this.fallbackAudio.pause();
-        this.fallbackAudio = null;
-      }
-
-      let finished = false;
-      const handleDone = () => {
-        if (!finished) {
-          finished = true;
-          this.fallbackAudio = null;
-          if (onDone) onDone();
-        }
-      };
-
-      // 1. 首选高保真长文本全句流 (Google Translate TTS，对整句发音支持极其自然标准)
-      const primaryUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${encodeURIComponent(cleanText.substring(0, 160))}`;
-
-      // 2. 备选短语流 (有道标准美音词汇流，取首句短语以防 500 报错)
-      const firstClause = cleanText.split(/[.!?]/)[0].replace(/[^a-zA-Z0-9\s]/g, '').trim().substring(0, 40);
-      const secondaryUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(firstClause)}&type=2`;
-
-      const tryPlay = (url, onFail) => {
-        const audio = new Audio(url);
-        this.fallbackAudio = audio;
-
-        audio.onended = handleDone;
-        audio.onerror = (e) => {
-          console.warn('Audio stream error for', url, e);
-          if (onFail) onFail();
-          else handleDone();
-        };
-
-        audio.play().catch(e => {
-          console.warn('Audio play blocked for', url, e);
-          if (onFail) onFail();
-          else handleDone();
-        });
-      };
-
-      tryPlay(primaryUrl, () => {
-        tryPlay(secondaryUrl, () => {
-          if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
-            window.soundEngine.playHint();
-          }
-          handleDone();
-        });
-      });
-
-      setTimeout(handleDone, 6000);
-
-    } catch (e) {
-      console.warn('English fallback error:', e);
-      if (onDone) onDone();
-    }
-  }
-
-  // 英文朗读并在按钮上展示文字与声波状态
   speakEnglishWithButton(btnEl, text) {
     if (!btnEl) {
       this.speakEnglish(text);
@@ -417,6 +170,60 @@ class SpeechEngine {
       btnEl.classList.remove('speaking');
       btnEl.innerHTML = origText;
     });
+  }
+
+  // 备选 Web Speech API
+  _speakWithWebSpeechFallback(text, lang, onDone) {
+    if (!this.synth) {
+      if (onDone) onDone();
+      return;
+    }
+
+    try {
+      this.stop();
+      this.isSpeakingNow = true;
+
+      const cleanText = text.replace(/<[^>]+>/g, '').trim();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      this.currentUtterance = utterance;
+      utterance.lang = lang;
+      utterance.rate = 0.85;
+
+      let finished = false;
+      const handleDone = () => {
+        if (!finished) {
+          finished = true;
+          this.currentUtterance = null;
+          this.isSpeakingNow = false;
+          if (onDone) onDone();
+        }
+      };
+
+      utterance.onend = handleDone;
+      utterance.onerror = handleDone;
+
+      this.synth.speak(utterance);
+      setTimeout(handleDone, 4000);
+
+    } catch (e) {
+      this.isSpeakingNow = false;
+      if (onDone) onDone();
+    }
+  }
+
+  // 停止播放
+  stop() {
+    this.isSpeakingNow = false;
+    if (this.currentAudio) {
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+        this.currentAudio = null;
+      } catch (e) {}
+    }
+    if (this.synth) {
+      try { this.synth.cancel(); } catch (e) {}
+    }
   }
 }
 
