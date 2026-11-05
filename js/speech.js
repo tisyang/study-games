@@ -109,6 +109,8 @@ class SpeechEngine {
         utterance.volume = 1.0;
 
         let finished = false;
+        let started = false;
+
         const handleDone = () => {
           if (!finished) {
             finished = true;
@@ -117,14 +119,32 @@ class SpeechEngine {
           }
         };
 
+        utterance.onstart = () => {
+          started = true;
+        };
+
         utterance.onend = handleDone;
         utterance.onerror = (err) => {
           console.warn('WebSpeech error, fallback to audio stream:', err);
-          // 遇到错误立刻降级到音频流方案
-          this._speakWithAudioFallback(cleanText, onDone);
+          if (!finished) {
+            finished = true;
+            this.currentUtterance = null;
+            this._speakWithAudioFallback(cleanText, onDone);
+          }
         };
 
         this.synth.speak(utterance);
+
+        // Linux/Firefox 假死探测机制：800ms 内未实际开始发音（缺少 speech-dispatcher），立即无缝转入网络音频流
+        setTimeout(() => {
+          if (!started && !finished) {
+            console.warn('Chinese WebSpeech did not start within 800ms, activating audio fallback');
+            finished = true;
+            try { this.synth.cancel(); } catch (e) {}
+            this.currentUtterance = null;
+            this._speakWithAudioFallback(cleanText, onDone);
+          }
+        }, 800);
 
         // 超时保底（防止个别浏览器既不触发 onend 也不触发 onerror）
         const maxWaitMs = Math.max(3000, cleanText.length * 400);
@@ -275,6 +295,8 @@ class SpeechEngine {
         utterance.volume = 1.0;
 
         let finished = false;
+        let started = false;
+
         const handleDone = () => {
           if (!finished) {
             finished = true;
@@ -283,14 +305,34 @@ class SpeechEngine {
           }
         };
 
+        utterance.onstart = () => {
+          started = true;
+        };
+
         utterance.onend = handleDone;
         utterance.onerror = (err) => {
           console.warn('English WebSpeech error, fallback to audio stream:', err);
-          this._speakEnglishWithAudioFallback(cleanText, onDone);
+          if (!finished) {
+            finished = true;
+            this.currentUtterance = null;
+            this._speakEnglishWithAudioFallback(cleanText, onDone);
+          }
         };
 
         this.synth.speak(utterance);
 
+        // Linux/Firefox 假死探测机制：800ms 内未实际开始发音（缺少 speech-dispatcher），立即无缝转入网络音频流
+        setTimeout(() => {
+          if (!started && !finished) {
+            console.warn('English WebSpeech did not start within 800ms, activating audio fallback');
+            finished = true;
+            try { this.synth.cancel(); } catch (e) {}
+            this.currentUtterance = null;
+            this._speakEnglishWithAudioFallback(cleanText, onDone);
+          }
+        }, 800);
+
+        // 超时保底
         const maxWaitMs = Math.max(3500, cleanText.length * 300);
         setTimeout(handleDone, maxWaitMs);
       }, 50);
@@ -301,19 +343,13 @@ class SpeechEngine {
     }
   }
 
-  // 方案 B: 高保真美式英语流回退 (有道标准美音 type=2)
+  // 方案 B: 高保真美式英语流回退 (双通道网络音频流，解决 Linux 缺失 TTS 问题)
   _speakEnglishWithAudioFallback(cleanText, onDone) {
     try {
-      const encoded = encodeURIComponent(cleanText.substring(0, 120));
-      const audioUrl = `https://dict.youdao.com/dictvoice?audio=${encoded}&type=2`;
-
       if (this.fallbackAudio) {
         this.fallbackAudio.pause();
         this.fallbackAudio = null;
       }
-
-      const audio = new Audio(audioUrl);
-      this.fallbackAudio = audio;
 
       let finished = false;
       const handleDone = () => {
@@ -324,21 +360,38 @@ class SpeechEngine {
         }
       };
 
-      audio.onended = handleDone;
-      audio.onerror = () => {
-        console.warn('English audio stream failed');
-        if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
-          window.soundEngine.playHint();
-        }
-        handleDone();
+      // 1. 首选高保真长文本全句流 (Google Translate TTS，对整句发音支持极其自然标准)
+      const primaryUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${encodeURIComponent(cleanText.substring(0, 160))}`;
+
+      // 2. 备选短语流 (有道标准美音词汇流，取首句短语以防 500 报错)
+      const firstClause = cleanText.split(/[.!?]/)[0].replace(/[^a-zA-Z0-9\s]/g, '').trim().substring(0, 40);
+      const secondaryUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(firstClause)}&type=2`;
+
+      const tryPlay = (url, onFail) => {
+        const audio = new Audio(url);
+        this.fallbackAudio = audio;
+
+        audio.onended = handleDone;
+        audio.onerror = (e) => {
+          console.warn('Audio stream error for', url, e);
+          if (onFail) onFail();
+          else handleDone();
+        };
+
+        audio.play().catch(e => {
+          console.warn('Audio play blocked for', url, e);
+          if (onFail) onFail();
+          else handleDone();
+        });
       };
 
-      audio.play().catch(e => {
-        console.warn('English audio play blocked:', e);
-        if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
-          window.soundEngine.playHint();
-        }
-        handleDone();
+      tryPlay(primaryUrl, () => {
+        tryPlay(secondaryUrl, () => {
+          if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
+            window.soundEngine.playHint();
+          }
+          handleDone();
+        });
       });
 
       setTimeout(handleDone, 6000);
