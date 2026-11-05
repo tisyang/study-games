@@ -432,21 +432,39 @@ class EnglishVisualEngine {
       }
     }
 
-    // 3. 原声感谢气泡跳动展示
+    // 3. 防重复切题状态阀
+    let transitioned = false;
+    const doTransition = () => {
+      if (!transitioned) {
+        transitioned = true;
+        if (callback) callback();
+      }
+    };
+
+    // 4. 原声感谢气泡跳动展示（附带“下一题 ⏩”微按键，自由跳过）
     if (balloon) {
       balloon.innerHTML = `
         <span class="speech-quote thank-you-quote">“${q.thankYouSpeech}”</span>
+        <button id="btn-skip-english" class="btn-skip-anim" title="跳过等待，进入下一题">下一题 ⏩</button>
       `;
       balloon.classList.add('balloon-cheer');
+
+      const btnSkip = document.getElementById('btn-skip-english');
+      if (btnSkip) {
+        btnSkip.onclick = (e) => {
+          e.stopPropagation();
+          doTransition();
+        };
+      }
     }
 
-    // 4. 纯正美音朗诵感谢语
-    window.speechEngine.speakEnglish(q.thankYouSpeech);
+    // 5. 纯正美音朗诵感谢语：严格等待音频完整播放完毕后，再留出 1.2 秒给孩子享受成功的画面余韵，然后才切入下一题
+    window.speechEngine.speakEnglish(q.thankYouSpeech, () => {
+      this._registerTimer(doTransition, 1200);
+    });
 
-    // 留出 4.5 秒给孩子欣赏救援成功的喜悦动画与回味原声
-    this._registerTimer(() => {
-      if (callback) callback();
-    }, 4500);
+    // 6. 异常超时保底保护（若浏览器禁音或报错，最多等待 9 秒自动切题，防游戏卡死）
+    this._registerTimer(doTransition, 9000);
   }
 }
 

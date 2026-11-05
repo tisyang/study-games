@@ -171,9 +171,18 @@ class ChineseVisualEngine {
   celebrateIdiom(q, callback) {
     const bubble = document.getElementById('idiom-live-bubble');
 
-    // 1. 发音朗读成语与拼音
-    const pinyinText = q.pinyin.join(' ');
-    window.speechEngine.speak(`${q.word}。${q.meaning}`);
+    let transitioned = false;
+    const doTransition = () => {
+      if (!transitioned) {
+        transitioned = true;
+        if (callback) callback();
+      }
+    };
+
+    // 1. 发音朗读成语与拼音：严格等待语音完整播放完毕后，再留出 1.2 秒余韵切题
+    window.speechEngine.speak(`${q.word}。${q.meaning}`, () => {
+      this._registerTimer(doTransition, 1200);
+    });
 
     // 2. 动效高潮演播
     if (q.scene === 'dragon') {
@@ -190,18 +199,25 @@ class ChineseVisualEngine {
       bubble.innerHTML = `
         <div class="idiom-ruby-title">
           ${q.word.split('').map((char, i) => `<ruby>${char}<rt>${q.pinyin[i]}</rt></ruby>`).join('')}
+          <button id="btn-skip-idiom" class="btn-skip-anim" style="vertical-align: middle; margin-left: 10px;" title="跳过等待，进入下一题">下一题 ⏩</button>
         </div>
         <div class="idiom-meaning-box">
           💡 <strong>做人的智慧：</strong> ${q.meaning}
         </div>
       `;
       bubble.classList.add('pulse');
+
+      const btnSkip = document.getElementById('btn-skip-idiom');
+      if (btnSkip) {
+        btnSkip.onclick = (e) => {
+          e.stopPropagation();
+          doTransition();
+        };
+      }
     }
 
-    // 留出 4.5 秒给孩子聆听语音朗读与阅读成语哲理
-    this._registerTimer(() => {
-      if (callback) callback();
-    }, 4500);
+    // 异常超时保底保护（最多等待 15 秒）
+    this._registerTimer(doTransition, 15000);
   }
 
   // ==================== 2. 诗情画意集渲染 ====================
@@ -283,23 +299,43 @@ class ChineseVisualEngine {
     }).join('');
     if (verseDisplay) verseDisplay.innerHTML = fullRuby;
 
-    // 3. 语音悠扬朗读
-    window.speechEngine.speak(`${q.line}。${q.meaning}`);
+    // 3. 防重复切题状态阀
+    let transitioned = false;
+    const doTransition = () => {
+      if (!transitioned) {
+        transitioned = true;
+        if (callback) callback();
+      }
+    };
+
+    // 4. 语音悠扬朗读：严格等待朗诵完整播放完毕，再留出 1.2 秒余韵切题
+    window.speechEngine.speak(`${q.line}。${q.meaning}`, () => {
+      this._registerTimer(doTransition, 1200);
+    });
 
     if (bubble) {
       bubble.innerHTML = `
-        <div class="poem-congrats-title">🎉 妙笔点睛！诗画相融</div>
+        <div class="poem-congrats-title">
+          <span>🎉 妙笔点睛！诗画相融</span>
+          <button id="btn-skip-poem" class="btn-skip-anim" style="vertical-align: middle; margin-left: 10px;" title="跳过等待，进入下一题">下一题 ⏩</button>
+        </div>
         <div class="poem-insight-text">
           🌟 <strong>诗意赏析：</strong> ${q.meaning}
         </div>
       `;
       bubble.classList.add('pulse');
+
+      const btnSkip = document.getElementById('btn-skip-poem');
+      if (btnSkip) {
+        btnSkip.onclick = (e) => {
+          e.stopPropagation();
+          doTransition();
+        };
+      }
     }
 
-    // 留出 4.8 秒给孩子聆听名篇朗读并感受诗画之美
-    this._registerTimer(() => {
-      if (callback) callback();
-    }, 4800);
+    // 异常超时保底保护（长诗词最多等待 25 秒）
+    this._registerTimer(doTransition, 25000);
   }
 }
 

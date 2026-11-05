@@ -59,19 +59,20 @@ class SpeechEngine {
     this.stop();
     this.isSpeakingNow = true;
 
-    // 播放一声清脆按键点击音
-    if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
-      window.soundEngine.playClick();
-    }
-
     try {
       const audio = new Audio(filePath);
       this.currentAudio = audio;
 
       let finished = false;
+      let timerId = null;
+
       const handleDone = () => {
         if (!finished) {
           finished = true;
+          if (timerId) {
+            clearTimeout(timerId);
+            timerId = null;
+          }
           this.currentAudio = null;
           this.isSpeakingNow = false;
           if (onEndCallback) onEndCallback();
@@ -89,8 +90,8 @@ class SpeechEngine {
         handleDone();
       });
 
-      // 6秒超时保底
-      setTimeout(handleDone, 6000);
+      // 异常保护保底（25秒长超时，充分保障音频正常完整播放，完成时自动 clearTimeout）
+      timerId = setTimeout(handleDone, 25000);
 
     } catch (e) {
       console.warn('playAudioFile exception:', e);
