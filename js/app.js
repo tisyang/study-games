@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       'idiom': '🎭 成语小剧场',
       'poem': '🎨 诗情画意集'
     },
+    currentSubject: 'math',
     totalQuestions: 10,
     currentIndex: 0,
     roundCorrect: 0,
@@ -42,9 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
     btnToggleSfx: document.getElementById('btn-toggle-sfx'),
     btnToggleBgm: document.getElementById('btn-toggle-bgm'),
 
-    // 视图
-    viewLobby: document.getElementById('view-lobby'),
+    // 视图层级
+    viewMainLobby: document.getElementById('view-main-lobby'),
+    viewSubjectLobby: document.getElementById('view-subject-lobby'),
     viewQuiz: document.getElementById('view-quiz'),
+
+    // 一级与二级大厅控件
+    cardGotoMath: document.getElementById('card-goto-math'),
+    cardGotoChinese: document.getElementById('card-goto-chinese'),
+    btnBackMain: document.getElementById('btn-back-main'),
+    subjectLobbyTitle: document.getElementById('subject-lobby-title'),
+    subjectLobbyDesc: document.getElementById('subject-lobby-desc'),
+    gridMathModes: document.getElementById('grid-math-modes'),
+    gridChineseModes: document.getElementById('grid-chinese-modes'),
 
     // 答题舞台
     quizTitle: document.getElementById('quiz-title'),
@@ -134,11 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
     state.maxCombo = 0;
     state.isLocked = false;
 
-    // 切换视图
-    el.viewLobby.classList.add('hidden');
+    // 切换至答题舞台视图
+    el.viewMainLobby.classList.add('hidden');
+    el.viewSubjectLobby.classList.add('hidden');
     el.viewQuiz.classList.remove('hidden');
     el.btnHome.style.display = 'flex';
-    el.quizTitle.textContent = state.modeTitles[mode] || '算术挑战';
+    el.quizTitle.textContent = state.modeTitles[mode] || '答题挑战';
 
     updateComboDisplay();
 
@@ -318,8 +330,30 @@ document.addEventListener('DOMContentLoaded', () => {
     el.modalSummary.classList.remove('hidden');
   }
 
-  // 返回大厅
-  function backToLobby() {
+  // 打开二级学科专区大厅 (数学岛 / 语文岛)
+  function openSubjectLobby(subject) {
+    window.soundEngine.playClick();
+    state.currentSubject = subject;
+    el.viewMainLobby.classList.add('hidden');
+    el.viewSubjectLobby.classList.remove('hidden');
+    el.viewQuiz.classList.add('hidden');
+    el.btnHome.style.display = 'none';
+
+    if (subject === 'math') {
+      el.subjectLobbyTitle.textContent = '🧮 趣味数学岛';
+      el.subjectLobbyDesc.textContent = '100以内加减法 · 表内乘除法 · 动态具象演算沙盒';
+      el.gridMathModes.classList.remove('hidden');
+      el.gridChineseModes.classList.add('hidden');
+    } else if (subject === 'chinese') {
+      el.subjectLobbyTitle.textContent = '📖 语文智慧岛';
+      el.subjectLobbyDesc.textContent = '32个寓言成语 · 32首课标必背古诗 · 拼音伴读与发音';
+      el.gridMathModes.classList.add('hidden');
+      el.gridChineseModes.classList.remove('hidden');
+    }
+  }
+
+  // 返回二级学科专区大厅
+  function backToSubjectLobby() {
     stopTimer();
     window.soundEngine.playClick();
     if (window.chineseVisualEngine) {
@@ -334,14 +368,51 @@ document.addEventListener('DOMContentLoaded', () => {
     el.modalSummary.classList.add('hidden');
     el.modalHint.classList.add('hidden');
     el.viewQuiz.classList.add('hidden');
-    el.viewLobby.classList.remove('hidden');
+    el.viewSubjectLobby.classList.remove('hidden');
+    el.viewMainLobby.classList.add('hidden');
+    el.btnHome.style.display = 'none';
+    state.currentCombo = 0;
+    updateComboDisplay();
+  }
+
+  // 返回一级乐园总大厅 (岛屿分类)
+  function backToMainLobby() {
+    stopTimer();
+    window.soundEngine.playClick();
+    if (window.chineseVisualEngine) {
+      window.chineseVisualEngine.clear();
+    }
+    if (window.speechEngine) {
+      window.speechEngine.stop();
+    }
+    if (window.visualEngine) {
+      window.visualEngine.clear();
+    }
+    el.modalSummary.classList.add('hidden');
+    el.modalHint.classList.add('hidden');
+    el.viewQuiz.classList.add('hidden');
+    el.viewSubjectLobby.classList.add('hidden');
+    el.viewMainLobby.classList.remove('hidden');
     el.btnHome.style.display = 'none';
     state.currentCombo = 0;
     updateComboDisplay();
   }
 
   // ------------------ 事件绑定 ------------------
-  // 1. 大厅关卡卡片点击
+  // 1. 一级大厅学科卡片点击
+  if (el.cardGotoMath) {
+    el.cardGotoMath.addEventListener('click', () => openSubjectLobby('math'));
+  }
+  if (el.cardGotoChinese) {
+    el.cardGotoChinese.addEventListener('click', () => openSubjectLobby('chinese'));
+  }
+
+  // 2. 二级大厅返回一级大厅按钮
+  if (el.btnBackMain) {
+    el.btnBackMain.addEventListener('click', backToMainLobby);
+  }
+
+  // 3. 关卡卡片点击进入答题
   document.querySelectorAll('.portal-card:not(.locked)').forEach(card => {
     card.addEventListener('click', () => {
       window.soundEngine.playClick();
@@ -352,23 +423,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 2. 选项按键点击
+  // 4. 选项按键点击
   el.optionBtns.forEach(btn => {
     btn.addEventListener('click', () => handleOptionClick(btn));
   });
 
-  // 3. 提示弹窗按钮
+  // 5. 提示弹窗按钮
   el.btnCloseHint.addEventListener('click', closeHint);
 
-  // 4. 结算弹窗按钮
+  // 6. 结算弹窗按钮
   el.btnReplay.addEventListener('click', () => {
     el.modalSummary.classList.add('hidden');
     startQuiz(state.currentMode);
   });
-  el.btnBackLobby.addEventListener('click', backToLobby);
-  el.btnHome.addEventListener('click', backToLobby);
+  el.btnBackLobby.addEventListener('click', backToSubjectLobby);
+  el.btnHome.addEventListener('click', backToSubjectLobby);
 
-  // 5. 顶部音频按钮控制
+  // 7. 顶部音频按钮控制
   el.btnToggleSfx.addEventListener('click', () => {
     const enabled = window.soundEngine.toggleSfx();
     el.btnToggleSfx.textContent = enabled ? '🔔' : '🔕';

@@ -23,20 +23,82 @@
       </div>
     </header>
 
-    <!-- 视图 1: 学习乐园大厅 -->
-    <main id="view-lobby" class="view">
+    <!-- 视图 1: 乐学萌岛·一级总大厅 (学科岛屿分类) -->
+    <main id="view-main-lobby" class="view">
       <div class="hero-banner">
-        <h1>二年级数学大冒险 🧮</h1>
-        <p>快乐点击玩算术，每天进步一点点！</p>
+        <h1>🌟 乐学萌岛 🏝️</h1>
+        <p>快乐点击学知识，每天进步一点点！</p>
       </div>
 
-      <div class="portal-grid">
+      <div class="island-grid">
+        <!-- 学科 1: 趣味数学岛 -->
+        <div class="island-card math" id="card-goto-math">
+          <div class="island-badge">🧮 算术大冒险</div>
+          <span class="island-icon">🧮</span>
+          <div class="island-title">趣味数学岛</div>
+          <div class="island-desc">100以内加减法 · 九九乘除法 · 动态具象演算沙盒</div>
+          <div class="island-tags">
+            <span class="sub-tag">➕ 进位加法</span>
+            <span class="sub-tag">➖ 退位减法</span>
+            <span class="sub-tag">✖️ 乘法方阵</span>
+            <span class="sub-tag">➗ 公平除法</span>
+          </div>
+          <button class="btn-enter-island">进入数学岛 ➔</button>
+        </div>
+
+        <!-- 学科 2: 语文智慧岛 -->
+        <div class="island-card chinese" id="card-goto-chinese">
+          <div class="island-badge">📖 国学与诗词</div>
+          <span class="island-icon">📖</span>
+          <div class="island-title">语文智慧岛</div>
+          <div class="island-desc">32个寓言成语 · 32首课标必背古诗 · 拼音伴读与发音</div>
+          <div class="island-tags">
+            <span class="sub-tag">🎭 成语小剧场</span>
+            <span class="sub-tag">🎨 诗情画意集</span>
+            <span class="sub-tag">🔤 声调拼音</span>
+            <span class="sub-tag">🔊 语音朗读</span>
+          </div>
+          <button class="btn-enter-island">进入语文岛 ➔</button>
+        </div>
+
+        <!-- 学科 3: 英语单词乐园 (筹备中) -->
+        <div class="island-card locked">
+          <div class="island-badge">筹备中 🚧</div>
+          <span class="island-icon">🔤</span>
+          <div class="island-title">英语单词乐园</div>
+          <div class="island-desc">自然拼读、萌宠动物与基础生活单词趣味翻牌</div>
+          <button class="btn-enter-island disabled">正在建造中...</button>
+        </div>
+
+        <!-- 学科 4: 益智逻辑岛 (筹备中) -->
+        <div class="island-card locked">
+          <div class="island-badge">筹备中 🚧</div>
+          <span class="island-icon">🧩</span>
+          <div class="island-title">益智思维岛</div>
+          <div class="island-desc">空间对称、找规律与趣味数学数独大闯关</div>
+          <button class="btn-enter-island disabled">正在建造中...</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- 视图 2: 二级学科专区大厅 (具体游戏模式选择) -->
+    <main id="view-subject-lobby" class="view hidden">
+      <div class="subject-lobby-header">
+        <button id="btn-back-main" class="icon-btn" title="返回乐园总大厅">←</button>
+        <div class="subject-title-box">
+          <h2 id="subject-lobby-title">🧮 趣味数学岛</h2>
+          <p id="subject-lobby-desc">挑选喜欢的关卡，开始大冒险吧！</p>
+        </div>
+      </div>
+
+      <!-- 数学关卡卡片网格 -->
+      <div class="portal-grid" id="grid-math-modes">
         <!-- 100以内加法 -->
         <div class="portal-card add" data-mode="add">
           <span class="card-icon">➕</span>
           <div class="card-title">进位加法森林</div>
           <div class="card-desc">100以内两位数加法，攻克满十进一！</div>
-          <span class="card-tag">10道精选</span>
+          <span class="card-tag">果园装箱</span>
         </div>
 
         <!-- 100以内减法 -->
@@ -44,7 +106,7 @@
           <span class="card-icon">➖</span>
           <div class="card-title">退位减法溪流</div>
           <div class="card-desc">个位不够借一当十，轻松掌握破十法！</div>
-          <span class="card-tag">10道精选</span>
+          <span class="card-tag">松鼠拆箱</span>
         </div>
 
         <!-- 表内乘法 -->
@@ -52,7 +114,7 @@
           <span class="card-icon">✖️</span>
           <div class="card-title">九九乘法城堡</div>
           <div class="card-desc">一一得一到九九八十一，口诀滚瓜烂熟！</div>
-          <span class="card-tag">10道精选</span>
+          <span class="card-tag">曲奇方阵</span>
         </div>
 
         <!-- 表内除法 -->
@@ -60,7 +122,7 @@
           <span class="card-icon">➗</span>
           <div class="card-title">算术除法海湾</div>
           <div class="card-desc">乘除好伙伴，想乘法口诀快速求商！</div>
-          <span class="card-tag">10道精选</span>
+          <span class="card-tag">公平野餐</span>
         </div>
 
         <!-- 综合大挑战 -->
@@ -70,7 +132,10 @@
           <div class="card-desc">加减乘除随机出题，快来看看你能得几颗星！</div>
           <span class="card-tag">小勇士首选</span>
         </div>
+      </div>
 
+      <!-- 语文关卡卡片网格 -->
+      <div class="portal-grid hidden" id="grid-chinese-modes">
         <!-- 语文模块 1: 成语小剧场 -->
         <div class="portal-card idiom" data-mode="idiom">
           <span class="card-icon">🎭</span>
@@ -86,18 +151,10 @@
           <div class="card-desc">32首课标必背经典古诗，画中寻诗填词，伴读诗意！</div>
           <span class="card-tag">拼音·画卷·名篇</span>
         </div>
-
-        <!-- 未来学科预留 (锁定展示) -->
-        <div class="portal-card locked">
-          <span class="card-icon">🔤</span>
-          <div class="card-title">英语单词乐园</div>
-          <div class="card-desc">自然拼读与动物单词</div>
-          <span class="card-tag">筹备中 🚧</span>
-        </div>
       </div>
     </main>
 
-    <!-- 视图 2: 答题挑战舞台 -->
+    <!-- 视图 3: 答题挑战舞台 -->
     <main id="view-quiz" class="view hidden">
       <div class="quiz-header">
         <div class="quiz-mode-title" id="quiz-title">

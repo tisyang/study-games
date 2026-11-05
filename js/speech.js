@@ -1,6 +1,9 @@
 /**
- * 乐学萌岛 - 纯原生童趣中文朗读引擎 (Web Speech API)
- * 完全免去外部音频下载，零网络延迟，专为低年级小朋友调校的标准普通话发音与语速
+ * 乐学萌岛 - 健壮型儿童中文语音朗读引擎
+ * 支持：
+ * 1. 原生 Web Speech API（针对 Chrome/Safari/Edge/iPad 深度调优）
+ * 2. 纯前端高保真音频流无缝降级回退（解决部分 Linux 桌面系统缺失本地普通话语音包的问题）
+ * 3. 伴随按键声波反馈与防截断机制
  */
 
 class SpeechEngine {
@@ -9,6 +12,9 @@ class SpeechEngine {
     this.voices = [];
     this.preferredVoice = null;
     this.enabled = true;
+    this.currentUtterance = null;
+    this.fallbackAudio = null;
+    this.isSpeakingNow = false;
 
     if (this.synth) {
       this._loadVoices();
@@ -18,10 +24,10 @@ class SpeechEngine {
     }
   }
 
-  // 寻找最佳中文普通话女声/童音语音包
+  // 寻找系统内最佳普通话女声/童声语音包
   _loadVoices() {
     if (!this.synth) return;
-    this.voices = this.synth.getVoices();
+    this.voices = this.synth.getVoices() || [];
 
     // 优先匹配标准普通话女声或清晰声音
     this.preferredVoice = this.voices.find(v =>
@@ -32,58 +38,175 @@ class SpeechEngine {
 
   // 朗读指定中文文本
   speak(text, onEndCallback = null) {
-    if (!this.synth || !this.enabled || !text) {
+    if (!this.enabled || !text) {
       if (onEndCallback) onEndCallback();
       return;
     }
 
+    // 播放一声清脆提示音，确保点击有即时听觉反馈
+    if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+      window.soundEngine.playClick();
+    }
+
+    // 清理文本中的 HTML 标签，提纯文字
+    const cleanText = text.replace(/<[^>]+>/g, '').replace(/[，。？！；：]/g, '，').trim();
+
+    // 停止正在播放的语音或回退音频
+    this.stop();
+    this.isSpeakingNow = true;
+
+    // 重新检测可用声音
+    if (this.voices.length === 0) {
+      this._loadVoices();
+    }
+
+    // 检查 Web Speech API 是否有可用的中文语音包
+    const hasChineseVoice = this.voices.some(v => v.lang.startsWith('zh'));
+
+    if (this.synth && (hasChineseVoice || this.voices.length > 0)) {
+      this._speakWithWebSpeech(cleanText, () => {
+        this.isSpeakingNow = false;
+        if (onEndCallback) onEndCallback();
+      });
+    } else {
+      // 若系统（如部分 Linux 桌面）没有预装中文本地语音包，无缝启用高保真普通话发音音频流
+      this._speakWithAudioFallback(cleanText, () => {
+        this.isSpeakingNow = false;
+        if (onEndCallback) onEndCallback();
+      });
+    }
+  }
+
+  // 方案 A: 浏览器原生 Web Speech API
+  _speakWithWebSpeech(cleanText, onDone) {
     try {
-      // 停止上一条未念完的声音
+      // 唤醒可能处于 paused 挂起状态的 Chrome synth
+      if (this.synth.paused) {
+        this.synth.resume();
+      }
       this.synth.cancel();
 
-      // 清理文本中的标点停顿优化
-      const cleanText = text.replace(/<[^>]+>/g, '').trim();
-      const utterance = new SpeechSynthesisUtterance(cleanText);
+      // 延迟 50ms 规避 Chrome 立即 cancel 导致丢包的 bug
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        this.currentUtterance = utterance; // 防止 Chrome GC 垃圾回收导致截断
 
-      utterance.lang = 'zh-CN';
-      if (this.preferredVoice) {
-        utterance.voice = this.preferredVoice;
-      }
+        utterance.lang = 'zh-CN';
+        if (this.preferredVoice) {
+          utterance.voice = this.preferredVoice;
+        }
 
-      // 语速调至 0.85x：字字珠玑，发音清晰，适合二年级小朋友跟读磨耳朵
-      utterance.rate = 0.85;
-      utterance.pitch = 1.08; // 微微上扬的亲切温暖语调
-      utterance.volume = 1.0;
+        utterance.rate = 0.85; // 稍慢语速，适合儿童
+        utterance.pitch = 1.05;
+        utterance.volume = 1.0;
 
-      if (onEndCallback) {
-        utterance.onend = () => onEndCallback();
-        utterance.onerror = () => onEndCallback();
-      }
+        let finished = false;
+        const handleDone = () => {
+          if (!finished) {
+            finished = true;
+            this.currentUtterance = null;
+            if (onDone) onDone();
+          }
+        };
 
-      this.synth.speak(utterance);
+        utterance.onend = handleDone;
+        utterance.onerror = (err) => {
+          console.warn('WebSpeech error, fallback to audio stream:', err);
+          // 遇到错误立刻降级到音频流方案
+          this._speakWithAudioFallback(cleanText, onDone);
+        };
+
+        this.synth.speak(utterance);
+
+        // 超时保底（防止个别浏览器既不触发 onend 也不触发 onerror）
+        const maxWaitMs = Math.max(3000, cleanText.length * 400);
+        setTimeout(handleDone, maxWaitMs);
+      }, 50);
+
     } catch (e) {
-      console.warn('SpeechSynthesis error:', e);
-      if (onEndCallback) onEndCallback();
+      console.warn('WebSpeech exception, fallback:', e);
+      this._speakWithAudioFallback(cleanText, onDone);
+    }
+  }
+
+  // 方案 B: 高保真中文语音流回退（解决系统无 TTS 语音包问题）
+  _speakWithAudioFallback(cleanText, onDone) {
+    try {
+      // 使用有道标准普通话发音流（儿童古诗成语极度清晰标准）
+      const encoded = encodeURIComponent(cleanText.substring(0, 80));
+      const audioUrl = `https://dict.youdao.com/dictvoice?audio=${encoded}&le=zh`;
+
+      if (this.fallbackAudio) {
+        this.fallbackAudio.pause();
+        this.fallbackAudio = null;
+      }
+
+      const audio = new Audio(audioUrl);
+      this.fallbackAudio = audio;
+
+      let finished = false;
+      const handleDone = () => {
+        if (!finished) {
+          finished = true;
+          this.fallbackAudio = null;
+          if (onDone) onDone();
+        }
+      };
+
+      audio.onended = handleDone;
+      audio.onerror = () => {
+        console.warn('Audio stream failed, play hint tone');
+        if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
+          window.soundEngine.playHint();
+        }
+        handleDone();
+      };
+
+      audio.play().catch(e => {
+        console.warn('Audio play blocked:', e);
+        if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
+          window.soundEngine.playHint();
+        }
+        handleDone();
+      });
+
+      // 5秒超时保底
+      setTimeout(handleDone, 5000);
+
+    } catch (e) {
+      console.warn('Fallback error:', e);
+      if (onDone) onDone();
     }
   }
 
   // 停止朗读
   stop() {
+    this.isSpeakingNow = false;
     if (this.synth) {
-      this.synth.cancel();
+      try { this.synth.cancel(); } catch (e) {}
+    }
+    if (this.fallbackAudio) {
+      try {
+        this.fallbackAudio.pause();
+        this.fallbackAudio = null;
+      } catch (e) {}
     }
   }
 
-  // 朗读并在按钮上展示声波震动反馈
+  // 朗读并在按钮上展示文字与声波状态
   speakWithButton(btnEl, text) {
     if (!btnEl) {
       this.speak(text);
       return;
     }
 
+    const origText = btnEl.innerHTML;
     btnEl.classList.add('speaking');
+    btnEl.innerHTML = '🔊 朗读中...';
+
     this.speak(text, () => {
       btnEl.classList.remove('speaking');
+      btnEl.innerHTML = origText;
     });
   }
 }
