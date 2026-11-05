@@ -1,5 +1,11 @@
 # 项目技术说明 (PROJECT.md)
 
+- **GitHub 开源仓库**: [https://github.com/tisyang/study-games](https://github.com/tisyang/study-games)
+- **作者**: [@tisyang](https://github.com/tisyang)
+- **协议**: MIT License
+
+---
+
 ## 一、 技术选型要点
 
 1. **轻量纯静态架构 (Vanilla HTML5 / CSS3 / ES Modules)**：

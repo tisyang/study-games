@@ -1,6 +1,19 @@
 # 乐学萌岛 (Kids Learn Island) - 趣味语数英大冒险
 
+[![GitHub repo](https://img.shields.io/badge/GitHub-tisyang%2Fstudy--games-181717?logo=github)](https://github.com/tisyang/study-games)
+[![Author](https://img.shields.io/badge/Author-tisyang-blue)](https://github.com/tisyang)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 面向小学二年级小朋友的趣味互动学习网页游戏。涵盖**趣味数学大冒险**（100以内加减法与表内乘除法具象化动画）、**语文智慧岛**（32个经典成语小剧场、32首课标必背古诗画卷、标准拼音标注与点击语音朗读）与全新**英语探索岛**（零翻译纯语感浸润、纯正美式原声、情境救急小英雄小剧场）。
+
+---
+
+## 🔗 开源仓库与作者
+
+- **GitHub 开源仓库**: [https://github.com/tisyang/study-games](https://github.com/tisyang/study-games)
+- **作者 (Author)**: [@tisyang](https://github.com/tisyang)
+- **开源协议**: [MIT License](LICENSE)
+- 欢迎 Star ⭐️、Fork、提交 Issue 或分享给身边的家长与老师！
 
 ---
 
@@ -73,6 +86,7 @@ sudo systemctl reload caddy
 │   ├── visual.js           # 数学具象化动态演算引擎
 │   └── app.js              # 游戏大厅与答题流程控制、连击与星星系统
 ├── Caddyfile.example       # Caddy 部署参考示例
+├── LICENSE                 # MIT 开源授权协议
 ├── README.md               # 部署与项目说明
 ├── PROJECT.md              # 架构选型与技术说明
 └── CHANGELOG.md            # 变更记录
