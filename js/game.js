@@ -48,6 +48,10 @@ class MathGameEngine {
       case 'div':
         q = this._generateDiv();
         break;
+      case 'idiom':
+        return this._generateIdiom();
+      case 'poem':
+        return this._generatePoem();
       default:
         q = this._generateAdd();
     }
@@ -254,6 +258,66 @@ class MathGameEngine {
     // 打乱最终4个选项的位置
     this._shuffle(result);
     return result;
+  }
+
+  // 生成一道成语题目
+  _generateIdiom() {
+    const list = window.chineseData.idioms;
+    const target = list[Math.floor(Math.random() * list.length)];
+
+    // 挑出3个不重复的成语作为混淆项
+    const otherCandidates = list.filter(item => item.id !== target.id);
+    this._shuffle(otherCandidates);
+    const chosenDistractors = otherCandidates.slice(0, 3);
+
+    const rawOptions = [target, ...chosenDistractors];
+    this._shuffle(rawOptions);
+
+    // 将选项封装为带拼音 ruby 的选项
+    const options = rawOptions.map(item => ({
+      value: item.word,
+      word: item.word,
+      pinyin: item.pinyin,
+      rubyHtml: item.word.split('').map((char, i) => `<ruby>${char}<rt>${item.pinyin[i]}</rt></ruby>`).join('')
+    }));
+
+    return {
+      type: 'idiom',
+      typeName: '成语',
+      subject: 'chinese',
+      ...target,
+      answer: target.word,
+      options,
+      prompt: '🧐 看动画情境猜成语：' + target.sceneTitle,
+      hint: `💡 成语锦囊：\n【${target.word}】\n${target.meaning}`
+    };
+  }
+
+  // 生成一道诗词题目
+  _generatePoem() {
+    const list = window.chineseData.poems;
+    const target = list[Math.floor(Math.random() * list.length)];
+
+    // 选项随机洗牌
+    const rawOptions = [...target.options];
+    this._shuffle(rawOptions);
+
+    const options = rawOptions.map(val => ({
+      value: val,
+      word: val,
+      rubyHtml: val
+    }));
+
+    return {
+      type: 'poem',
+      typeName: '诗词',
+      subject: 'chinese',
+      ...target,
+      answer: target.missingWord,
+      options,
+      prompt: `📜 《${target.title}》· [${target.dynasty}] ${target.author}`,
+      hint: `💡 诗意锦囊：\n《${target.title}》\n${target.meaning}`
+    };
   }
 
   // 洗牌算法

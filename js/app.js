@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
       'sub': '➖ 退位减法溪流',
       'mul': '✖️ 九九乘法城堡',
       'div': '➗ 算术除法海湾',
-      'mix': '🌈 全能算术大挑战'
+      'mix': '🌈 全能算术大挑战',
+      'idiom': '🎭 成语小剧场',
+      'poem': '🎨 诗情画意集'
     },
     totalQuestions: 10,
     currentIndex: 0,
@@ -160,17 +162,25 @@ document.addEventListener('DOMContentLoaded', () => {
     el.quizProgress.textContent = `第 ${state.currentIndex + 1} / ${state.totalQuestions} 题`;
     el.questionFormula.textContent = state.currentQuestion.prompt;
 
-    // 渲染现实生活情境与启蒙动画
-    if (window.visualEngine) {
+    // 渲染现实生活情境与启蒙动画 / 语文剧场
+    if (state.currentQuestion.subject === 'chinese') {
+      if (state.currentQuestion.type === 'idiom') {
+        window.chineseVisualEngine.renderIdiom(state.currentQuestion);
+      } else {
+        window.chineseVisualEngine.renderPoetry(state.currentQuestion);
+      }
+    } else if (window.visualEngine) {
       window.visualEngine.render(state.currentQuestion);
     }
 
     // 渲染4个选项按键
-    state.currentQuestion.options.forEach((optValue, idx) => {
+    state.currentQuestion.options.forEach((optItem, idx) => {
       const btn = el.optionBtns[idx];
-      btn.textContent = optValue;
-      btn.dataset.value = optValue;
-      btn.className = `option-btn btn-${idx}`; // 重置对错样式
+      const optVal = (typeof optItem === 'object') ? optItem.value : optItem;
+      const optHtml = (typeof optItem === 'object') ? (optItem.rubyHtml || optItem.word) : optItem;
+      btn.innerHTML = optHtml;
+      btn.dataset.value = optVal;
+      btn.className = `option-btn btn-${idx} ${state.currentQuestion.subject === 'chinese' ? 'btn-chinese' : ''}`;
     });
 
     // 启动倒计时
@@ -182,8 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (state.isLocked) return;
 
     window.soundEngine.playClick();
-    const chosen = parseInt(btn.dataset.value, 10);
-    const correct = state.currentQuestion.answer;
+    const chosen = String(btn.dataset.value);
+    const correct = String(state.currentQuestion.answer);
 
     if (chosen === correct) {
       // ===== 答对 =====
@@ -201,8 +211,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // 播放清脆上升和弦
       window.soundEngine.playCorrect(state.currentCombo);
 
-      // 启动演算过程动画，演播完成后自然切入下一题
-      if (window.visualEngine) {
+      // 启动演播：语文剧场或数学演算
+      if (state.currentQuestion.subject === 'chinese') {
+        if (state.currentQuestion.type === 'idiom') {
+          window.chineseVisualEngine.celebrateIdiom(state.currentQuestion, () => {
+            state.currentIndex++;
+            loadNextQuestion();
+          });
+        } else {
+          window.chineseVisualEngine.celebratePoetry(state.currentQuestion, () => {
+            state.currentIndex++;
+            loadNextQuestion();
+          });
+        }
+      } else if (window.visualEngine) {
         window.visualEngine.playProcessAnimation(state.currentQuestion, () => {
           state.currentIndex++;
           loadNextQuestion();
@@ -300,6 +322,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function backToLobby() {
     stopTimer();
     window.soundEngine.playClick();
+    if (window.chineseVisualEngine) {
+      window.chineseVisualEngine.clear();
+    }
+    if (window.speechEngine) {
+      window.speechEngine.stop();
+    }
     if (window.visualEngine) {
       window.visualEngine.clear();
     }

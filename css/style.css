@@ -255,10 +255,23 @@ body {
 .portal-card.mix {
   border-color: #fbcfe8;
   background: linear-gradient(180deg, #fff1f2 0%, #fff 100%);
-  grid-column: 1 / -1;
 }
 .portal-card.mix .card-title { color: #db2777; }
 .portal-card.mix .card-tag { background: #fce7f3; color: #be185d; }
+
+.portal-card.idiom {
+  border-color: #c084fc;
+  background: linear-gradient(180deg, #faf5ff 0%, #fff 100%);
+}
+.portal-card.idiom .card-title { color: #7e22ce; }
+.portal-card.idiom .card-tag { background: #f3e8ff; color: #6b21a8; }
+
+.portal-card.poem {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #f0f9ff 0%, #fff 100%);
+}
+.portal-card.poem .card-title { color: #0369a1; }
+.portal-card.poem .card-tag { background: #e0f2fe; color: #0284c7; }
 
 .portal-card.locked {
   opacity: 0.65;
@@ -1008,6 +1021,221 @@ body {
   65% { transform: scale(0.98, 1.02); }
   75% { transform: scale(1.02, 0.98); }
   100% { transform: scale(1, 1); }
+}
+
+/* ================== 语文成语与诗词专项样式 ================== */
+
+/* 标准汉字拼音标注 */
+ruby {
+  display: inline-flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  vertical-align: bottom;
+  margin: 0 1px;
+  line-height: 1.1;
+}
+
+rt {
+  font-size: 0.52em;
+  color: #64748b;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 2px;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* 语文选项按钮 (带拼音排版自适应) */
+.option-btn.btn-chinese {
+  font-size: 1.35rem;
+  padding: 12px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.option-btn.btn-chinese ruby {
+  font-size: 1.35rem;
+}
+
+/* 听故事/听诗句语音按钮 */
+.chinese-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.btn-voice-pill {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-voice-pill:hover {
+  transform: scale(1.05);
+}
+
+.btn-voice-pill:active {
+  transform: scale(0.95);
+}
+
+.btn-voice-pill.speaking {
+  animation: pulseVoice 0.6s infinite alternate;
+  background: #f59e0b;
+}
+
+.chinese-story-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #334155;
+  line-height: 1.6;
+}
+
+/* 成语小剧场与诗情画意舞台 */
+.chinese-theater-stage,
+.poetry-scroll-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.theater-well, .theater-pen, .theater-forest, .theater-field,
+.theater-stump, .theater-temple, .theater-river, .theater-generic {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  width: 100%;
+  max-width: 540px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 各种生动小剧场元素 */
+.jump-actor { display: inline-block; animation: bounce 0.8s infinite alternate; }
+.bounce-actor { display: inline-block; animation: gentlePulse 0.6s infinite alternate; }
+.float-actor { display: inline-block; animation: floatBoat 1.5s infinite ease-in-out; }
+.dragon-soar { animation: soarDragon 1.2s ease forwards; }
+
+/* 诗词画卷画布与宣纸风诗句卡 */
+.poetry-scroll-canvas {
+  background: linear-gradient(180deg, #ecfeff 0%, #ffffff 100%);
+  border: 3px solid #38bdf8;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  width: 100%;
+  max-width: 540px;
+  text-align: center;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.15);
+  font-size: 2.2rem;
+  transition: all 0.4s ease;
+}
+
+.poetry-scroll-canvas.canvas-glowing {
+  border-color: #f59e0b;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+  background: linear-gradient(180deg, #fffbeb 0%, #fff 100%);
+}
+
+.poem-verse-card {
+  background: #fefce8;
+  border: 2px dashed #eab308;
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #713f12;
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 540px;
+  letter-spacing: 1px;
+}
+
+.poem-verse-card ruby {
+  font-size: 1.6rem;
+}
+
+.poem-verse-card rt {
+  color: #854d0e;
+  font-size: 0.5em;
+}
+
+.poem-hole-box {
+  background: #fee2e2;
+  border: 2px dashed #ef4444;
+  border-radius: 8px;
+  padding: 2px 10px;
+  color: #b91c1c;
+  font-size: 1.15rem;
+  display: inline-block;
+  animation: pulseBox 0.8s infinite alternate;
+}
+
+.verse-char-glowing {
+  color: #15803d;
+  animation: popIn 0.4s ease;
+}
+
+/* 成语小道理与诗词赏析弹出区 */
+.idiom-ruby-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #7e22ce;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.idiom-meaning-box, .poem-insight-text {
+  font-size: 1.05rem;
+  color: #334155;
+  line-height: 1.6;
+  text-align: left;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.poem-congrats-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #0284c7;
+  margin-bottom: 6px;
+}
+
+@keyframes pulseVoice {
+  0% { transform: scale(1); box-shadow: 0 0 5px rgba(245, 158, 11, 0.4); }
+  100% { transform: scale(1.08); box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); }
+}
+
+@keyframes floatBoat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(2deg); }
+}
+
+@keyframes soarDragon {
+  0% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 0px gold); }
+  50% { transform: scale(1.25) translateY(-8px); filter: drop-shadow(0 0 15px gold); }
+  100% { transform: scale(1.1) translateY(0); filter: drop-shadow(0 0 10px gold); }
 }
 
 /* 手机和平板横竖屏适配 */

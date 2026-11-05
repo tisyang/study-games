@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>乐学萌岛 - 二年级数学趣味大冒险</title>
+  <title>乐学萌岛 - 二年级趣味语数大冒险</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -70,14 +71,23 @@
           <span class="card-tag">小勇士首选</span>
         </div>
 
-        <!-- 未来学科预留 (锁定展示) -->
-        <div class="portal-card locked">
-          <span class="card-icon">📖</span>
-          <div class="card-title">语文识字岛</div>
-          <div class="card-desc">看图识字与趣味成语</div>
-          <span class="card-tag">筹备中 🚧</span>
+        <!-- 语文模块 1: 成语小剧场 -->
+        <div class="portal-card idiom" data-mode="idiom">
+          <span class="card-icon">🎭</span>
+          <div class="card-title">成语小剧场</div>
+          <div class="card-desc">32个寓言成语，看动画像素画识成语，字字带拼音！</div>
+          <span class="card-tag">拼音·朗读·寓意</span>
         </div>
 
+        <!-- 语文模块 2: 诗情画意集 -->
+        <div class="portal-card poem" data-mode="poem">
+          <span class="card-icon">🎨</span>
+          <div class="card-title">诗情画意集</div>
+          <div class="card-desc">32首课标必背经典古诗，画中寻诗填词，伴读诗意！</div>
+          <span class="card-tag">拼音·画卷·名篇</span>
+        </div>
+
+        <!-- 未来学科预留 (锁定展示) -->
         <div class="portal-card locked">
           <span class="card-icon">🔤</span>
           <div class="card-title">英语单词乐园</div>
@@ -172,8 +182,11 @@
 
   <!-- 引入脚本 -->
   <script src="js/audio.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/chinese_data.js"></script>
   <script src="js/game.js"></script>
   <script src="js/visual.js"></script>
+  <script src="js/chinese_visual.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
