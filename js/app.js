@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
       'div': '➗ 算术除法海湾',
       'mix': '🌈 全能算术大挑战',
       'idiom': '🎭 成语小剧场',
-      'poem': '🎨 诗情画意集'
+      'poem': '🎨 诗情画意集',
+      'english_story': '🌟 情境救急小剧场'
     },
     currentSubject: 'math',
     totalQuestions: 10,
@@ -51,11 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // 一级与二级大厅控件
     cardGotoMath: document.getElementById('card-goto-math'),
     cardGotoChinese: document.getElementById('card-goto-chinese'),
+    cardGotoEnglish: document.getElementById('card-goto-english'),
     btnBackMain: document.getElementById('btn-back-main'),
     subjectLobbyTitle: document.getElementById('subject-lobby-title'),
     subjectLobbyDesc: document.getElementById('subject-lobby-desc'),
     gridMathModes: document.getElementById('grid-math-modes'),
     gridChineseModes: document.getElementById('grid-chinese-modes'),
+    gridEnglishModes: document.getElementById('grid-english-modes'),
 
     // 答题舞台
     quizTitle: document.getElementById('quiz-title'),
@@ -174,25 +177,40 @@ document.addEventListener('DOMContentLoaded', () => {
     el.quizProgress.textContent = `第 ${state.currentIndex + 1} / ${state.totalQuestions} 题`;
     el.questionFormula.textContent = state.currentQuestion.prompt;
 
-    // 渲染现实生活情境与启蒙动画 / 语文剧场
+    // 渲染现实生活情境与启蒙动画 / 语文剧场 / 英语救急剧场
     if (state.currentQuestion.subject === 'chinese') {
       if (state.currentQuestion.type === 'idiom') {
         window.chineseVisualEngine.renderIdiom(state.currentQuestion);
       } else {
         window.chineseVisualEngine.renderPoetry(state.currentQuestion);
       }
+    } else if (state.currentQuestion.subject === 'english') {
+      window.englishVisualEngine.renderStory(state.currentQuestion);
     } else if (window.visualEngine) {
       window.visualEngine.render(state.currentQuestion);
     }
 
-    // 渲染4个选项按键
+    const optionsContainer = document.querySelector('.options-grid');
+    if (state.currentQuestion.options.length === 3) {
+      if (optionsContainer) optionsContainer.classList.add('three-options');
+      el.optionBtns[3].style.display = 'none';
+    } else {
+      if (optionsContainer) optionsContainer.classList.remove('three-options');
+      el.optionBtns[3].style.display = '';
+    }
+
+    // 渲染选项按键
     state.currentQuestion.options.forEach((optItem, idx) => {
       const btn = el.optionBtns[idx];
+      btn.style.display = '';
       const optVal = (typeof optItem === 'object') ? optItem.value : optItem;
-      const optHtml = (typeof optItem === 'object') ? (optItem.rubyHtml || optItem.word) : optItem;
+      let optHtml = (typeof optItem === 'object') ? (optItem.rubyHtml || optItem.word || optItem.icon) : optItem;
+      if (optItem.isEnglishTool) {
+        optHtml = `<span class="tool-icon">${optItem.icon}</span>`;
+      }
       btn.innerHTML = optHtml;
       btn.dataset.value = optVal;
-      btn.className = `option-btn btn-${idx} ${state.currentQuestion.subject === 'chinese' ? 'btn-chinese' : ''}`;
+      btn.className = `option-btn btn-${idx} ${state.currentQuestion.subject === 'chinese' ? 'btn-chinese' : ''} ${state.currentQuestion.subject === 'english' ? 'btn-tool' : ''}`;
     });
 
     // 启动倒计时
@@ -223,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // 播放清脆上升和弦
       window.soundEngine.playCorrect(state.currentCombo);
 
-      // 启动演播：语文剧场或数学演算
+      // 启动演播：语文剧场或数学演算或英语救援
       if (state.currentQuestion.subject === 'chinese') {
         if (state.currentQuestion.type === 'idiom') {
           window.chineseVisualEngine.celebrateIdiom(state.currentQuestion, () => {
@@ -236,6 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
             loadNextQuestion();
           });
         }
+      } else if (state.currentQuestion.subject === 'english') {
+        window.englishVisualEngine.celebrateRescue(state.currentQuestion, () => {
+          state.currentIndex++;
+          loadNextQuestion();
+        });
       } else if (window.visualEngine) {
         window.visualEngine.playProcessAnimation(state.currentQuestion, () => {
           state.currentIndex++;
@@ -330,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el.modalSummary.classList.remove('hidden');
   }
 
-  // 打开二级学科专区大厅 (数学岛 / 语文岛)
+  // 打开二级学科专区大厅 (数学岛 / 语文岛 / 英语岛)
   function openSubjectLobby(subject) {
     window.soundEngine.playClick();
     state.currentSubject = subject;
@@ -344,11 +367,19 @@ document.addEventListener('DOMContentLoaded', () => {
       el.subjectLobbyDesc.textContent = '100以内加减法 · 表内乘除法 · 动态具象演算沙盒';
       el.gridMathModes.classList.remove('hidden');
       el.gridChineseModes.classList.add('hidden');
+      el.gridEnglishModes.classList.add('hidden');
     } else if (subject === 'chinese') {
       el.subjectLobbyTitle.textContent = '📖 语文智慧岛';
       el.subjectLobbyDesc.textContent = '32个寓言成语 · 32首课标必背古诗 · 拼音伴读与发音';
       el.gridMathModes.classList.add('hidden');
       el.gridChineseModes.classList.remove('hidden');
+      el.gridEnglishModes.classList.add('hidden');
+    } else if (subject === 'english') {
+      el.subjectLobbyTitle.textContent = '🔤 英语探索岛';
+      el.subjectLobbyDesc.textContent = '零翻译语感浸润 · 纯正地道原声 · 情境救急小英雄';
+      el.gridMathModes.classList.add('hidden');
+      el.gridChineseModes.classList.add('hidden');
+      el.gridEnglishModes.classList.remove('hidden');
     }
   }
 
@@ -358,6 +389,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.soundEngine.playClick();
     if (window.chineseVisualEngine) {
       window.chineseVisualEngine.clear();
+    }
+    if (window.englishVisualEngine) {
+      window.englishVisualEngine.clear();
     }
     if (window.speechEngine) {
       window.speechEngine.stop();
@@ -382,6 +416,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.chineseVisualEngine) {
       window.chineseVisualEngine.clear();
     }
+    if (window.englishVisualEngine) {
+      window.englishVisualEngine.clear();
+    }
     if (window.speechEngine) {
       window.speechEngine.stop();
     }
@@ -405,6 +442,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (el.cardGotoChinese) {
     el.cardGotoChinese.addEventListener('click', () => openSubjectLobby('chinese'));
+  }
+  if (el.cardGotoEnglish) {
+    el.cardGotoEnglish.addEventListener('click', () => openSubjectLobby('english'));
   }
 
   // 2. 二级大厅返回一级大厅按钮

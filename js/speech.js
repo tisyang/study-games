@@ -11,6 +11,7 @@ class SpeechEngine {
     this.synth = window.speechSynthesis || null;
     this.voices = [];
     this.preferredVoice = null;
+    this.preferredEnglishVoice = null;
     this.enabled = true;
     this.currentUtterance = null;
     this.fallbackAudio = null;
@@ -24,7 +25,7 @@ class SpeechEngine {
     }
   }
 
-  // 寻找系统内最佳普通话女声/童声语音包
+  // 寻找系统内最佳普通话与英文语音包
   _loadVoices() {
     if (!this.synth) return;
     this.voices = this.synth.getVoices() || [];
@@ -34,6 +35,13 @@ class SpeechEngine {
       (v.lang === 'zh-CN' || v.lang === 'cmn-Hans-CN') &&
       (v.name.includes('Xiaoxiao') || v.name.includes('Natural') || v.name.includes('Female') || v.name.includes('普通话') || v.name.includes('Chinese'))
     ) || this.voices.find(v => v.lang.startsWith('zh')) || null;
+
+    // 优先匹配标准美式/英式清晰英语女声/童声
+    this.preferredEnglishVoice = this.voices.find(v =>
+      (v.lang === 'en-US' || v.lang === 'en_US') &&
+      (v.name.includes('Jenny') || v.name.includes('Natural') || v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google US English'))
+    ) || this.voices.find(v => v.lang === 'en-US' || v.lang === 'en_US')
+      || this.voices.find(v => v.lang.startsWith('en')) || null;
   }
 
   // 朗读指定中文文本
@@ -205,6 +213,154 @@ class SpeechEngine {
     btnEl.innerHTML = '🔊 朗读中...';
 
     this.speak(text, () => {
+      btnEl.classList.remove('speaking');
+      btnEl.innerHTML = origText;
+    });
+  }
+
+  // 朗读指定英文文本 (纯正原声浸润)
+  speakEnglish(text, onEndCallback = null) {
+    if (!this.enabled || !text) {
+      if (onEndCallback) onEndCallback();
+      return;
+    }
+
+    if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+      window.soundEngine.playClick();
+    }
+
+    const cleanText = text.replace(/<[^>]+>/g, '').trim();
+
+    this.stop();
+    this.isSpeakingNow = true;
+
+    if (this.voices.length === 0) {
+      this._loadVoices();
+    }
+
+    const hasEnglishVoice = this.voices.some(v => v.lang.startsWith('en'));
+
+    if (this.synth && (hasEnglishVoice || (this.preferredEnglishVoice !== null))) {
+      this._speakEnglishWithWebSpeech(cleanText, () => {
+        this.isSpeakingNow = false;
+        if (onEndCallback) onEndCallback();
+      });
+    } else {
+      this._speakEnglishWithAudioFallback(cleanText, () => {
+        this.isSpeakingNow = false;
+        if (onEndCallback) onEndCallback();
+      });
+    }
+  }
+
+  // 方案 A: 浏览器原生 Web Speech API (英文美音)
+  _speakEnglishWithWebSpeech(cleanText, onDone) {
+    try {
+      if (this.synth.paused) {
+        this.synth.resume();
+      }
+      this.synth.cancel();
+
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        this.currentUtterance = utterance;
+
+        utterance.lang = 'en-US';
+        if (this.preferredEnglishVoice) {
+          utterance.voice = this.preferredEnglishVoice;
+        }
+
+        utterance.rate = 0.85; // 稍慢语速，清晰自然适合二年级
+        utterance.pitch = 1.05;
+        utterance.volume = 1.0;
+
+        let finished = false;
+        const handleDone = () => {
+          if (!finished) {
+            finished = true;
+            this.currentUtterance = null;
+            if (onDone) onDone();
+          }
+        };
+
+        utterance.onend = handleDone;
+        utterance.onerror = (err) => {
+          console.warn('English WebSpeech error, fallback to audio stream:', err);
+          this._speakEnglishWithAudioFallback(cleanText, onDone);
+        };
+
+        this.synth.speak(utterance);
+
+        const maxWaitMs = Math.max(3500, cleanText.length * 300);
+        setTimeout(handleDone, maxWaitMs);
+      }, 50);
+
+    } catch (e) {
+      console.warn('English WebSpeech exception, fallback:', e);
+      this._speakEnglishWithAudioFallback(cleanText, onDone);
+    }
+  }
+
+  // 方案 B: 高保真美式英语流回退 (有道标准美音 type=2)
+  _speakEnglishWithAudioFallback(cleanText, onDone) {
+    try {
+      const encoded = encodeURIComponent(cleanText.substring(0, 120));
+      const audioUrl = `https://dict.youdao.com/dictvoice?audio=${encoded}&type=2`;
+
+      if (this.fallbackAudio) {
+        this.fallbackAudio.pause();
+        this.fallbackAudio = null;
+      }
+
+      const audio = new Audio(audioUrl);
+      this.fallbackAudio = audio;
+
+      let finished = false;
+      const handleDone = () => {
+        if (!finished) {
+          finished = true;
+          this.fallbackAudio = null;
+          if (onDone) onDone();
+        }
+      };
+
+      audio.onended = handleDone;
+      audio.onerror = () => {
+        console.warn('English audio stream failed');
+        if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
+          window.soundEngine.playHint();
+        }
+        handleDone();
+      };
+
+      audio.play().catch(e => {
+        console.warn('English audio play blocked:', e);
+        if (window.soundEngine && typeof window.soundEngine.playHint === 'function') {
+          window.soundEngine.playHint();
+        }
+        handleDone();
+      });
+
+      setTimeout(handleDone, 6000);
+
+    } catch (e) {
+      console.warn('English fallback error:', e);
+      if (onDone) onDone();
+    }
+  }
+
+  // 英文朗读并在按钮上展示文字与声波状态
+  speakEnglishWithButton(btnEl, text) {
+    if (!btnEl) {
+      this.speakEnglish(text);
+      return;
+    }
+
+    const origText = btnEl.innerHTML;
+    btnEl.classList.add('speaking');
+    btnEl.innerHTML = '🔊 Listening...';
+
+    this.speakEnglish(text, () => {
       btnEl.classList.remove('speaking');
       btnEl.innerHTML = origText;
     });

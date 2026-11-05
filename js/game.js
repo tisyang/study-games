@@ -52,6 +52,8 @@ class MathGameEngine {
         return this._generateIdiom();
       case 'poem':
         return this._generatePoem();
+      case 'english_story':
+        return this._generateEnglishStory();
       default:
         q = this._generateAdd();
     }
@@ -317,6 +319,33 @@ class MathGameEngine {
       options,
       prompt: `📜 《${target.title}》· [${target.dynasty}] ${target.author}`,
       hint: `💡 诗意锦囊：\n《${target.title}》\n${target.meaning}`
+    };
+  }
+
+  // 生成一道英语情境救急小剧场题目 (纯英文情境，无中文翻译干扰)
+  _generateEnglishStory() {
+    const list = window.englishData.stories;
+    const target = list[Math.floor(Math.random() * list.length)];
+
+    // 随机打乱工具选项
+    const rawOptions = [...target.options];
+    this._shuffle(rawOptions);
+
+    const options = rawOptions.map(tool => ({
+      value: tool,
+      icon: tool,
+      isEnglishTool: true
+    }));
+
+    return {
+      type: 'english_story',
+      typeName: '情境救急',
+      subject: 'english',
+      ...target,
+      answer: target.correctTool,
+      options,
+      prompt: `🆘 ${target.title} - Pick the helper tool!`,
+      hint: `💡 Listen and watch:\n"${target.crisisSpeech}"`
     };
   }
 
