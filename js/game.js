@@ -95,8 +95,8 @@ class MathGameEngine {
     return {
       type: 'add',
       typeName: '加法',
-      storyTag: '🍎 果园装箱工场',
-      story: `果园大丰收！树上摘了 ${a} 个苹果，小鹿又运来 ${b} 个。两堆苹果合在一起，一共能装多少个苹果呢？`,
+      storyTag: '🍎 果园装箱',
+      story: `摘了 ${a} 个苹果，又运来 ${b} 个，合在一起是多少个？`,
       num1: a,
       num2: b,
       op: '+',
@@ -137,8 +137,8 @@ class MathGameEngine {
     return {
       type: 'sub',
       typeName: '减法',
-      storyTag: '🐿️ 松鼠储蓄屋',
-      story: `小松鼠仓库里存了 ${a} 颗松果，松鼠宝宝准备拿走 ${b} 颗过冬。拿走之后，仓库里还剩下多少颗松果？`,
+      storyTag: '🐿️ 松鼠储粮',
+      story: `存了 ${a} 颗松果，吃掉 ${b} 颗，还剩下多少颗？`,
       num1: a,
       num2: b,
       op: '-',
@@ -160,8 +160,8 @@ class MathGameEngine {
     return {
       type: 'mul',
       typeName: '乘法',
-      storyTag: '🍪 魔法曲奇烤盘',
-      story: `面包师烤了一盘香喷喷的曲奇，整齐排了 ${a} 排，每一排都刚好有 ${b} 块。烤盘上一共有多少块曲奇呢？`,
+      storyTag: '🍪 曲奇方阵',
+      story: `曲奇排成 ${a} 行，每行 ${b} 块，一共有多少块？`,
       num1: a,
       num2: b,
       op: '×',
@@ -183,8 +183,8 @@ class MathGameEngine {
     return {
       type: 'div',
       typeName: '除法',
-      storyTag: '🍓 动物野餐派对',
-      story: `野餐桌上一共有 ${dividend} 颗新鲜草莓，要绝对公平地平均分给 ${divisor} 位小动物好朋友。每只小动物能分到多少颗？`,
+      storyTag: '🍓 野餐分享',
+      story: `把 ${dividend} 颗草莓平均分给 ${divisor} 只小动物，每只几颗？`,
       num1: dividend,
       num2: divisor,
       op: '÷',
@@ -317,7 +317,7 @@ class MathGameEngine {
       ...target,
       answer: target.missingWord,
       options,
-      prompt: `📜 《${target.title}》· [${target.dynasty}] ${target.author}`,
+      prompt: '🌸 点击填空 · 补全画中诗句',
       hint: `💡 诗意锦囊：\n《${target.title}》\n${target.meaning}`
     };
   }
@@ -344,7 +344,7 @@ class MathGameEngine {
       ...target,
       answer: target.correctTool,
       options,
-      prompt: `🆘 Help ${target.actor} - Pick a tool!`,
+      prompt: '🆘 Pick a tool!',
       hint: `💡 Listen and watch:\n"${target.crisisSpeech}"`
     };
   }

@@ -64,6 +64,15 @@ body {
   background: #ffffff;
   border-bottom: 2px solid #edf2f7;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  transition: padding 0.2s ease;
+}
+
+/* 答题专注模式：压缩导航留白，隐藏全局页脚外链，彻底杜绝首屏滚动 */
+body.in-quiz-mode .top-navbar {
+  padding: 10px 20px;
+}
+body.in-quiz-mode .app-footer {
+  display: none !important;
 }
 
 .nav-left, .nav-right {
@@ -446,25 +455,25 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .quiz-mode-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* 进度条与倒计时条 */
+/* 进度条与倒计时条：精巧扁平设计 */
 .timer-bar-container {
   width: 100%;
-  height: 12px;
+  height: 8px;
   background: #e2e8f0;
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 24px;
+  margin-bottom: 10px;
 }
 
 .timer-bar-fill {
@@ -481,8 +490,8 @@ body {
   background: #f8fafc;
   border: 2px solid #e2e8f0;
   border-radius: var(--radius-md);
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
 }
 
@@ -490,8 +499,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 12px;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
   border-bottom: 2px dashed #e2e8f0;
   flex-wrap: wrap;
 }
@@ -500,15 +509,20 @@ body {
   background: #fef3c7;
   color: #b45309;
   border: 1px solid #fde68a;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 800;
   white-space: nowrap;
 }
 
 .story-text {
-  font-size: 1.18rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.4;
+  flex: 1;
+}
   font-weight: 700;
   color: #1e293b;
   line-height: 1.6;
@@ -953,13 +967,39 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 80px;
-  margin: 10px 0;
+  min-height: 52px;
+  margin: 6px 0;
   position: relative;
 }
 
+body[data-type="poem"] .question-stage,
+body[data-type="english_story"] .question-stage {
+  min-height: 32px;
+  margin: 4px 0 6px 0;
+}
+
+.prompt-pill {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+.prompt-pill.poem-prompt {
+  color: #0369a1;
+  background: #f0f9ff;
+  border-color: #bae6fd;
+}
+.prompt-pill.english-prompt {
+  color: #047857;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
 .question-formula {
-  font-size: 3.2rem;
+  font-size: 2.8rem;
   font-weight: 900;
   color: #1e293b;
   letter-spacing: 2px;
@@ -969,25 +1009,25 @@ body {
 
 .streak-cheer {
   position: absolute;
-  top: -10px;
-  font-size: 1.1rem;
+  top: -12px;
+  font-size: 1rem;
   font-weight: 800;
   color: #ff4757;
   background: #ffeaa7;
-  padding: 4px 16px;
+  padding: 3px 14px;
   border-radius: 20px;
   transform: rotate(-3deg);
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   display: none;
 }
 
-/* 4选1 / 3选1 糖果选项区 */
+/* 4选1 / 3选1 糖果选项区 (紧凑舒适排版，防出界) */
 .options-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-  margin-top: 24px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-top: 10px;
+  margin-bottom: 6px;
 }
 
 .options-grid.three-options {
@@ -997,10 +1037,10 @@ body {
 .option-btn {
   background: #ffffff;
   border: 3px solid #cbd5e1;
-  border-bottom-width: 8px;
+  border-bottom-width: 6px;
   border-radius: var(--radius-md);
-  padding: 22px 10px;
-  font-size: 2.4rem;
+  padding: 13px 8px;
+  font-size: 2rem;
   font-weight: 900;
   color: #1e293b;
   cursor: pointer;
@@ -1316,42 +1356,198 @@ rt {
 
 /* 诗词画卷画布与宣纸风诗句卡 */
 .poetry-scroll-canvas {
-  background: linear-gradient(180deg, #ecfeff 0%, #ffffff 100%);
-  border: 3px solid #38bdf8;
+  background: linear-gradient(180deg, #fdfbf7 0%, #f4efe6 100%);
+  border: 3px solid #b38f65;
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: 8px 12px;
   width: 100%;
-  max-width: 540px;
+  max-width: 520px;
   text-align: center;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.15);
-  font-size: 2.2rem;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 16px rgba(179, 143, 101, 0.18);
   transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .poetry-scroll-canvas.canvas-glowing {
   border-color: #f59e0b;
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
-  background: linear-gradient(180deg, #fffbeb 0%, #fff 100%);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.5);
+  background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+/* 32首诗 1:1 专属意境渲染画布 */
+.poem-scene {
+  min-height: 125px;
+  max-height: 145px;
+  border-radius: 10px;
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.art-layer-sky {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #334155;
+  z-index: 2;
+}
+
+.art-layer-scenery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  z-index: 2;
+}
+
+.art-layer-water, .art-layer-waterfall, .art-layer-petals {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  z-index: 2;
+}
+
+.art-layer-actors {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  z-index: 3;
+}
+
+/* 32 首古诗专属意境背景色 */
+.bg-lake { background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 60%, #38bdf8 100%); }
+.bg-blue-sky { background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 60%, #e0f2fe 100%); }
+.bg-morning { background: linear-gradient(180deg, #fed7aa 0%, #fef3c7 50%, #dcfce7 100%); }
+.bg-misty-rain { background: linear-gradient(180deg, #cbd5e1 0%, #e2e8f0 60%, #cbd5e1 100%); }
+.bg-night-sky { background: linear-gradient(180deg, #0f172a 0%, #1e293b 60%, #334155 100%); color: #f8fafc; }
+.bg-deep-night { background: linear-gradient(180deg, #020617 0%, #0f172a 60%, #1e293b 100%); color: #f8fafc; }
+.bg-hot-field { background: linear-gradient(180deg, #fef08a 0%, #fde047 50%, #86efac 100%); }
+.bg-warm-meal { background: linear-gradient(180deg, #ffedd5 0%, #fed7aa 50%, #fff 100%); }
+.bg-yellow-river { background: linear-gradient(180deg, #fed7aa 0%, #fb923c 40%, #eab308 100%); color: #7c2d12; }
+.bg-climb-tower { background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 50%, #fed7aa 100%); }
+.bg-lotus-pond { background: linear-gradient(180deg, #dcfce7 0%, #bbf7d0 50%, #6ee7b7 100%); }
+.bg-stream-shadow { background: linear-gradient(180deg, #d1fae5 0%, #a7f3d0 50%, #bae6fd 100%); }
+.bg-snow-mountain { background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%); }
+.bg-cold-river { background: linear-gradient(180deg, #94a3b8 0%, #cbd5e1 50%, #e2e8f0 100%); }
+.bg-wind-seasons { background: linear-gradient(135deg, #fed7aa 0%, #fed7aa 50%, #fbcfe8 50%, #fbcfe8 100%); }
+.bg-wind-bamboo { background: linear-gradient(180deg, #99f6e4 0%, #5eead4 50%, #2dd4bf 100%); }
+.bg-willow-spring { background: linear-gradient(180deg, #dcfce7 0%, #86efac 60%, #4ade80 100%); }
+.bg-spring-scissors { background: linear-gradient(180deg, #fce7f3 0%, #fbcfe8 40%, #bbf7d0 100%); }
+.bg-prairie { background: linear-gradient(180deg, #bae6fd 0%, #bbf7d0 40%, #4ade80 100%); }
+.bg-fire-rebirth { background: linear-gradient(180deg, #475569 0%, #64748b 40%, #86efac 100%); }
+.bg-art-scroll { background: linear-gradient(180deg, #fefce8 0%, #fef08a 60%, #fde047 100%); }
+.bg-bird-art { background: linear-gradient(180deg, #fdf2f8 0%, #fce7f3 60%, #bbf7d0 100%); }
+.bg-lotus-boat { background: linear-gradient(180deg, #bbf7d0 0%, #86efac 50%, #38bdf8 100%); }
+.bg-duckweed-pond { background: linear-gradient(180deg, #86efac 0%, #4ade80 60%, #22c55e 100%); }
+.bg-cowboy-forest { background: linear-gradient(180deg, #bbf7d0 0%, #4ade80 50%, #16a34a 100%); }
+.bg-cicada-tree { background: linear-gradient(180deg, #a7f3d0 0%, #6ee7b7 50%, #15803d 100%); }
+.bg-kite-field { background: linear-gradient(180deg, #7dd3fc 0%, #bae6fd 50%, #86efac 100%); }
+.bg-village-spring { background: linear-gradient(180deg, #e9d5ff 0%, #fbcfe8 50%, #bbf7d0 100%); }
+.bg-lushan-falls { background: linear-gradient(180deg, #0284c7 0%, #38bdf8 50%, #bae6fd 100%); color: #fff; }
+.bg-incense-peak { background: linear-gradient(180deg, #f472b6 0%, #c084fc 40%, #a855f7 100%); color: #fff; }
+.bg-sunset-river { background: linear-gradient(180deg, #ea580c 0%, #f97316 40%, #fdba74 100%); color: #fff; }
+.bg-dew-moon { background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%); color: #f8fafc; }
+.bg-default-poem { background: linear-gradient(180deg, #fefce8 0%, #fef08a 100%); }
+
+/* 细致国风微动效 */
+.full-moon-glow {
+  text-shadow: 0 0 14px #fde047;
+  display: inline-block;
+  animation: gentlePulse 2s infinite alternate;
+}
+.red-palm-badge {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px dashed #ef4444;
+  color: #dc2626;
+  border-radius: 12px;
+  padding: 1px 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+.river-split {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+.river-red { background: rgba(220, 38, 38, 0.85); color: #fff; border-radius: 10px; padding: 2px 8px; }
+.river-green { background: rgba(16, 185, 129, 0.85); color: #fff; border-radius: 10px; padding: 2px 8px; }
+.season-split {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+.waterfall-anim {
+  animation: waterfallRush 0.8s infinite linear;
+  display: inline-block;
+}
+@keyframes waterfallRush {
+  0% { transform: translateY(-2px); }
+  50% { transform: translateY(2px); }
+  100% { transform: translateY(-2px); }
+}
+.sway-anim {
+  animation: swayWillow 2s infinite ease-in-out alternate;
+  display: inline-block;
+}
+@keyframes swayWillow {
+  0% { transform: rotate(-3deg); }
+  100% { transform: rotate(3deg); }
+}
+.tilt-anim {
+  animation: tiltBamboo 1.2s infinite ease-in-out alternate;
+  display: inline-block;
+}
+@keyframes tiltBamboo {
+  0% { transform: rotate(-6deg); }
+  100% { transform: rotate(-1deg); }
+}
+.flutter {
+  animation: flutterFly 0.4s infinite alternate;
+  display: inline-block;
+}
+@keyframes flutterFly {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
 }
 
 .poem-verse-card {
   background: #fefce8;
   border: 2px dashed #eab308;
   border-radius: var(--radius-sm);
-  padding: 14px 20px;
-  font-size: 1.6rem;
+  padding: 10px 16px;
+  font-size: 1.45rem;
   font-weight: 800;
   color: #713f12;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   width: 100%;
-  max-width: 540px;
+  max-width: 520px;
   letter-spacing: 1px;
 }
 
 .poem-verse-card ruby {
-  font-size: 1.6rem;
+  font-size: 1.45rem;
 }
 
 .poem-verse-card rt {
@@ -1365,7 +1561,7 @@ rt {
   border-radius: 8px;
   padding: 2px 10px;
   color: #b91c1c;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   display: inline-block;
   animation: pulseBox 0.8s infinite alternate;
 }

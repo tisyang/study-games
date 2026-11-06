@@ -148,6 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
     state.maxCombo = 0;
     state.isLocked = false;
 
+    // 标记答题专注模式 (隐藏页脚、优化全屏空间)
+    document.body.classList.add('in-quiz-mode');
+
     // 切换至答题舞台视图
     el.viewMainLobby.classList.add('hidden');
     el.viewSubjectLobby.classList.add('hidden');
@@ -173,9 +176,18 @@ document.addEventListener('DOMContentLoaded', () => {
     state.errorsOnCurrent = 0;
     state.currentQuestion = window.mathEngine.generateQuestion(state.currentMode);
 
+    document.body.dataset.subject = state.currentQuestion.subject || 'math';
+    document.body.dataset.type = state.currentQuestion.type || '';
+
     // 渲染题目与进度
     el.quizProgress.textContent = `第 ${state.currentIndex + 1} / ${state.totalQuestions} 题`;
-    el.questionFormula.textContent = state.currentQuestion.prompt;
+    if (state.currentQuestion.type === 'poem') {
+      el.questionFormula.innerHTML = `<span class="prompt-pill poem-prompt">🌸 点击正确词语，补全画中诗句</span>`;
+    } else if (state.currentQuestion.type === 'english_story') {
+      el.questionFormula.innerHTML = `<span class="prompt-pill english-prompt">🆘 挑选最神奇的救急工具</span>`;
+    } else {
+      el.questionFormula.textContent = state.currentQuestion.prompt;
+    }
 
     // 渲染现实生活情境与启蒙动画 / 语文剧场 / 英语救急剧场
     if (state.currentQuestion.subject === 'chinese') {
@@ -325,6 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function finishRound() {
     stopTimer();
     window.soundEngine.playVictory();
+    document.body.classList.remove('in-quiz-mode');
 
     const score = state.roundCorrect;
     let starsStr = '⭐';
@@ -356,6 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 打开二级学科专区大厅 (数学岛 / 语文岛 / 英语岛)
   function openSubjectLobby(subject) {
     window.soundEngine.playClick();
+    document.body.classList.remove('in-quiz-mode');
     state.currentSubject = subject;
     el.viewMainLobby.classList.add('hidden');
     el.viewSubjectLobby.classList.remove('hidden');
@@ -387,6 +401,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function backToSubjectLobby() {
     stopTimer();
     window.soundEngine.playClick();
+    document.body.classList.remove('in-quiz-mode');
+    delete document.body.dataset.subject;
+    delete document.body.dataset.type;
+
     if (window.chineseVisualEngine) {
       window.chineseVisualEngine.clear();
     }
@@ -413,6 +431,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function backToMainLobby() {
     stopTimer();
     window.soundEngine.playClick();
+    document.body.classList.remove('in-quiz-mode');
+    delete document.body.dataset.subject;
+    delete document.body.dataset.type;
     if (window.chineseVisualEngine) {
       window.chineseVisualEngine.clear();
     }
