@@ -1406,6 +1406,18 @@ rt {
   filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.7));
 }
 
+.poem-fallback-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.poem-fallback-box .poem-scene {
+  width: 100%;
+  height: 100%;
+}
+
 /* 32首诗 1:1 专属意境渲染画布 */
 .poem-scene {
   min-height: 125px;
