@@ -258,11 +258,18 @@ class ChineseVisualEngine {
       `<span class="poem-hole-box">❓ 点击下方填词</span>`
     );
 
+    const imagePath = `assets/images/poems/${q.id}.jpg`;
+
     this.stage.innerHTML = `
       <div class="poetry-scroll-stage">
-        <!-- 专属诗意画卷 (32首古诗1:1定制意境图) -->
+        <!-- 专属古典国风水墨意境画 (高清静态JPG大图) -->
         <div class="poetry-scroll-canvas" id="poetry-canvas">
-          ${this._renderPoemArtScene(q)}
+          <div class="poem-art-image-wrapper">
+            <img src="${imagePath}" alt="${q.title}水墨意境图" class="poem-art-img" id="poem-art-img" onerror="this.style.display='none'; const fb = document.getElementById('poem-art-fallback'); if (fb) fb.style.display='flex';">
+            <div id="poem-art-fallback" style="display: none; width: 100%;" class="poem-fallback-box">
+              ${this._renderPoemArtScene(q)}
+            </div>
+          </div>
         </div>
 
         <!-- 带拼音的诗句展示区 (包含挖空点睛处) -->
@@ -271,7 +278,7 @@ class ChineseVisualEngine {
         </div>
 
         <div id="poetry-live-bubble" class="enlighten-bubble glow">
-          🌸 <strong>画中寻诗：</strong> 请观察上方画卷意境，选出最贴合的诗句词语！
+          🌸 <strong>观画寻句：</strong> 请观察上方水墨画卷意境，选出最贴合的诗句词语！
         </div>
       </div>
     `;
@@ -755,8 +762,10 @@ class ChineseVisualEngine {
     const verseDisplay = document.getElementById('poem-verse-display');
     const canvas = document.getElementById('poetry-canvas');
 
-    // 1. 点亮画卷
+    // 1. 点亮画卷与大图
     if (canvas) canvas.classList.add('canvas-glowing');
+    const artImg = document.getElementById('poem-art-img');
+    if (artImg) artImg.classList.add('img-glowing');
 
     // 2. 补全完整带拼音的诗句
     const fullRuby = q.pinyinArr.map(([char, py]) => {

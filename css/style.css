@@ -1376,6 +1376,36 @@ rt {
   background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
 }
 
+/* 诗词专属高清静态大图包裹器 */
+.poem-art-image-wrapper {
+  width: 100%;
+  max-width: 490px;
+  height: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
+  background: #fdfbf7;
+  margin: 0 auto;
+}
+
+.poem-art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.poem-art-img.img-glowing {
+  transform: scale(1.03);
+  filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.7));
+}
+
 /* 32首诗 1:1 专属意境渲染画布 */
 .poem-scene {
   min-height: 125px;
