@@ -8,6 +8,8 @@
 
 本轮改版的设计、资源与验证结果见 [改版文档](docs/redesign/README.md) 和 [第二批验收记录](docs/redesign/11-subject-acceptance.md)。
 
+另有面向4—5岁孩子的“小小乐园”：小熊接客人以5以内实物加法练习接着数，汉字小世界通过“日、月、水、山”的场景互动认识和运用汉字。两种样板均为三个小任务、语音引导、无计时，详见 [幼儿样板说明](docs/redesign/12-preschool-prototypes.md)。
+
 ---
 
 ## 🔗 开源仓库与作者

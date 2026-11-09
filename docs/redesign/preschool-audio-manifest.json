@@ -1,0 +1,231 @@
+{
+  "date": "2026-11-09",
+  "provider": "Google Translate TTS (existing project provider), zh-CN",
+  "items": [
+    {
+      "id": "welcome",
+      "text": "欢迎来到小小乐园。想和小熊接客人，还是去汉字小世界？",
+      "asset": "assets/audio/preschool/welcome.mp3",
+      "bytes": 66432,
+      "sha256": "7c58febd7b04af93516044fb938deb678cdde530d49a26d1c452aa4324bd5eaf",
+      "duration": 8.304
+    },
+    {
+      "id": "bus0",
+      "text": "车上有两位乘客，再上来一位。一共有几位？点点等车的小动物。",
+      "asset": "assets/audio/preschool/bus0.mp3",
+      "bytes": 69504,
+      "sha256": "111a41bda3389ac9eb324ffb3ff387d38435eb4dd85a5907ea7cbdb92de1f348",
+      "duration": 8.688
+    },
+    {
+      "id": "bus1",
+      "text": "记住车上有三位，再上来两位。从三接着数，点一位，数一个。",
+      "asset": "assets/audio/preschool/bus1.mp3",
+      "bytes": 72768,
+      "sha256": "001ecc6c157a838c6e0202a5a1f15510009ed8e6f94582082f34c6bb61cb4e63",
+      "duration": 9.096
+    },
+    {
+      "id": "picnic",
+      "text": "篮子里有两个苹果，再放两个。记住二，接着数。点点外面的苹果。",
+      "asset": "assets/audio/preschool/picnic.mp3",
+      "bytes": 74880,
+      "sha256": "e8014ae5524200cb41ab4e67aab75de7cd6f79743aaee09056a711a32fb2a641",
+      "duration": 9.36
+    },
+    {
+      "id": "recountBus",
+      "text": "点点车里的每位乘客，从一开始数。每位只数一次。",
+      "asset": "assets/audio/preschool/recountBus.mp3",
+      "bytes": 58176,
+      "sha256": "d97bbfda5b758679233ea0af52a4031b9fe4d71e05ba6b981ce2646db67f13ba",
+      "duration": 7.272
+    },
+    {
+      "id": "recountPicnic",
+      "text": "点点篮子里的每个苹果，从一开始数。每个只数一次。",
+      "asset": "assets/audio/preschool/recountPicnic.mp3",
+      "bytes": 55104,
+      "sha256": "ecc426980c6b2e5cddde0f88d6ced63a14c8fa3771859ef55e7921c34e5aca38",
+      "duration": 6.888
+    },
+    {
+      "id": "retryNumber",
+      "text": "再看看数字。可以点从头数，再试一次。",
+      "asset": "assets/audio/preschool/retryNumber.mp3",
+      "bytes": 45504,
+      "sha256": "397ed9c20a25148aaa08c04d86a9b9eede9f54ad9b727d38f9a6f42905f4e839",
+      "duration": 5.688
+    },
+    {
+      "id": "rightNumber",
+      "text": "对啦！最后数到的数，就是现在一共有多少。",
+      "asset": "assets/audio/preschool/rightNumber.mp3",
+      "bytes": 48000,
+      "sha256": "18e7b4cd7ebf9e3556c8b9206947a52a7e32186554c71b8406a577acc0b7fb29",
+      "duration": 6
+    },
+    {
+      "id": "sunLearn",
+      "text": "日，太阳的日。点一下日字，让太阳升起来。",
+      "asset": "assets/audio/preschool/sunLearn.mp3",
+      "bytes": 53376,
+      "sha256": "9e292bf5c0bfe757309e5247bb90fea8e8a3f99fb4ee086f8f2d0509b2b115de",
+      "duration": 6.672
+    },
+    {
+      "id": "sunName",
+      "text": "日，太阳的日。",
+      "asset": "assets/audio/preschool/sunName.mp3",
+      "bytes": 20928,
+      "sha256": "ccb3406d861dd3e5de7d3816b0a41c394da54daae8a0bb5423ace4799e57496d",
+      "duration": 2.616
+    },
+    {
+      "id": "sunQuiz",
+      "text": "太阳出来了。哪个字表示太阳？",
+      "asset": "assets/audio/preschool/sunQuiz.mp3",
+      "bytes": 31872,
+      "sha256": "83d98b2906a0a3331c0ce38f2e44aa696b68eadadf8e9c013169b211802bd001",
+      "duration": 3.984
+    },
+    {
+      "id": "moonLearn",
+      "text": "月，月亮的月。点一下月字，让月亮出来。",
+      "asset": "assets/audio/preschool/moonLearn.mp3",
+      "bytes": 50496,
+      "sha256": "02643338f727725a8bffe7db4c05b1327a3753fbd8d077ae7d12c26696313d89",
+      "duration": 6.312
+    },
+    {
+      "id": "moonName",
+      "text": "月，月亮的月。",
+      "asset": "assets/audio/preschool/moonName.mp3",
+      "bytes": 20928,
+      "sha256": "269a13474b9839a9beed179497cea9215dbd4b3d0c59b40c7f2c44cf701f0807",
+      "duration": 2.616
+    },
+    {
+      "id": "moonQuiz",
+      "text": "小熊睡觉了，窗外有月亮。找一找表示月亮的字。",
+      "asset": "assets/audio/preschool/moonQuiz.mp3",
+      "bytes": 57600,
+      "sha256": "1fa930b9ce718ef59d67ea02cc93c8707b72900f62acbed1bdd04243f72eb538",
+      "duration": 7.2
+    },
+    {
+      "id": "waterLearn",
+      "text": "水，流水的水。点一下水字，让小河流起来。",
+      "asset": "assets/audio/preschool/waterLearn.mp3",
+      "bytes": 55104,
+      "sha256": "436656ed224de8a6fb8e463403584badb26367ad18b1b2e3798899dc8f0e87d8",
+      "duration": 6.888
+    },
+    {
+      "id": "waterName",
+      "text": "水，流水的水。",
+      "asset": "assets/audio/preschool/waterName.mp3",
+      "bytes": 22848,
+      "sha256": "835a64a36375650cbb565a6489041b4e8bfe4f02303a3c46ff4b67033c942a16",
+      "duration": 2.856
+    },
+    {
+      "id": "waterQuiz",
+      "text": "小花渴了，给它浇点水。找一找水字。",
+      "asset": "assets/audio/preschool/waterQuiz.mp3",
+      "bytes": 45696,
+      "sha256": "e74273501a296e631eafe7b3c0c8f320b904c3b1886f6318e151d33fe501da4b",
+      "duration": 5.712
+    },
+    {
+      "id": "mountainLearn",
+      "text": "山，大山的山。点一下山字，让大山出现。",
+      "asset": "assets/audio/preschool/mountainLearn.mp3",
+      "bytes": 53184,
+      "sha256": "3a349168ce0bbf88eaf4b4c182f9493a363de7e71743c76a342fcee5039b1db9",
+      "duration": 6.648
+    },
+    {
+      "id": "mountainName",
+      "text": "山，大山的山。",
+      "asset": "assets/audio/preschool/mountainName.mp3",
+      "bytes": 21888,
+      "sha256": "88164dbd345734083601cbab85e6657602964887a42847545d03e534e5d3e05d",
+      "duration": 2.736
+    },
+    {
+      "id": "mountainQuiz",
+      "text": "小熊去爬山。找一找表示大山的字。",
+      "asset": "assets/audio/preschool/mountainQuiz.mp3",
+      "bytes": 41472,
+      "sha256": "aa6dca05fd5e1dbb9c95a487acc1c046fd485d869c2014b123beac693d58628a",
+      "duration": 5.184
+    },
+    {
+      "id": "retryLetter",
+      "text": "再试试。也可以点再看一次，看看这个字。",
+      "asset": "assets/audio/preschool/retryLetter.mp3",
+      "bytes": 45120,
+      "sha256": "30c1fa774afa891d9e52fc7a6991325823b1da80ecaecd28aef280520fbb9ca0",
+      "duration": 5.64
+    },
+    {
+      "id": "rightLetter",
+      "text": "找到了！这个字在这里也用得上。",
+      "asset": "assets/audio/preschool/rightLetter.mp3",
+      "bytes": 33792,
+      "sha256": "9c823f0420d3283588495674caae81a0abf74b5c69d38d2699bfae9ea909c8b2",
+      "duration": 4.224
+    },
+    {
+      "id": "finish",
+      "text": "三个小任务都完成啦！休息一下，或者再玩一次吧。",
+      "asset": "assets/audio/preschool/finish.mp3",
+      "bytes": 53952,
+      "sha256": "00330681ce2f7bf141c36c35d79ea79b889edc91d0eebcf9a36a780ee6e2c39b",
+      "duration": 6.744
+    },
+    {
+      "id": "n1",
+      "text": "一",
+      "asset": "assets/audio/preschool/n1.mp3",
+      "bytes": 6144,
+      "sha256": "9fda698f224fb860300f5f89be07086d1c5a711f13f223cc54e0303b9574a4a0",
+      "duration": 0.768
+    },
+    {
+      "id": "n2",
+      "text": "二",
+      "asset": "assets/audio/preschool/n2.mp3",
+      "bytes": 6144,
+      "sha256": "7951caebc176ef66f71bd01a5776779182bf12dacc99bed1a97ba4fc3924c232",
+      "duration": 0.768
+    },
+    {
+      "id": "n3",
+      "text": "三",
+      "asset": "assets/audio/preschool/n3.mp3",
+      "bytes": 6912,
+      "sha256": "00dc7369b4289818042f77e91108f5d75a31e145689e8fc06b3720ab351284e7",
+      "duration": 0.864
+    },
+    {
+      "id": "n4",
+      "text": "四",
+      "asset": "assets/audio/preschool/n4.mp3",
+      "bytes": 7104,
+      "sha256": "a7f93ec7f3e62d9b7c02ac64297f583f6a4d1042e485eb223cf94e0ad7222037",
+      "duration": 0.888
+    },
+    {
+      "id": "n5",
+      "text": "五",
+      "asset": "assets/audio/preschool/n5.mp3",
+      "bytes": 8064,
+      "sha256": "b3f468941139ee9a5e441c5ef4c23c411c967e07e52dfa3d18eaef4335e47d88",
+      "duration": 1.008
+    }
+  ],
+  "verification": "All files match SHA256 and decode in local Chromium; text matches PRESCHOOL_AUDIO."
+}
