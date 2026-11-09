@@ -28,7 +28,7 @@
 #preschool-content button:disabled { cursor: default; }
 #preschool-content button:focus-visible,
 .preschool-entry:focus-visible { outline: 4px solid #2563eb; outline-offset: 4px; }
-.ps-game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+.ps-game-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 24px 0; }
 .ps-game-card {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
   min-height: 270px; padding: 28px 16px; border: 3px solid #dfc48f; border-radius: 28px;
@@ -88,6 +88,33 @@
 .ps-letter-scene { padding: 8px; background: #f8f5ea; border: 2px solid #e5dfcd; border-radius: 28px; }
 .ps-landscape { display: block; width: 100%; max-height: 320px; border-radius: 20px; }
 .ps-teach-glyph { display: block; margin: 24px auto; min-width: 150px; min-height: 150px; background: #fffef6; border: 3px solid #c7d2c4; border-bottom: 7px solid #b0bda9; border-radius: 28px; font-size: 104px; color: #403c32; line-height: 1.3; }
+.ps-teach-glyph.ps-phrase { font-size: 72px; padding: 10px 24px; }
+.ps-word-choice.ps-phrase { font-size: 40px; }
+.ps-reading-card { text-align: center; font-size: 80px; margin: 20px; }
+.ps-reading-card.ps-phrase { font-size: 64px; }
+.ps-picture-choices { max-width: none; }
+.ps-picture-choices .ps-word-choice { padding: 8px; overflow: hidden; }
+.ps-hear-scene { text-align: center; padding: 40px 0; font-size: 80px; }
+.ps-token-row { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; min-height: 100px; padding: 14px 0; }
+.ps-token { position: relative; display: inline-flex; justify-content: center; align-items: center; width: 64px; min-height: 64px; font-size: 44px; border: 2px solid #dfcba4; background: #fffdf4; border-radius: 18px; }
+.ps-token b { position: absolute; right: -3px; bottom: -7px; border-radius: 50%; background: #fff; font: 700 24px/1.3 system-ui, sans-serif; padding: 0 6px; color: #3f7454; }
+.ps-token.ps-counted { border-color: #6b9777; }
+.ps-number-basket, .ps-change-scene { background: #fff5dd; border: 3px solid #dfc392; border-radius: 28px; padding: 16px; margin: 16px 0; text-align: center; }
+.ps-number-basket > span { font-size: 48px; }
+.ps-empty { font-size: 24px; padding: 22px 0; }
+.ps-scattered { justify-content: space-between; min-height: 140px; }
+.ps-scattered .ps-token:nth-child(odd) { transform: translateY(-12px); }
+.ps-scattered .ps-token:nth-child(even) { transform: translateY(12px); }
+.ps-number-tools { display: flex; justify-content: center; gap: 16px; }
+.ps-center { display: block; margin: 16px auto; }
+.ps-friends { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 14px; min-height: 120px; font-size: 52px; }
+.ps-plates { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ps-plate { background: #f5f7ef; border: 3px solid #b5c7a8; border-radius: 26px; padding: 12px 8px; text-align: center; }
+.ps-plate-fruit { min-height: 120px; font-size: 36px; overflow-wrap: anywhere; }
+.ps-plate > strong { display: block; font-size: 40px; color: #3f7454; }
+.ps-plate .ps-help { display: block; margin: 10px auto; padding: 8px 12px; }
+#preschool-content button:disabled { cursor: default; }
+.ps-next:disabled, .ps-help:disabled { opacity: .5; }
 .ps-scene-subject { transition: opacity 0.5s ease; }
 .ps-scene-active .ps-scene-subject { animation: ps-appear 0.5s ease; }
 @keyframes ps-appear { from { opacity: 0.15; } to { opacity: 1; } }
@@ -100,6 +127,8 @@
   .preschool-entry strong { font-size: 26px; }
   .preschool-entry small { font-size: 16px; }
   .ps-game-grid { grid-template-columns: 1fr; gap: 20px; }
+  .ps-picture-choices { grid-template-columns: 1fr; }
+  .ps-picture-choices .ps-landscape { max-height: 160px; }
   .ps-group-grid { grid-template-columns: 1fr; }
   .ps-group-grid .ps-game-card { min-height: 170px; gap: 10px; }
   .ps-game-card { min-height: 210px; gap: 12px; }

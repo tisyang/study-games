@@ -8,7 +8,7 @@
 
 本轮改版的设计、资源与验证结果见 [改版文档](docs/redesign/README.md) 和 [第二批验收记录](docs/redesign/11-subject-acceptance.md)。
 
-另有面向4—5岁孩子的“小小乐园”：小熊接客人以5以内实物加法练习接着数，汉字小世界包含自然（日月水山火木）、动物（牛羊马）、生活（门口手）共12个字，通过场景互动认识和运用。每轮三个任务、语音引导、无计时；汉字优先安排未玩过的字，并在当前浏览器记住答对记录。详见 [幼儿玩法说明](docs/redesign/12-preschool-prototypes.md)。
+另有面向4—5岁孩子的“小小乐园”：30个汉字、18个双字词，以认识、听音辨认和场景运用混合复习；数字覆盖0—5数与量、数量保持、多一少一、零、分合与接着数。每轮三个任务，无计时；学习记录保存在当前浏览器，所有语音直接播放预生成MP3。详见 [幼儿第一阶段说明](docs/redesign/13-preschool-stage1.md)。
 
 ---
 
@@ -86,11 +86,13 @@ sudo systemctl reload caddy
 ├── index.html              # 主页面与游戏大厅
 ├── assets/
 │   ├── images/poems/v2/    # 32 张新版无字绘本 WebP 配图
-│   └── audio/              # 152 个本地 MP3 静态语音资源
+│   └── audio/              # 333 个本地 MP3 静态语音资源
 │       ├── english/        # 24 个英语危机与救援感谢原声
-│       └── chinese/        # 128 个成语故事、哲理、古诗与诗意
+│       ├── chinese/        # 128 个成语故事、哲理、古诗与诗意
+│       └── preschool/      # 181 个幼儿字词、数量与任务语音
 ├── css/
-│   └── style.css           # 卡通糖果风样式、拼音标注与动画
+│   ├── style.css           # 卡通糖果风样式、拼音标注与动画
+│   └── preschool.css       # 幼儿玩法独立样式
 ├── js/
 │   ├── audio.js            # Web Audio API 声音与童趣背景音乐引擎
 │   ├── speech.js           # 离线高保真语音播放引擎（直调本地静态 MP3）
@@ -100,7 +102,9 @@ sudo systemctl reload caddy
 │   ├── english_visual.js   # 英语日常互助场景与物品反馈
 │   ├── game.js             # 数学、语文与英语题目生成、智能选项算法
 │   ├── visual.js           # 数学具象化动态演算引擎
-│   └── app.js              # 游戏大厅与答题流程控制、连击与星星系统
+│   ├── app.js              # 游戏大厅与答题流程控制、连击与星星系统
+│   ├── preschool_data.js   # 30字、18词及幼儿固定语音文本
+│   └── preschool.js        # 幼儿字词复习、数量玩法与场景
 ├── Caddyfile.example       # Caddy 部署参考示例
 ├── LICENSE                 # MIT 开源授权协议
 ├── README.md               # 部署与项目说明

@@ -4,7 +4,7 @@
 
 第一批已提交为 `7f0d260`，结果见 [首批验收记录](03-acceptance.md)。第二批已提交为`2553e5a`，由 agy / Gemini 3.8 Flash Low 实现，Codex 设计、生成资源并独立验收；范围见 [第二批总纲](05-subjects-overview.md)，结果见 [第二批验收记录](11-subject-acceptance.md)。
 
-新增幼儿样板由Codex直接实现，设计、范围和验收见 [小小乐园](12-preschool-prototypes.md)，本批尚未提交或发布。
+幼儿初版`7a00508`与12字扩充`76493ce`由Codex直接实现，历史范围见[小小乐园](12-preschool-prototypes.md)。当前[幼儿第一阶段](13-preschool-stage1.md)包含30字、18词与0—5数量玩法，本批尚未提交或发布。
 
 ## 背景与目标
 

@@ -425,7 +425,1031 @@
       "bytes": 8064,
       "sha256": "b3f468941139ee9a5e441c5ef4c23c411c967e07e52dfa3d18eaef4335e47d88",
       "duration": 1.008
+    },
+    {
+      "id": "flowerLearn",
+      "text": "花，花朵的花。点一下花字，让小花开放。",
+      "asset": "assets/audio/preschool/flowerLearn.mp3",
+      "bytes": 52416,
+      "sha256": "4345e221dbcf898eaa7ff0f00548606294d45c6d517e1db86dbdc8f02e1a241b",
+      "duration": 6.552
+    },
+    {
+      "id": "flowerName",
+      "text": "花，小花。",
+      "asset": "assets/audio/preschool/flowerName.mp3",
+      "bytes": 16704,
+      "sha256": "1f305b157faf6ed9f6b98ab3e8a51e538cfb03e6030ec7a68bc3e3dcfdaffebf",
+      "duration": 2.088
+    },
+    {
+      "id": "flowerQuiz",
+      "text": "春天小花开了。找一找花字。",
+      "asset": "assets/audio/preschool/flowerQuiz.mp3",
+      "bytes": 32832,
+      "sha256": "28bfd76843482297e17cdf65467c2c5b7d9049b75eaa6b1746e47748dcb49e30",
+      "duration": 4.104
+    },
+    {
+      "id": "fruitLearn",
+      "text": "果，果实的果。点一下果字，看看好吃的果实。",
+      "asset": "assets/audio/preschool/fruitLearn.mp3",
+      "bytes": 55296,
+      "sha256": "1595062cee3d8dcd71ced82c07e34b447274cfa2a0f3541dec15109232565914",
+      "duration": 6.912
+    },
+    {
+      "id": "fruitName",
+      "text": "果，果实。",
+      "asset": "assets/audio/preschool/fruitName.mp3",
+      "bytes": 16512,
+      "sha256": "f43ac385914a783d04bb2dfa62fb836ed4baf690117f8c4d35d41c05dfc37c97",
+      "duration": 2.064
+    },
+    {
+      "id": "fruitQuiz",
+      "text": "苹果是果实。找一找果字。",
+      "asset": "assets/audio/preschool/fruitQuiz.mp3",
+      "bytes": 32256,
+      "sha256": "add86611afa75ddf0a5e39b03acaaf203ec63bd31822e2dc96674f4ce1a2de34",
+      "duration": 4.032
+    },
+    {
+      "id": "birdLearn",
+      "text": "鸟，小鸟的鸟。点一下鸟字，请小鸟出来。",
+      "asset": "assets/audio/preschool/birdLearn.mp3",
+      "bytes": 53760,
+      "sha256": "b103c3c5e0881e17e969519986a2b7591e3cc0bb819fc80e7c3d11258792a46c",
+      "duration": 6.72
+    },
+    {
+      "id": "birdName",
+      "text": "鸟，小鸟。",
+      "asset": "assets/audio/preschool/birdName.mp3",
+      "bytes": 18624,
+      "sha256": "c8d8987ca3a9cec5a17178743441a4f398981cf453e1acbf11e7f2a9a7cf26e8",
+      "duration": 2.328
+    },
+    {
+      "id": "birdQuiz",
+      "text": "小鸟在枝头唱歌。找一找鸟字。",
+      "asset": "assets/audio/preschool/birdQuiz.mp3",
+      "bytes": 37824,
+      "sha256": "b4f2f6c0a9fc36302ad3922cb9fef0829f5e457c4f876e2eb246c38c20e32cf8",
+      "duration": 4.728
+    },
+    {
+      "id": "catLearn",
+      "text": "猫，小猫的猫。点一下猫字，请小猫出来。",
+      "asset": "assets/audio/preschool/catLearn.mp3",
+      "bytes": 50688,
+      "sha256": "dac31099b3e3ceb4b0e289acad6a5e0688894119f156c8128f2f4f4aab13424f",
+      "duration": 6.336
+    },
+    {
+      "id": "catName",
+      "text": "猫，小猫。",
+      "asset": "assets/audio/preschool/catName.mp3",
+      "bytes": 16320,
+      "sha256": "63066b2f72bdef24cd7f3ec738c10aa331d81aea003f77d40394f782be22c4d1",
+      "duration": 2.04
+    },
+    {
+      "id": "catQuiz",
+      "text": "小猫在窗边晒太阳。找一找猫字。",
+      "asset": "assets/audio/preschool/catQuiz.mp3",
+      "bytes": 39168,
+      "sha256": "a5c8f259a04559bb4b20a2111717a8904b53f7bb859e2eaac710c63ed66de94c",
+      "duration": 4.896
+    },
+    {
+      "id": "dogLearn",
+      "text": "狗，小狗的狗。点一下狗字，请小狗出来。",
+      "asset": "assets/audio/preschool/dogLearn.mp3",
+      "bytes": 52224,
+      "sha256": "e818e251fba0b2829f1f79e78fad351f235992bb7d95a5d6f81bc243c3dc7210",
+      "duration": 6.528
+    },
+    {
+      "id": "dogName",
+      "text": "狗，小狗。",
+      "asset": "assets/audio/preschool/dogName.mp3",
+      "bytes": 17856,
+      "sha256": "3a2f2a6348d52864e18f7d65a5a573052d4508d1f54ddd5f8283857a8a81c40e",
+      "duration": 2.232
+    },
+    {
+      "id": "dogQuiz",
+      "text": "小狗在等主人回家。找一找狗字。",
+      "asset": "assets/audio/preschool/dogQuiz.mp3",
+      "bytes": 37632,
+      "sha256": "4949ad243f90fbe3f7b9eabdc27c7f5aa3b601f257e00324f0aeba756027ca7e",
+      "duration": 4.704
+    },
+    {
+      "id": "carLearn",
+      "text": "车，小车的车。点一下车字，让小车出发。",
+      "asset": "assets/audio/preschool/carLearn.mp3",
+      "bytes": 51456,
+      "sha256": "069327e4da07fb82f079a85fdd659ff32d65740a75e83beaba1315a3d240ff03",
+      "duration": 6.432
+    },
+    {
+      "id": "carName",
+      "text": "车，小车。",
+      "asset": "assets/audio/preschool/carName.mp3",
+      "bytes": 16320,
+      "sha256": "3648a8cb608fc6a4184ad1fa3f3f64c36512fec8b977048eba30f1bc433945c8",
+      "duration": 2.04
+    },
+    {
+      "id": "carQuiz",
+      "text": "小车准备出发。找一找车字。",
+      "asset": "assets/audio/preschool/carQuiz.mp3",
+      "bytes": 32448,
+      "sha256": "effa84d013b5032f8fbac7ca3eb5c5bd6e686e264560a36be221b4906fdd1231",
+      "duration": 4.056
+    },
+    {
+      "id": "personLearn",
+      "text": "人，人们的人。点一下人字，请小朋友出来。",
+      "asset": "assets/audio/preschool/personLearn.mp3",
+      "bytes": 50496,
+      "sha256": "7e82a39d29b2f8d3ce1ae9f1dbf8a0b39a01469d16af4b734c66c24782bb5868",
+      "duration": 6.312
+    },
+    {
+      "id": "personName",
+      "text": "人，小朋友。",
+      "asset": "assets/audio/preschool/personName.mp3",
+      "bytes": 17280,
+      "sha256": "55416da5b0406efcabaacfd43f2d76409f939a4ab421f64c9a1a435fbcf9dad6",
+      "duration": 2.16
+    },
+    {
+      "id": "personQuiz",
+      "text": "小朋友是人。找一找人字。",
+      "asset": "assets/audio/preschool/personQuiz.mp3",
+      "bytes": 28416,
+      "sha256": "600959b26e28808623723d6e071796f3f319b7e688c15d2a957fcbe86f7bea9b",
+      "duration": 3.552
+    },
+    {
+      "id": "bigLearn",
+      "text": "大，大小的大。点一下大字，让皮球变大。",
+      "asset": "assets/audio/preschool/bigLearn.mp3",
+      "bytes": 49536,
+      "sha256": "ceb1abe05bfa5cfd7291f2d324ce650a61514c6f2a045bd847df8cd6fd2d7ae6",
+      "duration": 6.192
+    },
+    {
+      "id": "bigName",
+      "text": "大，大皮球。",
+      "asset": "assets/audio/preschool/bigName.mp3",
+      "bytes": 17664,
+      "sha256": "7907d9a2960cab53675a1cc2184ad0e6dc7411369c73f56c0aa3c75a723671bf",
+      "duration": 2.208
+    },
+    {
+      "id": "bigQuiz",
+      "text": "箭头指着大皮球。找一找大字。",
+      "asset": "assets/audio/preschool/bigQuiz.mp3",
+      "bytes": 34752,
+      "sha256": "be0685c2432e0cd91f2752e28d5595d63a074085666f7c1fcd501ca0360c33df",
+      "duration": 4.344
+    },
+    {
+      "id": "smallLearn",
+      "text": "小，大小的小。点一下小字，让皮球变小。",
+      "asset": "assets/audio/preschool/smallLearn.mp3",
+      "bytes": 55104,
+      "sha256": "66da0e6b4b9fe8cce1ab35d2bfa463e4b2e45c5d68434df42e68fc5f3fdf812a",
+      "duration": 6.888
+    },
+    {
+      "id": "smallName",
+      "text": "小，小皮球。",
+      "asset": "assets/audio/preschool/smallName.mp3",
+      "bytes": 20544,
+      "sha256": "2b447def5965f6133adea18754fea2428e2dc36661954c2c0273e4933d01664d",
+      "duration": 2.568
+    },
+    {
+      "id": "smallQuiz",
+      "text": "箭头指着小皮球。找一找小字。",
+      "asset": "assets/audio/preschool/smallQuiz.mp3",
+      "bytes": 37248,
+      "sha256": "c6568c7c9ce57f224255ae3b62fff1fee984a3e669cbc1aa8d1273d764b35737",
+      "duration": 4.656
+    },
+    {
+      "id": "aboveLearn",
+      "text": "上，上面的上。点一下上字，让皮球放在桌子上。",
+      "asset": "assets/audio/preschool/aboveLearn.mp3",
+      "bytes": 58176,
+      "sha256": "cb9e18df813c477be36b5d18f13e0f8286b0b2b8ce2b7c2c0b180bad1aec12f9",
+      "duration": 7.272
+    },
+    {
+      "id": "aboveName",
+      "text": "上，在上面。",
+      "asset": "assets/audio/preschool/aboveName.mp3",
+      "bytes": 17472,
+      "sha256": "b55a71a097e761f5c0c7883280f169bac81e2bfa35e5e5d75ae69fa9c9e8c809",
+      "duration": 2.184
+    },
+    {
+      "id": "aboveQuiz",
+      "text": "皮球在桌子上面。找一找上字。",
+      "asset": "assets/audio/preschool/aboveQuiz.mp3",
+      "bytes": 33600,
+      "sha256": "02231b9c1df63c4e6cb82d76acea6722c8dc89a036eb118e987103933938cca4",
+      "duration": 4.2
+    },
+    {
+      "id": "belowLearn",
+      "text": "下，下面的下。点一下下字，让皮球放在桌子下。",
+      "asset": "assets/audio/preschool/belowLearn.mp3",
+      "bytes": 57984,
+      "sha256": "ab2c95f44c5226018bbe8fe3bbaeb3f0eeba7e6c143f551efc2e8353cffb9077",
+      "duration": 7.248
+    },
+    {
+      "id": "belowName",
+      "text": "下，在下面。",
+      "asset": "assets/audio/preschool/belowName.mp3",
+      "bytes": 18048,
+      "sha256": "7ef50b5425464f14c688c75fd29f51802e3012325b980e92d35d4649bc391bdd",
+      "duration": 2.256
+    },
+    {
+      "id": "belowQuiz",
+      "text": "皮球在桌子下面。找一找下字。",
+      "asset": "assets/audio/preschool/belowQuiz.mp3",
+      "bytes": 33984,
+      "sha256": "ba1de8f144dee4301e6092f8f70ba47b62dba0a3bd011dd557bc23083af9fe29",
+      "duration": 4.248
+    },
+    {
+      "id": "middleLearn",
+      "text": "中，中间的中。点一下中字，让小熊坐在中间。",
+      "asset": "assets/audio/preschool/middleLearn.mp3",
+      "bytes": 56448,
+      "sha256": "c6b9c5fda86130edf85ab08621682002be168f96bfec6dfeceb9e096259d3006",
+      "duration": 7.056
+    },
+    {
+      "id": "middleName",
+      "text": "中，在中间。",
+      "asset": "assets/audio/preschool/middleName.mp3",
+      "bytes": 17856,
+      "sha256": "ef23cb16612a0c1f32ee547d944b8aea3f99f6522de191a9c7471309ce7a710e",
+      "duration": 2.232
+    },
+    {
+      "id": "middleQuiz",
+      "text": "小熊坐在中间。找一找中字。",
+      "asset": "assets/audio/preschool/middleQuiz.mp3",
+      "bytes": 35328,
+      "sha256": "b2ffd3e76726d736f120bcd18a7e519d75765b30bfd0157fc56790165540b56a",
+      "duration": 4.416
+    },
+    {
+      "id": "openLearn",
+      "text": "开，打开的开。点一下开字，把门打开。",
+      "asset": "assets/audio/preschool/openLearn.mp3",
+      "bytes": 48960,
+      "sha256": "6a0344e0c75f036a5e87594e4747d8d56bb2f88aec2016eaf5603a0211c87031",
+      "duration": 6.12
+    },
+    {
+      "id": "openName",
+      "text": "开，打开。",
+      "asset": "assets/audio/preschool/openName.mp3",
+      "bytes": 16512,
+      "sha256": "0d584d255fe2adaa9306879c43b0aaba96f817a238087f63d87941dcf4c9b6b1",
+      "duration": 2.064
+    },
+    {
+      "id": "openQuiz",
+      "text": "小熊想进屋，需要开门。找一找开字。",
+      "asset": "assets/audio/preschool/openQuiz.mp3",
+      "bytes": 46080,
+      "sha256": "fc604bb13df97961e902ba7b94840e4cca4030f2a7a1019a706162d0318d3858",
+      "duration": 5.76
+    },
+    {
+      "id": "closeLearn",
+      "text": "关，关上的关。点一下关字，把门关好。",
+      "asset": "assets/audio/preschool/closeLearn.mp3",
+      "bytes": 50112,
+      "sha256": "d8799c06c197e382da6c737da670a2c068d672f56a72ed8467de409db9a15026",
+      "duration": 6.264
+    },
+    {
+      "id": "closeName",
+      "text": "关，关上。",
+      "asset": "assets/audio/preschool/closeName.mp3",
+      "bytes": 16128,
+      "sha256": "4dc07984deffec06fdfeec92b04ebde02aa89a0100cd783d02a99a0ce97d6a64",
+      "duration": 2.016
+    },
+    {
+      "id": "closeQuiz",
+      "text": "小熊出门后，要关好门。找一找关字。",
+      "asset": "assets/audio/preschool/closeQuiz.mp3",
+      "bytes": 46848,
+      "sha256": "be042e4e2bdcbcdb4c6881849f8e3d6e7e6a8efd636c8991a8c7db211f4f490b",
+      "duration": 5.856
+    },
+    {
+      "id": "comeLearn",
+      "text": "来，过来的来。点一下来字，到小熊这边来。",
+      "asset": "assets/audio/preschool/comeLearn.mp3",
+      "bytes": 52224,
+      "sha256": "e92b65ae1ac0f5af1e2744cadd6ea75e6b412234c3bfc9aa10eaa6bf92702150",
+      "duration": 6.528
+    },
+    {
+      "id": "comeName",
+      "text": "来，走过来。",
+      "asset": "assets/audio/preschool/comeName.mp3",
+      "bytes": 16704,
+      "sha256": "e193a9ea5ca9dc8acf898d6f8ec4d1553b8f760b3e3d4b679357d83856593771",
+      "duration": 2.088
+    },
+    {
+      "id": "comeQuiz",
+      "text": "小朋友朝小熊走来。找一找来字。",
+      "asset": "assets/audio/preschool/comeQuiz.mp3",
+      "bytes": 36864,
+      "sha256": "afe43a0f6013868316bd2be503b73bc003e2da7719ff0c97ce9cd2a9328a2464",
+      "duration": 4.608
+    },
+    {
+      "id": "goLearn",
+      "text": "去，过去的去。点一下去字，向公园出发。",
+      "asset": "assets/audio/preschool/goLearn.mp3",
+      "bytes": 51840,
+      "sha256": "560d4885556868d0bdb34596e60ebd321a61058370900280fc5ce8b392923941",
+      "duration": 6.48
+    },
+    {
+      "id": "goName",
+      "text": "去，走过去。",
+      "asset": "assets/audio/preschool/goName.mp3",
+      "bytes": 17664,
+      "sha256": "592a2865caf8d6fd018b6af5816d07750188f83a6c9189f15e8e89241f1761b6",
+      "duration": 2.208
+    },
+    {
+      "id": "goQuiz",
+      "text": "小朋友向公园走去。找一找去字。",
+      "asset": "assets/audio/preschool/goQuiz.mp3",
+      "bytes": 38784,
+      "sha256": "0a1def038bcc0a64f8fa5bd3633c29bbebe4efd3a41addca6fcea339a581fea7",
+      "duration": 4.848
+    },
+    {
+      "id": "walkLearn",
+      "text": "走，走路的走。点一下走字，慢慢走一走。",
+      "asset": "assets/audio/preschool/walkLearn.mp3",
+      "bytes": 48960,
+      "sha256": "146baa322a4cb0264a46c5eaa26af0c42a213b0cf8f8ba8139568891e54c9ab1",
+      "duration": 6.12
+    },
+    {
+      "id": "walkName",
+      "text": "走，走路。",
+      "asset": "assets/audio/preschool/walkName.mp3",
+      "bytes": 14400,
+      "sha256": "231c39019b5d967a1649beb1f3a7e883c7543c49f67cdb1aced7397d045d9bad",
+      "duration": 1.8
+    },
+    {
+      "id": "walkQuiz",
+      "text": "小朋友正在走路。找一找走字。",
+      "asset": "assets/audio/preschool/walkQuiz.mp3",
+      "bytes": 34752,
+      "sha256": "62d9154176a7209b57c456fb3e2aa0703ad2bb6b9343d3f2f9267915e86002a7",
+      "duration": 4.344
+    },
+    {
+      "id": "runLearn",
+      "text": "跑，跑步的跑。点一下跑字，向前跑一跑。",
+      "asset": "assets/audio/preschool/runLearn.mp3",
+      "bytes": 51840,
+      "sha256": "85bf4a376e72da4e4c5eea2b9cbce91b3dedabd531956473c9515ee38aca9628",
+      "duration": 6.48
+    },
+    {
+      "id": "runName",
+      "text": "跑，跑步。",
+      "asset": "assets/audio/preschool/runName.mp3",
+      "bytes": 15936,
+      "sha256": "968835ea278ffe441d1ecd5a771ef012b98a5199bebb40c26406554ae675b392",
+      "duration": 1.992
+    },
+    {
+      "id": "runQuiz",
+      "text": "小朋友正在跑步。找一找跑字。",
+      "asset": "assets/audio/preschool/runQuiz.mp3",
+      "bytes": 35520,
+      "sha256": "d5a0bd6def1774bff9f5591a97b7dd7902c3e8f2d90543c7f63cf860364e4e53",
+      "duration": 4.44
+    },
+    {
+      "id": "fruitBowlLearn",
+      "text": "水果。水果有苹果、香蕉和橘子。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/fruitBowlLearn.mp3",
+      "bytes": 71040,
+      "sha256": "d2c4bad9fcfcaff8403752799c18dfcb23b037af80cdf5528a4c6ec212d07645",
+      "duration": 8.88
+    },
+    {
+      "id": "fruitBowlName",
+      "text": "水果。",
+      "asset": "assets/audio/preschool/fruitBowlName.mp3",
+      "bytes": 9984,
+      "sha256": "67a397981a1cee9cec16e7bdc763552b1efe9029dd4092be9472dcf4bd32b823",
+      "duration": 1.248
+    },
+    {
+      "id": "fruitBowlQuiz",
+      "text": "野餐时，选一份好吃的食物。请选一个词语。",
+      "asset": "assets/audio/preschool/fruitBowlQuiz.mp3",
+      "bytes": 49920,
+      "sha256": "55140395280c12b4589ea5df36470107890a7ff9cfb9664bbfba9eed44125ee3",
+      "duration": 6.24
+    },
+    {
+      "id": "littleBirdLearn",
+      "text": "小鸟。小鸟会飞，也会唱歌。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/littleBirdLearn.mp3",
+      "bytes": 66048,
+      "sha256": "c857f304fa0d170bfc1a5c9d3ddb72de84efa5f1f2633cab1bacc0c1127cc411",
+      "duration": 8.256
+    },
+    {
+      "id": "littleBirdName",
+      "text": "小鸟。",
+      "asset": "assets/audio/preschool/littleBirdName.mp3",
+      "bytes": 10176,
+      "sha256": "bc840c41591293b6706597805efbb8610e2fbe7188e9de785ce97b95486eee25",
+      "duration": 1.272
+    },
+    {
+      "id": "littleBirdQuiz",
+      "text": "谁在枝头唱歌。请选一个词语。",
+      "asset": "assets/audio/preschool/littleBirdQuiz.mp3",
+      "bytes": 35712,
+      "sha256": "8ea1cfa58ea0a4cd70905661afb13347bf61282418a5f170b519fe6904d4c453",
+      "duration": 4.464
+    },
+    {
+      "id": "littleCatLearn",
+      "text": "小猫。小猫在晒太阳。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/littleCatLearn.mp3",
+      "bytes": 54144,
+      "sha256": "5812cc406952fec2a4afae955e977c870f8a24f46b8e020dec903108a102b7b3",
+      "duration": 6.768
+    },
+    {
+      "id": "littleCatName",
+      "text": "小猫。",
+      "asset": "assets/audio/preschool/littleCatName.mp3",
+      "bytes": 9408,
+      "sha256": "fac7e9e33e50209bb4b5cbc8ceae72e8dd76efe75f61467b0660ad2f38ec5590",
+      "duration": 1.176
+    },
+    {
+      "id": "littleCatQuiz",
+      "text": "谁在窗边晒太阳。请选一个词语。",
+      "asset": "assets/audio/preschool/littleCatQuiz.mp3",
+      "bytes": 38400,
+      "sha256": "fde4ca3cf336ba78b74bafe6904adb16369b3bd1b238ba17817ecd43debcbe43",
+      "duration": 4.8
+    },
+    {
+      "id": "littleDogLearn",
+      "text": "小狗。小狗在等主人。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/littleDogLearn.mp3",
+      "bytes": 54720,
+      "sha256": "8856ccdd3b02bf22fceac1b65ef4b096ae3fe1970abfae4e9ad41736bc1986c4",
+      "duration": 6.84
+    },
+    {
+      "id": "littleDogName",
+      "text": "小狗。",
+      "asset": "assets/audio/preschool/littleDogName.mp3",
+      "bytes": 9984,
+      "sha256": "54aed77b61149a8e63b4ae7c748c027c5dbdabe92d0eb2defa33960f62d76d0c",
+      "duration": 1.248
+    },
+    {
+      "id": "littleDogQuiz",
+      "text": "谁在等主人回家。请选一个词语。",
+      "asset": "assets/audio/preschool/littleDogQuiz.mp3",
+      "bytes": 36480,
+      "sha256": "072be20b2031ec7e6fd2f3374e281e0af78fb3e97565b3073534c31ef75fea84",
+      "duration": 4.56
+    },
+    {
+      "id": "littleHandLearn",
+      "text": "小手。用小手拍拍球。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/littleHandLearn.mp3",
+      "bytes": 58560,
+      "sha256": "b9361acb4aab7e97b1d7478182416caa6219027e1fbc8683bf45fdf41c67e7e7",
+      "duration": 7.32
+    },
+    {
+      "id": "littleHandName",
+      "text": "小手。",
+      "asset": "assets/audio/preschool/littleHandName.mp3",
+      "bytes": 10176,
+      "sha256": "c9ba99352d5d0369607eb594656f47b088a3eb92b77cd3939d67017daaa248d1",
+      "duration": 1.272
+    },
+    {
+      "id": "littleHandQuiz",
+      "text": "拍皮球要用什么。请选一个词语。",
+      "asset": "assets/audio/preschool/littleHandQuiz.mp3",
+      "bytes": 35328,
+      "sha256": "e12ce05e21aa68878fcfdb37932ac3a4a266add095ba76e91d1580b0526b3dc9",
+      "duration": 4.416
+    },
+    {
+      "id": "littleFlowerLearn",
+      "text": "小花。小花开了。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/littleFlowerLearn.mp3",
+      "bytes": 50112,
+      "sha256": "c241fc3af8d0d68566afea15e800cdd2b79f47b4f954079f84d1c4ea1923d667",
+      "duration": 6.264
+    },
+    {
+      "id": "littleFlowerName",
+      "text": "小花。",
+      "asset": "assets/audio/preschool/littleFlowerName.mp3",
+      "bytes": 9408,
+      "sha256": "0b2edb64a26e894e7d66fabc781638d4b99a783aa2a52982d855f06391ce2f53",
+      "duration": 1.176
+    },
+    {
+      "id": "littleFlowerQuiz",
+      "text": "春天，什么开放了。请选一个词语。",
+      "asset": "assets/audio/preschool/littleFlowerQuiz.mp3",
+      "bytes": 40512,
+      "sha256": "466b0c61afffe27a566ec8ed2c17d70c7251b03cd81063c9f21c59845a044020",
+      "duration": 5.064
+    },
+    {
+      "id": "openDoorLearn",
+      "text": "开门。开门，小熊就能进屋。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/openDoorLearn.mp3",
+      "bytes": 67008,
+      "sha256": "e2336b35de723188b8dea0cc0ba7602c19eeef92fb4b09e605b9cf2280302667",
+      "duration": 8.376
+    },
+    {
+      "id": "openDoorName",
+      "text": "开门。",
+      "asset": "assets/audio/preschool/openDoorName.mp3",
+      "bytes": 9408,
+      "sha256": "df217d78c2be6483dc01c0803e427a143a43812d09d5dcb62f0968057380c22d",
+      "duration": 1.176
+    },
+    {
+      "id": "openDoorQuiz",
+      "text": "请帮小熊把门打开。请选一个词语。",
+      "asset": "assets/audio/preschool/openDoorQuiz.mp3",
+      "bytes": 40512,
+      "sha256": "58f9ec5a62c44331a04e9e1ec6dc5b50402bed7159ba91f88d4829cfd56c52fd",
+      "duration": 5.064
+    },
+    {
+      "id": "closeDoorLearn",
+      "text": "关门。关门，让门合起来。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/closeDoorLearn.mp3",
+      "bytes": 62592,
+      "sha256": "01d32e502952afb45fe3de57303c3ea39a2cdafba0098103a07a448a221191c9",
+      "duration": 7.824
+    },
+    {
+      "id": "closeDoorName",
+      "text": "关门。",
+      "asset": "assets/audio/preschool/closeDoorName.mp3",
+      "bytes": 9792,
+      "sha256": "c80adeca65838787db41bd39fc6667c51e3d5671cb79714a99763fbfa7985749",
+      "duration": 1.224
+    },
+    {
+      "id": "closeDoorQuiz",
+      "text": "小熊出门了，请把门关好。请选一个词语。",
+      "asset": "assets/audio/preschool/closeDoorQuiz.mp3",
+      "bytes": 48960,
+      "sha256": "c3f29d49c7d695672da069673c9e15f0fc57a5d2e60a47b0257f76bfd391bf12",
+      "duration": 6.12
+    },
+    {
+      "id": "boardBusLearn",
+      "text": "上车。上车，乘客到车里面。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/boardBusLearn.mp3",
+      "bytes": 66048,
+      "sha256": "1bf7aef5ead4e68986dc3011eaf94c29df604d417034db3b573d9eac227da7b5",
+      "duration": 8.256
+    },
+    {
+      "id": "boardBusName",
+      "text": "上车。",
+      "asset": "assets/audio/preschool/boardBusName.mp3",
+      "bytes": 9408,
+      "sha256": "16c3a48e35acfaa0999c8480ea3f0eb3892638952c3dab01225962fb1c887a76",
+      "duration": 1.176
+    },
+    {
+      "id": "boardBusQuiz",
+      "text": "巴士要出发，请乘客进去。请选一个词语。",
+      "asset": "assets/audio/preschool/boardBusQuiz.mp3",
+      "bytes": 47616,
+      "sha256": "064265a9b85b31d8660dc6f86d1827a43999186ba96f861dc9fd6d7df367e050",
+      "duration": 5.952
+    },
+    {
+      "id": "leaveBusLearn",
+      "text": "下车。下车，乘客到车外面。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/leaveBusLearn.mp3",
+      "bytes": 67200,
+      "sha256": "d930f07f43d084ee5948f8daf9af87e702702b2faf2a78051b70ce7ddcd7a39f",
+      "duration": 8.4
+    },
+    {
+      "id": "leaveBusName",
+      "text": "下车。",
+      "asset": "assets/audio/preschool/leaveBusName.mp3",
+      "bytes": 10176,
+      "sha256": "d1373f2405908e27b3d5f2abad37b6dd8b30f10a5bbbb16851db7f5576ca6de6",
+      "duration": 1.272
+    },
+    {
+      "id": "leaveBusQuiz",
+      "text": "到站了，请乘客到外面。请选一个词语。",
+      "asset": "assets/audio/preschool/leaveBusQuiz.mp3",
+      "bytes": 45120,
+      "sha256": "11736216088881147c73414e46a908457a056a59f92c78c6930b9cd1c8789865",
+      "duration": 5.64
+    },
+    {
+      "id": "walkHereLearn",
+      "text": "走来。走来，慢慢到小熊这边。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/walkHereLearn.mp3",
+      "bytes": 65664,
+      "sha256": "b8d653f331024ee0443292a8813c9557646f9d66206579e5ca82d1e8643d80a5",
+      "duration": 8.208
+    },
+    {
+      "id": "walkHereName",
+      "text": "走来。",
+      "asset": "assets/audio/preschool/walkHereName.mp3",
+      "bytes": 8448,
+      "sha256": "9fefe8b93a4f2baec20c629e07a652923db908b1da03f06514bf084cbfa39416",
+      "duration": 1.056
+    },
+    {
+      "id": "walkHereQuiz",
+      "text": "请小朋友慢慢到小熊这边。请选一个词语。",
+      "asset": "assets/audio/preschool/walkHereQuiz.mp3",
+      "bytes": 45312,
+      "sha256": "940e99108b2893e4f491dd52a537e65dc69d126a784fcd2d3fe4cd0d10c80faf",
+      "duration": 5.664
+    },
+    {
+      "id": "runHereLearn",
+      "text": "跑来。跑来，跑到小熊这边。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/runHereLearn.mp3",
+      "bytes": 64128,
+      "sha256": "264146ac97f2d187678f1671f40e5fe968dc42cd1cc380ad08ece7c42f219059",
+      "duration": 8.016
+    },
+    {
+      "id": "runHereName",
+      "text": "跑来。",
+      "asset": "assets/audio/preschool/runHereName.mp3",
+      "bytes": 8448,
+      "sha256": "8d322477bd1c9ede0c687094a1fa0a252723a6f7ab9b6caa97b580e77eb120dc",
+      "duration": 1.056
+    },
+    {
+      "id": "runHereQuiz",
+      "text": "请小朋友跑到小熊这边。请选一个词语。",
+      "asset": "assets/audio/preschool/runHereQuiz.mp3",
+      "bytes": 43584,
+      "sha256": "bb77c9e4e0c58a9a4473f1d92289bec85e2991a50317c93edc79622303e3c6f6",
+      "duration": 5.448
+    },
+    {
+      "id": "bigDoorLearn",
+      "text": "大门。大门，宽宽大大的门。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/bigDoorLearn.mp3",
+      "bytes": 64512,
+      "sha256": "014c8a79f1d4352fdb9e09bf5a639bde74c32bb2c11812a14f720559d081ddb0",
+      "duration": 8.064
+    },
+    {
+      "id": "bigDoorName",
+      "text": "大门。",
+      "asset": "assets/audio/preschool/bigDoorName.mp3",
+      "bytes": 8832,
+      "sha256": "09acf8b76b77d9a0e05a96a7684fbe2e4607ce230d2b84833ab3b12e8e668065",
+      "duration": 1.104
+    },
+    {
+      "id": "bigDoorQuiz",
+      "text": "大熊想进屋，要选宽敞的入口。请选一个词语。",
+      "asset": "assets/audio/preschool/bigDoorQuiz.mp3",
+      "bytes": 52032,
+      "sha256": "32965f2bd254f9498dfddc3320234efda0d5a14d727846195f010377f2a4886c",
+      "duration": 6.504
+    },
+    {
+      "id": "smallDoorLearn",
+      "text": "小门。小门，小巧的门。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/smallDoorLearn.mp3",
+      "bytes": 60672,
+      "sha256": "aa0ad4b47f6914d89c4cecac04a61708fb009bfba4f2b82ce8ae97de4dfba7ef",
+      "duration": 7.584
+    },
+    {
+      "id": "smallDoorName",
+      "text": "小门。",
+      "asset": "assets/audio/preschool/smallDoorName.mp3",
+      "bytes": 9408,
+      "sha256": "c688a929a65173b7f4b07e1a4217c7a545ba6c564de344a0561fe01e94e02568",
+      "duration": 1.176
+    },
+    {
+      "id": "smallDoorQuiz",
+      "text": "小兔想进屋，要选小巧的入口。请选一个词语。",
+      "asset": "assets/audio/preschool/smallDoorQuiz.mp3",
+      "bytes": 51456,
+      "sha256": "c2b6d9b6e7ab5f3499a365036c6032bcd06cb26999e6ae64ba16f861f2e28680",
+      "duration": 6.432
+    },
+    {
+      "id": "bigMountainLearn",
+      "text": "大山。大山，高高的大山。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/bigMountainLearn.mp3",
+      "bytes": 60864,
+      "sha256": "2a88e9e8be8066e07414b2146d42bd68ad01ed01b9c6c6e0ac89cb56159ce8db",
+      "duration": 7.608
+    },
+    {
+      "id": "bigMountainName",
+      "text": "大山。",
+      "asset": "assets/audio/preschool/bigMountainName.mp3",
+      "bytes": 8640,
+      "sha256": "5ce267f4cf97543cd40778a7a91b4d5307a3cc06ab48b922fd929e95de3e0939",
+      "duration": 1.08
+    },
+    {
+      "id": "bigMountainQuiz",
+      "text": "箭头指着高高的大峰。请选一个词语。",
+      "asset": "assets/audio/preschool/bigMountainQuiz.mp3",
+      "bytes": 40704,
+      "sha256": "9e82a4c6dbf1e26d3a5cb8337c4203d4231ea91f6785c1d21458597bb338608a",
+      "duration": 5.088
+    },
+    {
+      "id": "smallMountainLearn",
+      "text": "小山。小山，低低的小山。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/smallMountainLearn.mp3",
+      "bytes": 62976,
+      "sha256": "12169c854d4f5a000abbc794835db3f07c7654253cc72806a4b7062a597a57e0",
+      "duration": 7.872
+    },
+    {
+      "id": "smallMountainName",
+      "text": "小山。",
+      "asset": "assets/audio/preschool/smallMountainName.mp3",
+      "bytes": 9600,
+      "sha256": "451dbbdbf35e96a576a1f7749db8f800da2adc542351a541aa52fa48c81c4448",
+      "duration": 1.2
+    },
+    {
+      "id": "smallMountainQuiz",
+      "text": "箭头指着低低的小峰。请选一个词语。",
+      "asset": "assets/audio/preschool/smallMountainQuiz.mp3",
+      "bytes": 40704,
+      "sha256": "086512a85e2e790c428250cbad819990ef3b14a7bdeed0bbb58cbf10550a4280",
+      "duration": 5.088
+    },
+    {
+      "id": "climbUpLearn",
+      "text": "上山。上山，向山顶走。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/climbUpLearn.mp3",
+      "bytes": 61824,
+      "sha256": "381b5f94339983f021f587f0b83b16fffad699eb5302ecc8db467c10479a1b70",
+      "duration": 7.728
+    },
+    {
+      "id": "climbUpName",
+      "text": "上山。",
+      "asset": "assets/audio/preschool/climbUpName.mp3",
+      "bytes": 9600,
+      "sha256": "9374a0f0a96cbf0caeec8912bc925daed55d9ae81cb6347386a07407dbf9a57d",
+      "duration": 1.2
+    },
+    {
+      "id": "climbUpQuiz",
+      "text": "小熊要到山顶，应该怎么做。请选一个词语。",
+      "asset": "assets/audio/preschool/climbUpQuiz.mp3",
+      "bytes": 49344,
+      "sha256": "5636189af7fb359d88c49c4ad8582097d746689eb8aae157caded6a84ea4a74e",
+      "duration": 6.168
+    },
+    {
+      "id": "climbDownLearn",
+      "text": "下山。下山，向山脚走。点一下词卡，看看画面。",
+      "asset": "assets/audio/preschool/climbDownLearn.mp3",
+      "bytes": 62400,
+      "sha256": "a9654b4892dab5c14edd71e32f901179cc8781630ae7c4f5de54e15eb30fd129",
+      "duration": 7.8
+    },
+    {
+      "id": "climbDownName",
+      "text": "下山。",
+      "asset": "assets/audio/preschool/climbDownName.mp3",
+      "bytes": 9600,
+      "sha256": "2d7a286b25e908972ef2f8e6076b59624bdba460cf29d8261b80b9755e0a1e79",
+      "duration": 1.2
+    },
+    {
+      "id": "climbDownQuiz",
+      "text": "小熊要回山脚，应该怎么做。请选一个词语。",
+      "asset": "assets/audio/preschool/climbDownQuiz.mp3",
+      "bytes": 50304,
+      "sha256": "2de2d9345eaad7408f022903b524d2d6dcc82e9eb9e0f5be51368ba2aa784b1d",
+      "duration": 6.288
+    },
+    {
+      "id": "welcomeStage1",
+      "text": "欢迎来到小小乐园。玩数字、认识汉字，还是去玩词语？",
+      "asset": "assets/audio/preschool/welcomeStage1.mp3",
+      "bytes": 63168,
+      "sha256": "37400034679b074a1f716fb3d8034f52c7a21b229cf213806546ab8f1f5c8ce0",
+      "duration": 7.896
+    },
+    {
+      "id": "mathGroups",
+      "text": "选一个数字游戏。找数字、看看数量变化、分一分，或者跟小熊接着数。",
+      "asset": "assets/audio/preschool/mathGroups.mp3",
+      "bytes": 83712,
+      "sha256": "f9ae9683838825aa005cb8b0b96e5dd4b13008336f75e1d67e86afe1d119f519",
+      "duration": 10.464
+    },
+    {
+      "id": "wordGroups",
+      "text": "选一组词语。先认识完整的词，再到场景里用一用。",
+      "asset": "assets/audio/preschool/wordGroups.mp3",
+      "bytes": 59136,
+      "sha256": "3c4045552f08551af9ab525bb3fdd1b9d6e56aa6ee7921e5c8fdecd9f4dadb39",
+      "duration": 7.392
+    },
+    {
+      "id": "listenChoose",
+      "text": "听一听，选出对应的字或词语。",
+      "asset": "assets/audio/preschool/listenChoose.mp3",
+      "bytes": 37440,
+      "sha256": "04843f6cab5d5056b28b3f799805a222953b97d740b03aa9faa3a2626e705030",
+      "duration": 4.68
+    },
+    {
+      "id": "lookChoose",
+      "text": "看看字卡，选出对应的画面。",
+      "asset": "assets/audio/preschool/lookChoose.mp3",
+      "bytes": 33024,
+      "sha256": "77eda3d36f601cf0db9f6d483a4c7499e17e6fc9167b2b09a10cf99b4d07e988",
+      "duration": 4.128
+    },
+    {
+      "id": "n0",
+      "text": "零",
+      "asset": "assets/audio/preschool/n0.mp3",
+      "bytes": 6528,
+      "sha256": "cac2ecabefc261af2b318152a64996fcd8cb06a866a32225666df71db10eb8b9",
+      "duration": 0.816
+    },
+    {
+      "id": "numberMatch",
+      "text": "点点苹果，再选一个数字，告诉小熊一共有几个。",
+      "asset": "assets/audio/preschool/numberMatch.mp3",
+      "bytes": 58368,
+      "sha256": "fc1a83193339c15caf884d63594c792aa8d6b463ff2852de98a759f61e4aba93",
+      "duration": 7.296
+    },
+    {
+      "id": "numberEmpty",
+      "text": "篮子里一个也没有，用哪个数字表示？",
+      "asset": "assets/audio/preschool/numberEmpty.mp3",
+      "bytes": 38976,
+      "sha256": "bf894ad5d2b402143d60667190f07df5812fee7030c3f395203955c27effd1d3",
+      "duration": 4.872
+    },
+    {
+      "id": "numberGive",
+      "text": "看看数字，按数字给小熊装苹果。够了就点送出。",
+      "asset": "assets/audio/preschool/numberGive.mp3",
+      "bytes": 56064,
+      "sha256": "9f5808e07230d71243f1cf083db7fe1d88dce8b30ad28dc29eeef7d8d9d64b90",
+      "duration": 7.008
+    },
+    {
+      "id": "numberSame",
+      "text": "先看看苹果，再点换个位置。位置变了，一共还是几个？",
+      "asset": "assets/audio/preschool/numberSame.mp3",
+      "bytes": 60480,
+      "sha256": "f6c08e8a34e98fd60af6e40c0d6e0139fd72246e0ea52878afd3bc43a7bfadc9",
+      "duration": 7.56
+    },
+    {
+      "id": "numberRetry",
+      "text": "再数数看，可以加一个，也可以拿回一个。",
+      "asset": "assets/audio/preschool/numberRetry.mp3",
+      "bytes": 47232,
+      "sha256": "746fe3aaf8bda65ff05b0618d62f965da577a586a0ea8d08a7d2a8df5686a106",
+      "duration": 5.904
+    },
+    {
+      "id": "numberRight",
+      "text": "对啦！数字和数量对上了。",
+      "asset": "assets/audio/preschool/numberRight.mp3",
+      "bytes": 30528,
+      "sha256": "69e52b8754862bdead8cbe0763bdea2e564c0d327c6e36c2ab7aa78e45124ddf",
+      "duration": 3.816
+    },
+    {
+      "id": "changeAdd",
+      "text": "记住原来的数量。点再来一位，看看现在有几位。",
+      "asset": "assets/audio/preschool/changeAdd.mp3",
+      "bytes": 50880,
+      "sha256": "0e1de51d8b5fe856ebababade030bd5cd23a547b98fabb5dc00ebc6953925c5b",
+      "duration": 6.36
+    },
+    {
+      "id": "changeRemove",
+      "text": "记住原来的数量。点走一位，看看现在有几位。",
+      "asset": "assets/audio/preschool/changeRemove.mp3",
+      "bytes": 49536,
+      "sha256": "878ac053976b0b8bbc808ddfa69461b325a147da45f3a1a1124a668ffe5fe61c",
+      "duration": 6.192
+    },
+    {
+      "id": "changeEmpty",
+      "text": "让小伙伴都回家，看看还剩几位。",
+      "asset": "assets/audio/preschool/changeEmpty.mp3",
+      "bytes": 37440,
+      "sha256": "e25bd3db18703b26859257019df5637b3d350fa8606eb2cc1da941d11cfa45e7",
+      "duration": 4.68
+    },
+    {
+      "id": "splitPrompt",
+      "text": "把苹果分给两个盘子。每点一次，放一个。分完后点分好了。",
+      "asset": "assets/audio/preschool/splitPrompt.mp3",
+      "bytes": 68544,
+      "sha256": "365b077e681da315b0ffe700d88d4846e02dbf61af276ccecec0745a09f1b0df",
+      "duration": 8.568
+    },
+    {
+      "id": "splitAgain",
+      "text": "这一种分法试过了，换个分法吧。可以拿回一个，再放到另一边。",
+      "asset": "assets/audio/preschool/splitAgain.mp3",
+      "bytes": 72000,
+      "sha256": "f6db2ae0cb6768fc86860c33a34b36dbe75a3811807cac6f7ddf5b53479b7d65",
+      "duration": 9
+    },
+    {
+      "id": "splitRight",
+      "text": "分好啦！两边合起来，还是原来那么多。",
+      "asset": "assets/audio/preschool/splitRight.mp3",
+      "bytes": 43200,
+      "sha256": "1bdcb7138ead5d0c80fc3307660a64d0dc248681be0b0d4d659343bc8b95096a",
+      "duration": 5.4
+    },
+    {
+      "id": "countStep",
+      "text": "再数一个。",
+      "asset": "assets/audio/preschool/countStep.mp3",
+      "bytes": 11904,
+      "sha256": "591935405b16ad3b6f9599f3cfcfc8d6f836c81b4cd623e5d29d10fd45c1df49",
+      "duration": 1.488
+    },
+    {
+      "id": "countPractice",
+      "text": "记住原来的数量，每增加一个就接着数。数完后，自己选一个数字。",
+      "asset": "assets/audio/preschool/countPractice.mp3",
+      "bytes": 72384,
+      "sha256": "5b102bb5109e1a27f023fe57458d68e0ba878929fef6c4bf5421aff216514b95",
+      "duration": 9.048
     }
   ],
-  "verification": "All 53 files match program text and SHA256 and decode in local Chromium."
+  "verification": "All 181 files match program text and SHA256 and decode in local Chromium; prior 53 files unchanged."
 }
