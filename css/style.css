@@ -677,11 +677,14 @@ button:focus-visible,
   max-width: 480px;
 }
 
-/* ================== 任务02: 加法探索模式 (收苹果果园场景) ================== */
-.explore-orchard-stage {
+/* ================== 任务02/06: 数学探索模式 ================== */
+.explore-orchard-stage,
+.math-explore-stage {
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .explore-header-row {
@@ -689,6 +692,9 @@ button:focus-visible,
   align-items: center;
   gap: 12px;
   margin-bottom: 8px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .squirrel-mascot {
@@ -711,6 +717,7 @@ button:focus-visible,
   font-size: 1rem;
   font-weight: 700;
   flex: 1;
+  min-width: 0;
   box-shadow: 0 2px 6px rgba(0,0,0,0.02);
   transition: all 0.2s ease;
 }
@@ -722,6 +729,10 @@ button:focus-visible,
   padding: 14px 12px;
   margin: 6px 0 10px;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .explore-piles-wrap {
@@ -923,74 +934,93 @@ button:focus-visible,
   transform: scale(0.96);
 }
 
-/* R5 & R6: 加法探索模式作用域差异化与尺寸强化 */
-.view.addition-explore {
+/* R5 & R6: 数学探索模式作用域差异化与尺寸强化 (扩充支持加减乘除) */
+.view.addition-explore,
+.view.math-explore {
   background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
 }
 
-.addition-explore #story-narration .story-text {
+.addition-explore #story-narration .story-text,
+.math-explore #story-narration .story-text {
   font-size: 1.65rem;
   font-weight: 900;
   color: #166534;
 }
 
-.addition-explore .squirrel-mascot {
+.addition-explore .squirrel-mascot,
+.math-explore .squirrel-mascot {
   font-size: 4rem;
 }
 
-.addition-explore .explore-bubble {
+.addition-explore .explore-bubble,
+.math-explore .explore-bubble {
   font-size: 1.3rem;
   font-weight: 800;
   line-height: 1.4;
   padding: 10px 18px;
 }
 
-.addition-explore .explore-display-board {
+.addition-explore .explore-display-board,
+.math-explore .explore-display-board {
   background: transparent;
   border: none;
   box-shadow: none;
   padding: 6px 0;
 }
 
-.addition-explore .explore-pile {
+.addition-explore .explore-pile,
+.math-explore .explore-pile {
   background: rgba(255, 255, 255, 0.75);
   border: 2px solid #bbf7d0;
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.08);
 }
 
-.addition-explore .pile-num {
+.explore-pile.pile-center {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.addition-explore .pile-num,
+.math-explore .pile-num {
   font-size: 2rem;
   font-weight: 900;
 }
 
 .addition-explore .ones-items .unit-item,
-.addition-explore .ten-pack-frame .unit-item {
+.addition-explore .ten-pack-frame .unit-item,
+.math-explore .ones-items .unit-item,
+.math-explore .ten-pack-frame .unit-item {
   font-size: 2rem;
   line-height: 1;
 }
 
-.addition-explore .tens-box {
+.addition-explore .tens-box,
+.math-explore .tens-box {
   font-size: 1.75rem;
 }
 
-.addition-explore .tens-box .box-label {
+.addition-explore .tens-box .box-label,
+.math-explore .tens-box .box-label {
   font-size: 1.05rem;
   font-weight: 800;
   padding: 2px 8px;
 }
 
-.addition-explore .ten-pack-zone {
+.addition-explore .ten-pack-zone,
+.math-explore .ten-pack-zone {
   background: rgba(254, 252, 232, 0.85);
   border: 2px dashed #facc15;
   padding: 12px 16px;
 }
 
-.addition-explore .pack-zone-tip {
+.addition-explore .pack-zone-tip,
+.math-explore .pack-zone-tip {
   font-size: 1.15rem;
   font-weight: 800;
 }
 
-.addition-explore .ten-pack-frame {
+.addition-explore .ten-pack-frame,
+.math-explore .ten-pack-frame {
   display: inline-grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
@@ -1001,7 +1031,8 @@ button:focus-visible,
   border-radius: 12px;
 }
 
-.addition-explore .ten-pack-frame .grid-slot {
+.addition-explore .ten-pack-frame .grid-slot,
+.math-explore .ten-pack-frame .grid-slot {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1012,16 +1043,225 @@ button:focus-visible,
   border-radius: 8px;
 }
 
-.addition-explore .btn-explore-tool {
+.addition-explore .btn-explore-tool,
+.math-explore .btn-explore-tool {
   font-size: 1.25rem;
   min-height: 50px;
   padding: 10px 22px;
 }
 
-.addition-explore .option-btn {
+.addition-explore .option-btn,
+.math-explore .option-btn {
   font-size: 2.1rem;
   min-height: 60px;
   font-weight: 900;
+}
+
+/* 乘法探索特化：烤盘与每排槽位 */
+.mul-explore-tray {
+  background: #fffbeb;
+  border: 3px dashed #f59e0b;
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  width: auto;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.12);
+}
+
+.cookie-tray-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cookie-tray-row .row-label {
+  font-size: 1rem;
+  color: #a16207;
+  font-weight: 800;
+  width: 55px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.cookie-slots-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.cookie-tray-row .cookie-item {
+  font-size: 32px;
+  line-height: 1;
+  display: inline-block;
+  animation: popIn 0.25s ease forwards;
+}
+
+.cookie-slot-empty {
+  font-size: 26px;
+  line-height: 1;
+  opacity: 0.35;
+  display: inline-block;
+}
+
+@media (max-width: 480px) {
+  .mul-explore-tray {
+    padding: 8px 4px;
+  }
+  .cookie-tray-row {
+    gap: 0;
+    padding: 2px 0;
+    margin-bottom: 2px;
+  }
+  .cookie-tray-row .row-label {
+    display: none;
+  }
+  .cookie-slots-group {
+    gap: 0;
+  }
+  .cookie-tray-row .cookie-item {
+    font-size: 24px;
+  }
+  .cookie-slot-empty {
+    font-size: 20px;
+  }
+}
+
+/* 除法探索特化：野餐篮与朋友盘子 */
+.div-explore-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.picnic-basket-pool {
+  background: #eff6ff;
+  border: 2px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 8px 16px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.basket-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1e40af;
+  white-space: nowrap;
+}
+
+.basket-fruits-sample {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.pool-more {
+  font-size: 1.2rem;
+  color: #3b82f6;
+  font-weight: 900;
+}
+
+.div-friends-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.div-explore-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 8px 12px;
+  min-width: 90px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .picnic-basket-pool {
+    padding: 6px 10px;
+    gap: 8px;
+  }
+  .basket-title {
+    font-size: 1rem;
+  }
+  .basket-fruits-sample {
+    font-size: 1.25rem;
+  }
+  .div-friends-grid {
+    gap: 6px;
+  }
+  .div-explore-card {
+    min-width: 78px;
+    padding: 6px 4px;
+  }
+}
+
+.div-explore-card.card-has-fruits {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.div-plate-dish {
+  margin-top: 4px;
+  min-height: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+
+.plate-empty-dish {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.plate-fruits {
+  font-size: 1.4rem;
+  line-height: 1.1;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+
+.plate-badge {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #15803d;
+  background: #dcfce7;
+  border-radius: 10px;
+  padding: 1px 6px;
+  margin-top: 2px;
 }
 
 .bounce-items {
@@ -1603,29 +1843,111 @@ rt {
   font-size: 1.35rem;
 }
 
-/* 听故事/听诗句语音按钮 */
+/* 语文/英语探索模式作用域差异化 */
+.view.chinese-explore {
+  background: linear-gradient(180deg, #faf5ff 0%, #ffffff 100%);
+}
+
+.chinese-explore .question-stage,
+.english-explore .question-stage {
+  display: none !important;
+}
+
+.chinese-explore .options-grid.three-options .option-btn,
+.chinese-explore .options-grid .option-btn {
+  font-size: 1.5rem;
+  min-height: 58px;
+  font-weight: 800;
+  padding: 12px 16px;
+  line-height: 1.3;
+}
+
 .chinese-header-bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.header-action-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.font-question {
+  font-size: 1.5rem !important; /* 至少 24px */
+  font-weight: 800 !important;
+  color: #1e293b !important;
+  background: transparent !important;
+  border: none !important;
+  line-height: 1.4 !important;
+  padding: 0 !important;
+  white-space: normal !important; /* 支持正常折行 */
+  word-break: break-word !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+.poem-verse-line {
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.poem-hole-box {
+  background: #fef08a;
+  border: 2px dashed #ca8a04;
+  border-radius: 8px;
+  padding: 2px 12px;
+  color: #854d0e;
+  font-weight: 900;
+  display: inline-block;
+  margin: 0 4px;
+}
+
+@media (max-width: 640px) {
+  .font-question {
+    font-size: 1.5rem !important; /* 手机端保证至少 24px */
+  }
+  .poem-verse-card {
+    font-size: 1.75rem !important; /* 诗句汉字至少 28px */
+    padding: 10px 12px;
+  }
+  .poem-verse-card ruby {
+    font-size: 1.75rem !important;
+  }
+  .chinese-explore .options-grid.three-options {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+  .chinese-explore .options-grid.three-options .option-btn,
+  .chinese-explore .options-grid .option-btn {
+    font-size: 1.5rem !important; /* 中文选项至少 24px */
+    min-height: 52px;
+    padding: 12px 16px;
+  }
 }
 
 .btn-voice-pill {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
   border: none;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  padding: 8px 16px;
+  min-height: 48px;
+  box-sizing: border-box;
+  border-radius: 24px;
+  font-size: 1rem;
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 6px;
 }
 
 .btn-voice-pill:hover {
@@ -1686,13 +2008,14 @@ rt {
   border-radius: var(--radius-md);
   padding: 8px 12px;
   width: 100%;
-  max-width: 520px;
+  max-width: 540px;
   text-align: center;
   margin-bottom: 8px;
   box-shadow: 0 4px 16px rgba(179, 143, 101, 0.18);
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .poetry-scroll-canvas.canvas-glowing {
@@ -1701,11 +2024,13 @@ rt {
   background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
 }
 
-/* 诗词专属高清静态大图包裹器 */
+/* 诗词专属绘本大图包裹器 (3:2比例，无文字，object-fit: contain) */
 .poem-art-image-wrapper {
   width: 100%;
-  max-width: 490px;
-  height: 145px;
+  max-width: 500px;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  min-height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1719,7 +2044,7 @@ rt {
 .poem-art-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   border-radius: 10px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
@@ -1727,7 +2052,7 @@ rt {
 }
 
 .poem-art-img.img-glowing {
-  transform: scale(1.03);
+  transform: scale(1.02);
   filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.7));
 }
 
@@ -1737,10 +2062,15 @@ rt {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
 }
-.poem-fallback-box .poem-scene {
-  width: 100%;
-  height: 100%;
+
+.poem-fallback-text {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #64748b;
 }
 
 /* 32首诗 1:1 专属意境渲染画布 */
@@ -1903,7 +2233,7 @@ rt {
   border: 2px dashed #eab308;
   border-radius: var(--radius-sm);
   padding: 10px 16px;
-  font-size: 1.45rem;
+  font-size: 1.75rem; /* 保证至少 28px */
   font-weight: 800;
   color: #713f12;
   text-align: center;
@@ -1914,7 +2244,7 @@ rt {
 }
 
 .poem-verse-card ruby {
-  font-size: 1.45rem;
+  font-size: 1.75rem; /* 保证至少 28px */
 }
 
 .poem-verse-card rt {
@@ -1980,50 +2310,32 @@ rt {
   100% { transform: scale(1.1) translateY(0); filter: drop-shadow(0 0 10px gold); }
 }
 
-/* ================== 英语情境救急小剧场样式 ================== */
+/* ================== 英语日常互助小帮手样式 ================== */
 .english-header-bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.english-request-tag {
+  font-size: 1.5rem !important; /* 至少 24px */
+  font-weight: 800 !important;
+  color: #1e293b !important;
+  line-height: 1.4 !important;
+  display: block;
+}
+
+.english-request-tag.thank-you-active {
+  color: #047857 !important;
 }
 
 .btn-voice-pill.english-voice {
   background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
   box-shadow: 0 2px 5px rgba(2, 132, 199, 0.3);
-}
-
-.english-speech-balloon {
-  background: #f8fafc;
-  border: 2px solid #cbd5e1;
-  border-radius: 16px;
-  padding: 10px 16px;
-  margin-bottom: 8px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.03);
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.english-speech-balloon .speech-quote {
-  font-size: 1.28rem;
-  font-weight: 800;
-  color: #1e293b;
-  letter-spacing: 0.3px;
-  line-height: 1.4;
-}
-
-.english-speech-balloon.balloon-cheer {
-  background: #ecfdf5;
-  border-color: #6ee7b7;
-  animation: gentlePulse 0.5s ease 2;
-}
-
-.english-speech-balloon .thank-you-quote {
-  color: #047857;
-  font-weight: 800;
+  min-height: 48px;
 }
 
 .english-theater-stage {
@@ -2032,6 +2344,169 @@ rt {
   flex-direction: column;
   align-items: center;
   position: relative;
+}
+
+.bg-daily-scene {
+  background: linear-gradient(180deg, #f0fdf4 0%, #e0f2fe 100%);
+}
+
+.scene-context-corner {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 40px;
+  line-height: 1;
+  pointer-events: none;
+  opacity: 0.85;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
+  z-index: 1;
+}
+
+.actor-dialog-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 英语选项图形与尺寸 */
+.tool-art {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.tool-art svg {
+  display: block;
+  width: 72px;
+  height: 72px;
+  max-width: 72px;
+  max-height: 72px;
+}
+
+.tool-emoji {
+  font-size: 64px;
+  line-height: 1.1;
+  display: inline-block;
+}
+
+.count-emojis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  line-height: 1;
+}
+
+.item-count-icon {
+  font-size: 36px; /* 每个数量物品至少 32px */
+  display: inline-block;
+}
+
+.option-btn.btn-english {
+  min-height: 96px;
+  padding: 12px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delivered-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 2px solid #67e8f9;
+  border-radius: 16px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
+}
+
+.delivered-tool .tool-art {
+  flex-direction: row;
+}
+
+.cheer-sparkles {
+  position: absolute;
+  top: -8px;
+  right: -24px;
+  font-size: 2rem;
+  animation: gentlePulse 0.6s infinite alternate;
+  pointer-events: none;
+}
+
+/* 角色身旁穿戴与互动反馈定位 */
+.actor-happy-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  gap: 16px;
+}
+
+.english-explore .actor-emoji {
+  font-size: 72px; /* 桌面约 72px，保持居中 */
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+/* 兔子撑伞：伞在兔子正上方 (头顶) */
+.actor-happy-box.delivered-kind-umbrella {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.actor-happy-box.delivered-kind-umbrella .delivered-tool {
+  order: 1;
+  margin-bottom: -16px;
+  z-index: 3;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+.actor-happy-box.delivered-kind-umbrella .actor-emoji {
+  order: 2;
+  z-index: 2;
+}
+
+/* 企鹅围巾：围巾穿戴在企鹅颈部位置，不参与flex推挤 */
+.actor-happy-box.delivered-kind-scarf {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.actor-happy-box.delivered-kind-scarf .delivered-tool {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 3;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+.actor-happy-box.delivered-kind-scarf .tool-art svg {
+  width: 58px;
+  height: 58px;
+}
+
+.english-interactive-tip.tip-success {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  color: #047857;
+}
+
+.english-interactive-tip.tip-retry {
+  background: #fefce8;
+  border-color: #fde047;
+  color: #a16207;
 }
 
 .theater-crisis-box {
@@ -2243,6 +2718,9 @@ rt {
 
 /* 手机竖屏适配 (390px 自然纵向滚动、按钮防误触) */
 @media (max-width: 640px) {
+  body.in-quiz-mode .brand-badge span {
+    display: none;
+  }
   body {
     padding: 8px;
     align-items: flex-start;
@@ -2303,6 +2781,24 @@ rt {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
+  .english-explore .options-grid.three-options {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .english-explore .option-btn.btn-english {
+    min-height: 80px;
+    padding: 10px;
+  }
+  .english-explore .tool-art svg {
+    width: 60px;
+    height: 60px;
+  }
+  .english-explore .tool-emoji {
+    font-size: 52px;
+  }
+  .english-explore .item-count-icon {
+    font-size: 32px;
+  }
   .option-btn {
     font-size: 1.8rem;
     padding: 16px 8px;
@@ -2311,8 +2807,8 @@ rt {
     font-size: 2.2rem;
     padding: 12px 6px;
   }
-  .actor-emoji {
-    font-size: 3rem;
+  .english-explore .actor-emoji {
+    font-size: 64px; /* 手机端角色约 64px */
   }
   .hero-tool-display {
     font-size: 2.4rem;

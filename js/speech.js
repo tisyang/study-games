@@ -14,6 +14,10 @@ class SpeechEngine {
     this.currentUtterance = null;
     this.isSpeakingNow = false;
     this.audioIndex = null;
+    this._playbackToken = 0;
+    this._fallbackTimer = null;
+    this._activeButton = null;
+    this._activeButtonOrigHtml = null;
   }
 
   // 延迟建立文本到本地 MP3 资源路径的快速映射索引
@@ -57,6 +61,7 @@ class SpeechEngine {
   // 核心：直接播放本地静态 MP3 文件
   playAudioFile(filePath, onEndCallback = null) {
     this.stop();
+    const token = ++this._playbackToken;
     this.isSpeakingNow = true;
 
     try {
@@ -64,19 +69,20 @@ class SpeechEngine {
       this.currentAudio = audio;
 
       let finished = false;
-      let timerId = null;
 
       const handleDone = () => {
-        if (!finished) {
-          finished = true;
-          if (timerId) {
-            clearTimeout(timerId);
-            timerId = null;
-          }
-          this.currentAudio = null;
-          this.isSpeakingNow = false;
-          if (onEndCallback) onEndCallback();
+        if (finished || this._playbackToken !== token) return;
+        finished = true;
+        if (this._fallbackTimer) {
+          clearTimeout(this._fallbackTimer);
+          this._fallbackTimer = null;
         }
+        if (this.currentAudio === audio) {
+          this.currentAudio = null;
+        }
+        this.isSpeakingNow = false;
+        this._resetActiveButton();
+        if (onEndCallback) onEndCallback();
       };
 
       audio.onended = handleDone;
@@ -91,12 +97,15 @@ class SpeechEngine {
       });
 
       // 异常保护保底（25秒长超时，充分保障音频正常完整播放，完成时自动 clearTimeout）
-      timerId = setTimeout(handleDone, 25000);
+      this._fallbackTimer = setTimeout(handleDone, 25000);
 
     } catch (e) {
       console.warn('playAudioFile exception:', e);
-      this.isSpeakingNow = false;
-      if (onEndCallback) onEndCallback();
+      if (this._playbackToken === token) {
+        this.isSpeakingNow = false;
+        this._resetActiveButton();
+        if (onEndCallback) onEndCallback();
+      }
     }
   }
 
@@ -140,6 +149,31 @@ class SpeechEngine {
     this._speakWithWebSpeechFallback(text, 'en-US', onEndCallback);
   }
 
+  _bindActiveButton(btnEl, activeHtml) {
+    if (this._activeButton && this._activeButton !== btnEl) {
+      this._resetActiveButton();
+    }
+    if (btnEl) {
+      if (this._activeButton !== btnEl) {
+        this._activeButton = btnEl;
+        this._activeButtonOrigHtml = btnEl.innerHTML;
+      }
+      btnEl.classList.add('speaking');
+      btnEl.innerHTML = activeHtml;
+    }
+  }
+
+  _resetActiveButton() {
+    if (this._activeButton) {
+      this._activeButton.classList.remove('speaking');
+      if (this._activeButtonOrigHtml !== null) {
+        this._activeButton.innerHTML = this._activeButtonOrigHtml;
+      }
+      this._activeButton = null;
+      this._activeButtonOrigHtml = null;
+    }
+  }
+
   // 按钮交互联动（带 🔊 朗读中... 动态状态与声波）
   speakWithButton(btnEl, text) {
     if (!btnEl) {
@@ -147,14 +181,13 @@ class SpeechEngine {
       return;
     }
 
-    const origText = btnEl.innerHTML;
-    btnEl.classList.add('speaking');
-    btnEl.innerHTML = '🔊 朗读中...';
-
     this.speak(text, () => {
-      btnEl.classList.remove('speaking');
-      btnEl.innerHTML = origText;
+      this._resetActiveButton();
     });
+
+    if (this.isSpeakingNow) {
+      this._bindActiveButton(btnEl, '🔊 朗读中...');
+    }
   }
 
   speakEnglishWithButton(btnEl, text) {
@@ -163,14 +196,13 @@ class SpeechEngine {
       return;
     }
 
-    const origText = btnEl.innerHTML;
-    btnEl.classList.add('speaking');
-    btnEl.innerHTML = '🔊 Listening...';
-
     this.speakEnglish(text, () => {
-      btnEl.classList.remove('speaking');
-      btnEl.innerHTML = origText;
+      this._resetActiveButton();
     });
+
+    if (this.isSpeakingNow) {
+      this._bindActiveButton(btnEl, '🔊 Listening...');
+    }
   }
 
   // 备选 Web Speech API
@@ -182,6 +214,7 @@ class SpeechEngine {
 
     try {
       this.stop();
+      const token = ++this._playbackToken;
       this.isSpeakingNow = true;
 
       const cleanText = text.replace(/<[^>]+>/g, '').trim();
@@ -192,39 +225,53 @@ class SpeechEngine {
 
       let finished = false;
       const handleDone = () => {
-        if (!finished) {
-          finished = true;
-          this.currentUtterance = null;
-          this.isSpeakingNow = false;
-          if (onDone) onDone();
+        if (finished || this._playbackToken !== token) return;
+        finished = true;
+        if (this._fallbackTimer) {
+          clearTimeout(this._fallbackTimer);
+          this._fallbackTimer = null;
         }
+        if (this.currentUtterance === utterance) {
+          this.currentUtterance = null;
+        }
+        this.isSpeakingNow = false;
+        this._resetActiveButton();
+        if (onDone) onDone();
       };
 
       utterance.onend = handleDone;
       utterance.onerror = handleDone;
 
       this.synth.speak(utterance);
-      setTimeout(handleDone, 4000);
+      this._fallbackTimer = setTimeout(handleDone, 4000);
 
     } catch (e) {
       this.isSpeakingNow = false;
+      this._resetActiveButton();
       if (onDone) onDone();
     }
   }
 
   // 停止播放
   stop() {
+    this._playbackToken++;
     this.isSpeakingNow = false;
+    if (this._fallbackTimer) {
+      clearTimeout(this._fallbackTimer);
+      this._fallbackTimer = null;
+    }
     if (this.currentAudio) {
       try {
         this.currentAudio.pause();
         this.currentAudio.currentTime = 0;
-        this.currentAudio = null;
       } catch (e) {}
+      this.currentAudio = null;
     }
     if (this.synth) {
       try { this.synth.cancel(); } catch (e) {}
     }
+    this.currentUtterance = null;
+    this._resetActiveButton();
   }
 }
 

@@ -1,0 +1,223 @@
+{
+  "provider": "Google Translate TTS (existing project provider), en",
+  "date": "2026-11-09",
+  "items": [
+    {
+      "id": "e1",
+      "role": "crisis",
+      "text": "The red umbrella, please.",
+      "asset": "assets/audio/english/e1_crisis.mp3",
+      "bytes": 17856,
+      "sha256": "370eaac7500c0f87064cfa6887e67bd446601b0c61e5903da1790690d0765ec1",
+      "duration": 2.232
+    },
+    {
+      "id": "e1",
+      "role": "thanks",
+      "text": "Thank you! I'm dry now.",
+      "asset": "assets/audio/english/e1_thanks.mp3",
+      "bytes": 16896,
+      "sha256": "178482526d1f0a7c650671bc17a070c5a0e985984375c5548fba66d755ac3c3a",
+      "duration": 2.112
+    },
+    {
+      "id": "e2",
+      "role": "crisis",
+      "text": "I'm thirsty. Water, please.",
+      "asset": "assets/audio/english/e2_crisis.mp3",
+      "bytes": 20928,
+      "sha256": "b6327f2ba74b2fe9a3cc9acdeab7b500047d68ed5574020e435a71be147519ab",
+      "duration": 2.616
+    },
+    {
+      "id": "e2",
+      "role": "thanks",
+      "text": "Thank you! That's better.",
+      "asset": "assets/audio/english/e2_thanks.mp3",
+      "bytes": 15552,
+      "sha256": "df831fec84b00f61ab17abcc8242c2bbe3e43606413e97b32944abb982ed0bcb",
+      "duration": 1.944
+    },
+    {
+      "id": "e3",
+      "role": "crisis",
+      "text": "The lamp, please.",
+      "asset": "assets/audio/english/e3_crisis.mp3",
+      "bytes": 12096,
+      "sha256": "aa37054fe3e4693b8496be06daf9633cb0f8d7b93d9dcf87d631069b45902d3d",
+      "duration": 1.512
+    },
+    {
+      "id": "e3",
+      "role": "thanks",
+      "text": "Thank you! I can see!",
+      "asset": "assets/audio/english/e3_thanks.mp3",
+      "bytes": 15936,
+      "sha256": "46723cc1fe130f43ca1e309f0b2f3577de44d0a37a231a1618e87a82beb73ab8",
+      "duration": 1.992
+    },
+    {
+      "id": "e4",
+      "role": "crisis",
+      "text": "An apple, please.",
+      "asset": "assets/audio/english/e4_crisis.mp3",
+      "bytes": 12864,
+      "sha256": "64c4c6876dec041ab14f875309c452ab0bc0882069265963e987db7ae333ccf9",
+      "duration": 1.608
+    },
+    {
+      "id": "e4",
+      "role": "thanks",
+      "text": "Thank you! Yum!",
+      "asset": "assets/audio/english/e4_thanks.mp3",
+      "bytes": 13824,
+      "sha256": "d370961190ed47440e096023296178cc432740dd30c1ed6745d81a5e511abd91",
+      "duration": 1.728
+    },
+    {
+      "id": "e5",
+      "role": "crisis",
+      "text": "Soap, please.",
+      "asset": "assets/audio/english/e5_crisis.mp3",
+      "bytes": 11712,
+      "sha256": "836a3a3d4c31267859dce31344a40d127ec1a8b0c073dc745c59db99865fca80",
+      "duration": 1.464
+    },
+    {
+      "id": "e5",
+      "role": "thanks",
+      "text": "Thank you! Nice and clean.",
+      "asset": "assets/audio/english/e5_thanks.mp3",
+      "bytes": 18048,
+      "sha256": "a961fb783bd56631adcaf1e841e14ef6655d0dc46f0787ff8d4aabe8916dd515",
+      "duration": 2.256
+    },
+    {
+      "id": "e6",
+      "role": "crisis",
+      "text": "The yellow banana, please.",
+      "asset": "assets/audio/english/e6_crisis.mp3",
+      "bytes": 18240,
+      "sha256": "d94d49376adf888d3f6a9ba23e55b476c954d72a3ac711bc009b90fed3b0398d",
+      "duration": 2.28
+    },
+    {
+      "id": "e6",
+      "role": "thanks",
+      "text": "Thank you! A yellow banana.",
+      "asset": "assets/audio/english/e6_thanks.mp3",
+      "bytes": 18240,
+      "sha256": "9316f1128e816cdda15ccab0f772e8c833bf6e8eb20fd23144c3c993df6ec025",
+      "duration": 2.28
+    },
+    {
+      "id": "e7",
+      "role": "crisis",
+      "text": "My red scarf, please.",
+      "asset": "assets/audio/english/e7_crisis.mp3",
+      "bytes": 17280,
+      "sha256": "52957bc64d8e73d7254f40173146e42f23a85447274330aa163470788bfbdbd7",
+      "duration": 2.16
+    },
+    {
+      "id": "e7",
+      "role": "thanks",
+      "text": "Thank you! I'm warm now.",
+      "asset": "assets/audio/english/e7_thanks.mp3",
+      "bytes": 16704,
+      "sha256": "f87106add0bebecfcd5581112f54b5c1d779f84911922560fb1837108d5fa8d3",
+      "duration": 2.088
+    },
+    {
+      "id": "e8",
+      "role": "crisis",
+      "text": "Two apples, please.",
+      "asset": "assets/audio/english/e8_crisis.mp3",
+      "bytes": 13824,
+      "sha256": "a7674eed30afd7041c90b28b3e59c8897652fb9d2f4a16189f4da8109c7206b2",
+      "duration": 1.728
+    },
+    {
+      "id": "e8",
+      "role": "thanks",
+      "text": "Thank you! One, two!",
+      "asset": "assets/audio/english/e8_thanks.mp3",
+      "bytes": 18432,
+      "sha256": "4372bd258aa69ef2b33764541b813dd9ebd02879de61da3dd03b197898eab18d",
+      "duration": 2.304
+    },
+    {
+      "id": "e9",
+      "role": "crisis",
+      "text": "My teddy bear, please.",
+      "asset": "assets/audio/english/e9_crisis.mp3",
+      "bytes": 16704,
+      "sha256": "e3f7724aa582b5a7dec56182126c02156e3ed5179eb461707b3780a74c35ae36",
+      "duration": 2.088
+    },
+    {
+      "id": "e9",
+      "role": "thanks",
+      "text": "Thank you! My teddy bear.",
+      "asset": "assets/audio/english/e9_thanks.mp3",
+      "bytes": 17280,
+      "sha256": "511fd396c929b3dd9440121c9759bc7bab1f324055ee6373323f144c1e8b333c",
+      "duration": 2.16
+    },
+    {
+      "id": "e10",
+      "role": "crisis",
+      "text": "The box, please.",
+      "asset": "assets/audio/english/e10_crisis.mp3",
+      "bytes": 12288,
+      "sha256": "310977baefeced58999d4c9a8c42d579944a84ac04ee8d21d2e329e607de4981",
+      "duration": 1.536
+    },
+    {
+      "id": "e10",
+      "role": "thanks",
+      "text": "Thank you! Let's tidy up.",
+      "asset": "assets/audio/english/e10_thanks.mp3",
+      "bytes": 16896,
+      "sha256": "1249ecb3230937de4228c797525636cc8057c92448e9f28928ad7153d2803581",
+      "duration": 2.112
+    },
+    {
+      "id": "e11",
+      "role": "crisis",
+      "text": "Three balloons, please.",
+      "asset": "assets/audio/english/e11_crisis.mp3",
+      "bytes": 14592,
+      "sha256": "cb9f50a046ddb2b4e5f1aebb38b2cf7de899a608925321d36889108c97b188a1",
+      "duration": 1.824
+    },
+    {
+      "id": "e11",
+      "role": "thanks",
+      "text": "Thank you! One, two, three!",
+      "asset": "assets/audio/english/e11_thanks.mp3",
+      "bytes": 26304,
+      "sha256": "a3bb19ad88d172c677424da4a437c5dba2ccaa4c8483f38efffa47bd98d929bc",
+      "duration": 3.288
+    },
+    {
+      "id": "e12",
+      "role": "crisis",
+      "text": "The blue kite, please.",
+      "asset": "assets/audio/english/e12_crisis.mp3",
+      "bytes": 15744,
+      "sha256": "0eae591f9d4c4423ecc8080b4d4edafcfe192a932124cb7e051ad4ea259181cb",
+      "duration": 1.968
+    },
+    {
+      "id": "e12",
+      "role": "thanks",
+      "text": "Thank you! My blue kite.",
+      "asset": "assets/audio/english/e12_thanks.mp3",
+      "bytes": 16704,
+      "sha256": "c84b51ca79a0172b9e3a6cbb3ff7b780a2e78fdf43010e1bfd16ed46d198edbe",
+      "duration": 2.088
+    }
+  ],
+  "verification": "24 staged MP3 files decoded in Chromium; exact text matches the 12 English data entries before replacement."
+}

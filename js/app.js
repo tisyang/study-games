@@ -34,6 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     timerId: null
   };
 
+  // ------------------ 模式判断 ------------------
+  function isExploreMode(mode) {
+    return ['add', 'sub', 'mul', 'div', 'idiom', 'poem', 'english_story'].includes(mode || state.currentMode);
+  }
+
   // ------------------ DOM 元素引用 ------------------
   const el = {
     // 顶部状态
@@ -151,17 +156,31 @@ document.addEventListener('DOMContentLoaded', () => {
     state.maxCombo = 0;
     state.isLocked = false;
 
-    // 加法独立探索模式 vs 既有模式差异化初始化
-    if (mode === 'add') {
+    // 探索模式 vs 既有挑战模式差异化初始化
+    if (isExploreMode(mode)) {
       state.totalQuestions = 5;
       if (el.timerBarContainer) el.timerBarContainer.classList.add('hidden');
-      el.quizTitle.textContent = '帮松鼠收苹果';
-      if (el.viewQuiz) el.viewQuiz.classList.add('addition-explore');
+      el.quizTitle.textContent = state.modeTitles[mode] || '答题探索';
+      if (el.viewQuiz) {
+        el.viewQuiz.classList.remove('addition-explore');
+        if (['add', 'sub', 'mul', 'div'].includes(mode)) {
+          el.viewQuiz.classList.add('math-explore');
+          el.viewQuiz.classList.remove('chinese-explore', 'english-explore');
+        } else if (['idiom', 'poem'].includes(mode)) {
+          el.viewQuiz.classList.remove('math-explore', 'english-explore');
+          el.viewQuiz.classList.add('chinese-explore');
+        } else {
+          el.viewQuiz.classList.remove('math-explore', 'chinese-explore');
+          el.viewQuiz.classList.add('english-explore');
+        }
+      }
     } else {
       state.totalQuestions = 10;
       if (el.timerBarContainer) el.timerBarContainer.classList.remove('hidden');
       el.quizTitle.textContent = state.modeTitles[mode] || '答题挑战';
-      if (el.viewQuiz) el.viewQuiz.classList.remove('addition-explore');
+      if (el.viewQuiz) {
+        el.viewQuiz.classList.remove('addition-explore', 'math-explore', 'chinese-explore', 'english-explore');
+      }
     }
     if (el.quizAdvanceBox) el.quizAdvanceBox.classList.add('hidden');
 
@@ -188,6 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    if (window.speechEngine) {
+      window.speechEngine.stop();
+    }
+
     state.isLocked = false;
     state.errorsOnCurrent = 0;
     if (el.quizAdvanceBox) el.quizAdvanceBox.classList.add('hidden');
@@ -198,15 +221,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.dataset.type = state.currentQuestion.type || '';
 
     // 渲染题目与进度
-    if (state.currentMode === 'add') {
+    if (isExploreMode()) {
       el.quizProgress.textContent = `${state.currentIndex + 1} / ${state.totalQuestions}`;
-      el.questionFormula.textContent = `${state.currentQuestion.num1} + ${state.currentQuestion.num2} = ?`;
+      if (state.currentQuestion.subject === 'math') {
+        el.questionFormula.textContent = `${state.currentQuestion.num1} ${state.currentQuestion.op} ${state.currentQuestion.num2} = ?`;
+      } else {
+        el.questionFormula.textContent = state.currentQuestion.prompt || '';
+      }
     } else {
       el.quizProgress.textContent = `第 ${state.currentIndex + 1} / ${state.totalQuestions} 题`;
       if (state.currentQuestion.type === 'poem') {
         el.questionFormula.innerHTML = `<span class="prompt-pill poem-prompt">🌸 点击正确词语，补全画中诗句</span>`;
       } else if (state.currentQuestion.type === 'english_story') {
-        el.questionFormula.innerHTML = `<span class="prompt-pill english-prompt">🆘 挑选最神奇的救急工具</span>`;
+        el.questionFormula.innerHTML = `<span class="prompt-pill english-prompt">🎧 听英文请求，选出对应物品</span>`;
       } else {
         el.questionFormula.textContent = state.currentQuestion.prompt;
       }
@@ -223,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.englishVisualEngine.renderStory(state.currentQuestion);
     } else if (window.visualEngine) {
       window.visualEngine.render(state.currentQuestion, {
-        isExplore: state.currentMode === 'add'
+        isExplore: isExploreMode()
       });
     }
 
@@ -242,16 +269,19 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.style.display = '';
       const optVal = (typeof optItem === 'object') ? optItem.value : optItem;
       let optHtml = (typeof optItem === 'object') ? (optItem.rubyHtml || optItem.word || optItem.icon) : optItem;
-      if (optItem.isEnglishTool) {
-        optHtml = `<span class="tool-icon">${optItem.icon}</span>`;
+      if (state.currentQuestion.subject === 'english') {
+        optHtml = window.englishVisualEngine.renderTool(optItem);
+        btn.setAttribute('aria-label', optItem.label || String(optVal));
+      } else {
+        btn.removeAttribute('aria-label');
       }
       btn.innerHTML = optHtml;
       btn.dataset.value = optVal;
-      btn.className = `option-btn btn-${idx} ${state.currentQuestion.subject === 'chinese' ? 'btn-chinese' : ''} ${state.currentQuestion.subject === 'english' ? 'btn-tool' : ''}`;
+      btn.className = `option-btn btn-${idx} ${state.currentQuestion.subject === 'chinese' ? 'btn-chinese' : ''} ${state.currentQuestion.subject === 'english' ? 'btn-tool btn-english' : ''}`;
     });
 
-    // 启动倒计时 (加法独立探索样板无倒计时)
-    if (state.currentMode === 'add') {
+    // 启动倒计时 (探索模式无倒计时)
+    if (isExploreMode()) {
       stopTimer();
     } else {
       startTimer();
@@ -282,14 +312,26 @@ document.addEventListener('DOMContentLoaded', () => {
       // 播放清脆上升和弦
       window.soundEngine.playCorrect(state.currentCombo);
 
-      if (state.currentMode === 'add') {
-        // 加法探索模式：完成场景，展示正确等式，出现主动推进按钮
-        el.questionFormula.textContent = `${state.currentQuestion.num1} + ${state.currentQuestion.num2} = ${state.currentQuestion.answer}`;
-        if (window.visualEngine && window.visualEngine.completeExploreAddition) {
-          window.visualEngine.completeExploreAddition();
+      if (isExploreMode()) {
+        // 探索模式：完成场景，展示正确反馈，出现主动推进按钮
+        if (state.currentQuestion.subject === 'math') {
+          el.questionFormula.textContent = `${state.currentQuestion.num1} ${state.currentQuestion.op} ${state.currentQuestion.num2} = ${state.currentQuestion.answer}`;
+          if (window.visualEngine) {
+            window.visualEngine.completeExploreQuestion();
+          }
+        } else if (state.currentQuestion.subject === 'chinese') {
+          if (state.currentQuestion.type === 'idiom' && window.chineseVisualEngine) {
+            window.chineseVisualEngine.celebrateIdiom(state.currentQuestion);
+          } else if (state.currentQuestion.type === 'poem' && window.chineseVisualEngine) {
+            window.chineseVisualEngine.celebratePoetry(state.currentQuestion);
+          }
+        } else if (state.currentQuestion.subject === 'english') {
+          if (window.englishVisualEngine) {
+            window.englishVisualEngine.celebrateRescue(state.currentQuestion);
+          }
         }
         if (el.quizAdvanceBox && el.btnNextQuestion) {
-          el.btnNextQuestion.textContent = (state.currentIndex >= state.totalQuestions - 1) ? '完成啦 ➔' : '下一车 ➔';
+          el.btnNextQuestion.textContent = (state.currentIndex >= state.totalQuestions - 1) ? '完成啦 ➔' : '下一题 ➔';
           el.quizAdvanceBox.classList.remove('hidden');
         }
       } else {
@@ -339,13 +381,23 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.classList.remove('wrong');
       }, 400);
 
-      if (state.currentMode === 'add') {
-        // 加法探索模式：场景内轻微提示与高亮操作
-        if (window.visualEngine) {
-          if (state.errorsOnCurrent >= 2) {
-            window.visualEngine.showExploreHint();
-          } else {
-            window.visualEngine.setExploreHint('再试试看！🤔');
+      if (isExploreMode()) {
+        // 探索模式：场景内轻微提示
+        if (state.currentQuestion.subject === 'math') {
+          if (window.visualEngine) {
+            if (state.errorsOnCurrent >= 2) {
+              window.visualEngine.showExploreHint();
+            } else {
+              window.visualEngine.setExploreHint('再试试看！🤔');
+            }
+          }
+        } else if (state.currentQuestion.subject === 'chinese') {
+          if (window.chineseVisualEngine) {
+            window.chineseVisualEngine.showHint(state.currentQuestion, state.errorsOnCurrent);
+          }
+        } else if (state.currentQuestion.subject === 'english') {
+          if (window.englishVisualEngine) {
+            window.englishVisualEngine.showHint(state.currentQuestion);
           }
         }
       } else {
@@ -399,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (score === total) {
       starsStr = '⭐⭐⭐';
-      encourage = '太神啦！全部答对，你简直是数学小天才！🎉';
+      encourage = '太棒啦！任务全部完成！🎉';
       bonusStars = 10;
     } else if (score >= Math.ceil(total * 0.8)) {
       starsStr = '⭐⭐';
@@ -474,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el.modalHint.classList.add('hidden');
     if (el.quizAdvanceBox) el.quizAdvanceBox.classList.add('hidden');
     if (el.timerBarContainer) el.timerBarContainer.classList.remove('hidden');
-    if (el.viewQuiz) el.viewQuiz.classList.remove('addition-explore');
+    if (el.viewQuiz) el.viewQuiz.classList.remove('addition-explore', 'math-explore', 'chinese-explore', 'english-explore');
     el.viewQuiz.classList.add('hidden');
     el.viewSubjectLobby.classList.remove('hidden');
     el.viewMainLobby.classList.add('hidden');
@@ -506,7 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el.modalHint.classList.add('hidden');
     if (el.quizAdvanceBox) el.quizAdvanceBox.classList.add('hidden');
     if (el.timerBarContainer) el.timerBarContainer.classList.remove('hidden');
-    if (el.viewQuiz) el.viewQuiz.classList.remove('addition-explore');
+    if (el.viewQuiz) el.viewQuiz.classList.remove('addition-explore', 'math-explore', 'chinese-explore', 'english-explore');
     el.viewQuiz.classList.add('hidden');
     el.viewSubjectLobby.classList.add('hidden');
     el.viewMainLobby.classList.remove('hidden');
@@ -552,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (el.btnNextQuestion) {
     el.btnNextQuestion.addEventListener('click', () => {
       const isQuizVisible = el.viewQuiz && !el.viewQuiz.classList.contains('hidden');
-      if (state.currentMode === 'add' && state.isLocked && isQuizVisible && state.currentIndex < state.totalQuestions) {
+      if (isExploreMode() && state.isLocked && isQuizVisible && state.currentIndex < state.totalQuestions) {
         state.isLocked = false;
         window.soundEngine.playClick();
         if (el.quizAdvanceBox) el.quizAdvanceBox.classList.add('hidden');

@@ -851,9 +851,214 @@ function buildRubyHtml(pinyinArr) {
   }).join('');
 }
 
+// 任务 07 补充表：32 条成语的理解动作问题、选项与简短哲理解释
+const IDIOM_ACTION_EXTENSIONS = {
+  c1: {
+    actionQuestion: '青蛙怎样看到更大的天空？',
+    actionAnswer: '到井外看看',
+    actionOptions: ['到井外看看', '一直待井底', '闭上眼睛'],
+    insight: '多看多学，眼界更宽。'
+  },
+  c2: {
+    actionQuestion: '羊圈有破洞，怎么办？',
+    actionAnswer: '把洞补好',
+    actionOptions: ['把洞补好', '不管破洞', '继续等狼来'],
+    insight: '发现问题，及时补救。'
+  },
+  c3: {
+    actionQuestion: '动物们真正害怕的是谁？',
+    actionAnswer: '后面的大老虎',
+    actionOptions: ['后面的大老虎', '前面的小狐狸', '路边的小树'],
+    insight: '狐狸借了老虎的威风。'
+  },
+  c4: {
+    actionQuestion: '怎样帮助禾苗长大？',
+    actionAnswer: '按时浇水',
+    actionOptions: ['按时浇水', '用力拔高', '天天摇一摇'],
+    insight: '成长需要时间，不能心急。'
+  },
+  c5: {
+    actionQuestion: '怎样才能有收获？',
+    actionAnswer: '认真种田',
+    actionOptions: ['认真种田', '天天等兔子', '躺着睡大觉'],
+    insight: '收获要靠自己的努力。'
+  },
+  c6: {
+    actionQuestion: '画龙最后添上了什么？',
+    actionAnswer: '眼睛',
+    actionOptions: ['眼睛', '树叶', '尾巴上的花'],
+    insight: '关键的一笔让画面生动。'
+  },
+  c7: {
+    actionQuestion: '剑掉进水里，应记住哪里？',
+    actionAnswer: '掉剑的位置',
+    actionOptions: ['掉剑的位置', '移动的船边', '远处的岸边'],
+    insight: '船在移动，要看实际情况。'
+  },
+  c8: {
+    actionQuestion: '怎样更了解大象？',
+    actionAnswer: '多摸几处再交流',
+    actionOptions: ['多摸几处再交流', '只摸一条腿', '只听一个人说'],
+    insight: '看问题要全面。'
+  },
+  c9: {
+    actionQuestion: '捂住耳朵，别人还听得到吗？',
+    actionAnswer: '仍然听得到',
+    actionOptions: ['仍然听得到', '大家都听不到', '铃铛不会响'],
+    insight: '不能自己欺骗自己。'
+  },
+  c10: {
+    actionQuestion: '他们听到鸡叫后做什么？',
+    actionAnswer: '起床练剑',
+    actionOptions: ['起床练剑', '继续睡觉', '躲到屋里'],
+    insight: '本领来自勤奋练习。'
+  },
+  c11: {
+    actionQuestion: '青蛙怎样知道天空多大？',
+    actionAnswer: '跳出井口看看',
+    actionOptions: ['跳出井口看看', '只看井口', '把井口盖住'],
+    insight: '走出去，才能看得更远。'
+  },
+  c12: {
+    actionQuestion: '马跑了，老人怎么想？',
+    actionAnswer: '先别急着下结论',
+    actionOptions: ['先别急着下结论', '一定全是坏事', '从此不再养马'],
+    insight: '事情可能出现新的变化。'
+  },
+  c13: {
+    actionQuestion: '大雁为什么听到弓声就害怕？',
+    actionAnswer: '以前受过箭伤',
+    actionOptions: ['以前受过箭伤', '它正在唱歌', '它喜欢这个声音'],
+    insight: '过去的惊吓影响了它。'
+  },
+  c14: {
+    actionQuestion: '卖矛和盾的人该怎么说？',
+    actionAnswer: '如实说明本领',
+    actionOptions: ['如实说明本领', '两样都吹成最强', '不让别人提问'],
+    insight: '说话要前后一致。'
+  },
+  c15: {
+    actionQuestion: '面对困难，愚公怎么做？',
+    actionAnswer: '一点一点坚持挖',
+    actionOptions: ['一点一点坚持挖', '立刻放弃', '只抱怨不动手'],
+    insight: '大目标可以一步步完成。'
+  },
+  c16: {
+    actionQuestion: '怎样让自己的本领更熟练？',
+    actionAnswer: '多次认真练习',
+    actionOptions: ['多次认真练习', '从来不动手', '只看别人做'],
+    insight: '熟练以后，更容易找到窍门。'
+  },
+  c17: {
+    actionQuestion: '想让对方听懂，要怎么做？',
+    actionAnswer: '换成对方懂的说法',
+    actionOptions: ['换成对方懂的说法', '越说越难', '只顾自己说'],
+    insight: '交流要考虑对方能否理解。'
+  },
+  c18: {
+    actionQuestion: '鸡群中谁显得特别高？',
+    actionAnswer: '仙鹤',
+    actionOptions: ['仙鹤', '小鸡', '地上的石子'],
+    insight: '出众的特点很容易被看见。'
+  },
+  c19: {
+    actionQuestion: '想把花看仔细，怎么办？',
+    actionAnswer: '下马慢慢看',
+    actionOptions: ['下马慢慢看', '骑马飞快经过', '闭着眼睛走'],
+    insight: '看得匆忙，就难以看清。'
+  },
+  c20: {
+    actionQuestion: '哪组景象符合这个春天？',
+    actionAnswer: '鸟唱花开',
+    actionOptions: ['鸟唱花开', '冰封大雪', '枯枝落叶'],
+    insight: '鸟鸣花香，春天生机勃勃。'
+  },
+  c21: {
+    actionQuestion: '二月的草地和柳树旁有什么？',
+    actionAnswer: '嫩草和飞鸟',
+    actionOptions: ['嫩草和飞鸟', '厚雪和冰柱', '满地的枯叶'],
+    insight: '草木生长，鸟儿飞舞。'
+  },
+  c22: {
+    actionQuestion: '果树春天开花后，秋天会怎样？',
+    actionAnswer: '结出果实',
+    actionOptions: ['结出果实', '变成石头', '长出冰柱'],
+    insight: '春天开花，秋天结果。'
+  },
+  c23: {
+    actionQuestion: '哪组气球符合故事？',
+    actionAnswer: '红黄蓝都有',
+    actionOptions: ['红黄蓝都有', '全是灰色', '全是白色'],
+    insight: '很多鲜艳颜色在一起。'
+  },
+  c24: {
+    actionQuestion: '读书时怎样更专心？',
+    actionAnswer: '把注意力放书上',
+    actionOptions: ['把注意力放书上', '一直追蝴蝶', '一直看窗外'],
+    insight: '一次专心做好一件事。'
+  },
+  c25: {
+    actionQuestion: '小猫怎样才能钓到鱼？',
+    actionAnswer: '专心守着鱼竿',
+    actionOptions: ['专心守着鱼竿', '一直追蜻蜓', '一直扑蝴蝶'],
+    insight: '做事分心，容易没有收获。'
+  },
+  c26: {
+    actionQuestion: '小老鼠听到动静后怎样了？',
+    actionAnswer: '害怕地躲起来',
+    actionOptions: ['害怕地躲起来', '高兴地唱歌', '大胆地往前走'],
+    insight: '它的胆子特别小。'
+  },
+  c27: {
+    actionQuestion: '怎样搬桌子更有条理？',
+    actionAnswer: '商量好一起搬',
+    actionOptions: ['商量好一起搬', '人人乱拉乱推', '大家同时喊叫'],
+    insight: '人多也要分工有序。'
+  },
+  c28: {
+    actionQuestion: '吃东西应该怎样？',
+    actionAnswer: '慢慢嚼再咽',
+    actionOptions: ['慢慢嚼再咽', '一口塞得满满', '不嚼就往下咽'],
+    insight: '吃得太急，就是狼吞虎咽。'
+  },
+  c29: {
+    actionQuestion: '弟弟收到礼物是什么心情？',
+    actionAnswer: '急着想打开',
+    actionOptions: ['急着想打开', '一点也不想看', '困得想睡觉'],
+    insight: '想马上去做，等不及了。'
+  },
+  c30: {
+    actionQuestion: '小兔子在草地上怎样玩？',
+    actionAnswer: '高兴地蹦跳',
+    actionOptions: ['高兴地蹦跳', '一直坐着不动', '难过地低着头'],
+    insight: '高兴得又蹦又跳。'
+  },
+  c31: {
+    actionQuestion: '天气变暖，冰雪会怎样？',
+    actionAnswer: '慢慢变成水',
+    actionOptions: ['慢慢变成水', '越冻越厚', '变成小石头'],
+    insight: '温暖让冰雪融化。'
+  },
+  c32: {
+    actionQuestion: '小蚂蚁搬起了什么？',
+    actionAnswer: '比自己大的面包屑',
+    actionOptions: ['比自己大的面包屑', '一缕看不见的风', '天上的月亮'],
+    insight: '小身体也能有大力量。'
+  }
+};
+
+// 合并补充表到 IDIOM_DATABASE
+IDIOM_DATABASE.forEach(item => {
+  const ext = IDIOM_ACTION_EXTENSIONS[item.id];
+  if (ext) {
+    Object.assign(item, ext);
+  }
+});
+
 // 导出题库对象
 window.chineseData = {
   idioms: IDIOM_DATABASE,
   poems: POETRY_DATABASE,
+  idiomActionExtensions: IDIOM_ACTION_EXTENSIONS,
   buildRubyHtml
 };

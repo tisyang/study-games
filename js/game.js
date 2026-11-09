@@ -58,6 +58,9 @@ class MathGameEngine {
         q = this._generateAdd();
     }
 
+    // 统一数学题目协议：明确指定 subject = 'math'
+    q.subject = 'math';
+
     // 生成4个高仿真选项
     q.options = this._generateOptions(q);
     return q;
@@ -262,25 +265,24 @@ class MathGameEngine {
     return result;
   }
 
-  // 生成一道成语题目
+  // 生成一道成语题目 (任务 07：基于故事理解的行动与情境选择，三项选择，答对揭晓成语)
   _generateIdiom() {
     const list = window.chineseData.idioms;
     const target = list[Math.floor(Math.random() * list.length)];
 
-    // 挑出3个不重复的成语作为混淆项
-    const otherCandidates = list.filter(item => item.id !== target.id);
-    this._shuffle(otherCandidates);
-    const chosenDistractors = otherCandidates.slice(0, 3);
-
-    const rawOptions = [target, ...chosenDistractors];
+    // 若有 actionOptions，使用三项故事理解选项；否则回退为既有选项
+    let rawOptions = [];
+    if (target.actionOptions && target.actionOptions.length > 0) {
+      rawOptions = [...target.actionOptions];
+    } else {
+      rawOptions = [target.word];
+    }
     this._shuffle(rawOptions);
 
-    // 将选项封装为带拼音 ruby 的选项
-    const options = rawOptions.map(item => ({
-      value: item.word,
-      word: item.word,
-      pinyin: item.pinyin,
-      rubyHtml: item.word.split('').map((char, i) => `<ruby>${char}<rt>${item.pinyin[i]}</rt></ruby>`).join('')
+    const options = rawOptions.map(val => ({
+      value: val,
+      word: val,
+      rubyHtml: val
     }));
 
     return {
@@ -288,14 +290,14 @@ class MathGameEngine {
       typeName: '成语',
       subject: 'chinese',
       ...target,
-      answer: target.word,
+      answer: target.actionAnswer || target.word,
       options,
-      prompt: '🧐 看动画情境猜成语：' + target.sceneTitle,
-      hint: `💡 成语锦囊：\n【${target.word}】\n${target.meaning}`
+      prompt: target.actionQuestion || '请选择合适的做法：',
+      hint: `💡 故事锦囊：\n${target.story}`
     };
   }
 
-  // 生成一道诗词题目
+  // 生成一道诗词题目 (任务 07 审查修正：四项统一纯大字词语，不单给答案注音以免泄露答案)
   _generatePoem() {
     const list = window.chineseData.poems;
     const target = list[Math.floor(Math.random() * list.length)];
@@ -317,35 +319,29 @@ class MathGameEngine {
       ...target,
       answer: target.missingWord,
       options,
-      prompt: '🌸 点击填空 · 补全画中诗句',
+      prompt: '🌸 选出合适的词语，补全诗句',
       hint: `💡 诗意锦囊：\n《${target.title}》\n${target.meaning}`
     };
   }
 
-  // 生成一道英语情境救急小剧场题目 (纯英文情境，无中文翻译干扰)
+  // 生成一道英语日常互助题目 (纯英文情境，无中文翻译干扰)
   _generateEnglishStory() {
     const list = window.englishData.stories;
     const target = list[Math.floor(Math.random() * list.length)];
 
-    // 随机打乱工具选项
-    const rawOptions = [...target.options];
-    this._shuffle(rawOptions);
-
-    const options = rawOptions.map(tool => ({
-      value: tool,
-      icon: tool,
-      isEnglishTool: true
-    }));
+    // 随机打乱选项
+    const options = target.options.map(opt => ({ ...opt }));
+    this._shuffle(options);
 
     return {
       type: 'english_story',
-      typeName: '情境救急',
+      typeName: '日常互助',
       subject: 'english',
       ...target,
       answer: target.correctTool,
       options,
-      prompt: '🆘 Pick a tool!',
-      hint: `💡 Listen and watch:\n"${target.crisisSpeech}"`
+      prompt: '🎧 Listen and pick the right one!',
+      hint: `💡 Listen carefully:\n"${target.crisisSpeech}"`
     };
   }
 

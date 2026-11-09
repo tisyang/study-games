@@ -40,9 +40,23 @@ class VisualEnlightenmentEngine {
     this.clear();
     if (!this.container || !this.narration) return;
 
-    if (options.isExplore && q.type === 'add') {
-      this._renderAdditionExplore(q);
-      return;
+    if (options.isExplore) {
+      if (q.type === 'add') {
+        this._renderAdditionExplore(q);
+        return;
+      }
+      if (q.type === 'sub') {
+        this._renderSubtractionExplore(q);
+        return;
+      }
+      if (q.type === 'mul') {
+        this._renderMultiplicationExplore(q);
+        return;
+      }
+      if (q.type === 'div') {
+        this._renderDivisionExplore(q);
+        return;
+      }
     }
 
     // 更新故事叙述，将所有数字自动包裹醒目大字号鲜艳药丸胶囊
@@ -300,13 +314,54 @@ class VisualEnlightenmentEngine {
 
   showExploreHint() {
     if (!this.exploreData) return;
-    const { step, isCarry } = this.exploreData;
-    if (step === 'initial') {
-      this.setExploreHint('合在一起看看 🧺', '#btn-tool-merge');
-    } else if (step === 'merged' && isCarry) {
-      this.setExploreHint('十个装一箱 📦', '#btn-tool-pack');
-    } else {
-      this.setExploreHint('数一数苹果吧');
+    const type = this.exploreData.q ? this.exploreData.q.type : 'add';
+
+    if (type === 'add') {
+      const { step, isCarry } = this.exploreData;
+      if (step === 'initial') {
+        this.setExploreHint('合在一起看看 🧺', '#btn-tool-merge');
+      } else if (step === 'merged' && isCarry) {
+        this.setExploreHint('十个装一箱 📦', '#btn-tool-pack');
+      } else {
+        this.setExploreHint('数一数苹果吧');
+      }
+    } else if (type === 'sub') {
+      const { step, isBorrow } = this.exploreData;
+      if (step === 'initial' && isBorrow) {
+        this.setExploreHint('散装不够，先拆一箱 📦', '#btn-tool-sub-unpack');
+      } else if (step === 'initial' || step === 'unpacked') {
+        this.setExploreHint('把苹果取走看看 🐿️', '#btn-tool-sub-take');
+      } else {
+        this.setExploreHint('看一看还剩多少苹果吧！');
+      }
+    } else if (type === 'mul') {
+      const { filledRows, rows } = this.exploreData;
+      if (filledRows < rows) {
+        this.setExploreHint('摆一排饼干看看 🍪', '#btn-tool-mul-addrow');
+      } else {
+        this.setExploreHint('数一数烤盘上一共有几块饼干！');
+      }
+    } else if (type === 'div') {
+      const { sharedCount, quotient } = this.exploreData;
+      if (sharedCount < quotient) {
+        this.setExploreHint('每人分一个水果 🍎', '#btn-tool-div-deal');
+      } else {
+        this.setExploreHint('数一数每位朋友盘子里有几个水果！');
+      }
+    }
+  }
+
+  completeExploreQuestion() {
+    if (!this.exploreData) return;
+    const type = this.exploreData.q ? this.exploreData.q.type : 'add';
+    if (type === 'add') {
+      this.completeExploreAddition();
+    } else if (type === 'sub') {
+      this.completeExploreSubtraction();
+    } else if (type === 'mul') {
+      this.completeExploreMultiplication();
+    } else if (type === 'div') {
+      this.completeExploreDivision();
     }
   }
 
@@ -315,6 +370,491 @@ class VisualEnlightenmentEngine {
     this.exploreData.locked = true;
     this.exploreData.step = 'completed';
     this._updateExploreDisplay();
+  }
+
+  // ================= 减法：松鼠取苹果 独立探索 =================
+  _renderSubtractionExplore(q) {
+    this.narration.innerHTML = `<span class="story-text">拿走 <span class="hl-num">${q.num2}</span> 个，还剩多少？</span>`;
+
+    const aTens = Math.floor(q.num1 / 10);
+    const aOnes = q.num1 % 10;
+    const bTens = Math.floor(q.num2 / 10);
+    const bOnes = q.num2 % 10;
+    const isBorrow = aOnes < bOnes;
+
+    // aOnes + 10 当拆箱后，然后再减去 bOnes
+    const remainTens = Math.floor(q.answer / 10);
+    const remainOnes = q.answer % 10;
+
+    this.exploreData = {
+      q,
+      aTens, aOnes,
+      bTens, bOnes,
+      isBorrow,
+      remainTens, remainOnes,
+      step: 'initial', // 'initial' | 'unpacked' | 'taken' | 'completed'
+      locked: false
+    };
+
+    this.container.innerHTML = `
+      <div class="explore-sub-stage math-explore-stage">
+        <div class="explore-header-row">
+          <div class="squirrel-mascot" id="explore-sub-squirrel" aria-label="小松鼠">🐿️</div>
+          <div class="explore-bubble" id="explore-bubble" role="status" aria-live="polite">
+            <span>帮我取苹果吧！</span>
+          </div>
+        </div>
+
+        <div class="explore-display-board" id="explore-sub-board"></div>
+
+        <div class="explore-tools-bar">
+          ${isBorrow ? `
+            <button type="button" class="btn-explore-tool" id="btn-tool-sub-unpack" aria-label="拆一箱">
+              📦 拆一箱
+            </button>
+          ` : ''}
+          <button type="button" class="btn-explore-tool" id="btn-tool-sub-take" aria-label="取走">
+            🐿️ 取走 ${q.num2} 个
+          </button>
+          <button type="button" class="btn-explore-tool btn-tool-help" id="btn-tool-help" aria-label="帮帮我">
+            💡 帮帮我
+          </button>
+        </div>
+      </div>
+    `;
+
+    const btnUnpack = document.getElementById('btn-tool-sub-unpack');
+    const btnTake = document.getElementById('btn-tool-sub-take');
+    const btnHelp = document.getElementById('btn-tool-help');
+
+    if (btnUnpack) {
+      btnUnpack.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked || this.exploreData.step !== 'initial') return;
+        if (window.soundEngine) window.soundEngine.playUnpackBox();
+        this.exploreData.step = 'unpacked';
+        this._updateExploreSubDisplay();
+      });
+    }
+
+    if (btnTake) {
+      btnTake.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked) return;
+        if (this.exploreData.step === 'taken' || this.exploreData.step === 'completed') return;
+
+        if (this.exploreData.isBorrow && this.exploreData.step === 'initial') {
+          // 需要拆箱但尚未拆
+          if (window.soundEngine) window.soundEngine.playWrong();
+          this.setExploreHint('散装不够，先拆一箱 📦', '#btn-tool-sub-unpack');
+          return;
+        }
+
+        if (window.soundEngine) window.soundEngine.playDealFruit();
+        this.exploreData.step = 'taken';
+        this._updateExploreSubDisplay();
+      });
+    }
+
+    if (btnHelp) {
+      btnHelp.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked) return;
+        if (window.soundEngine) window.soundEngine.playHint();
+        this.showExploreHint();
+      });
+    }
+
+    this._updateExploreSubDisplay();
+  }
+
+  _updateExploreSubDisplay() {
+    if (!this.exploreData) return;
+    const board = document.getElementById('explore-sub-board');
+    const btnUnpack = document.getElementById('btn-tool-sub-unpack');
+    const btnTake = document.getElementById('btn-tool-sub-take');
+    const bubble = document.getElementById('explore-bubble');
+    if (!board) return;
+
+    const { q, aTens, aOnes, isBorrow, remainTens, remainOnes, step } = this.exploreData;
+
+    if (step === 'initial') {
+      board.innerHTML = `
+        <div class="explore-pile pile-center">
+          <div class="pile-title">仓库里原有 <span class="pile-num">${q.num1}</span> 个苹果</div>
+          <div class="item-group">
+            <div class="tens-boxes">${this._renderBoxes(aTens)}</div>
+            <div class="ones-items">${this._renderItems('🍎', aOnes)}</div>
+          </div>
+        </div>
+      `;
+      if (btnUnpack) {
+        btnUnpack.classList.remove('hidden', 'done');
+        btnUnpack.disabled = false;
+        btnUnpack.innerHTML = '📦 拆一箱';
+      }
+      if (btnTake) {
+        btnTake.classList.remove('hidden', 'done');
+        btnTake.disabled = false;
+        btnTake.innerHTML = `🐿️ 取走 ${q.num2} 个`;
+      }
+      if (bubble) bubble.innerHTML = `<span>帮我取苹果吧！</span>`;
+    } else if (step === 'unpacked') {
+      board.innerHTML = `
+        <div class="explore-pile pile-center">
+          <div class="pile-title">拆开 1 箱后：<span class="pile-num">${aTens - 1}</span> 箱 + <span class="pile-num">${aOnes + 10}</span> 个散装</div>
+          <div class="item-group">
+            <div class="tens-boxes">${this._renderBoxes(aTens - 1)}</div>
+            <div class="ones-items bounce-items">${this._renderItems('🍎', aOnes + 10)}</div>
+          </div>
+        </div>
+      `;
+      if (btnUnpack) {
+        btnUnpack.classList.add('done', 'hidden');
+        btnUnpack.disabled = true;
+        btnUnpack.innerHTML = '✅ 已拆一箱';
+      }
+      if (btnTake) {
+        btnTake.classList.remove('hidden', 'done');
+        btnTake.disabled = false;
+      }
+      if (bubble) bubble.innerHTML = `<span>散装够啦，快取走 ${q.num2} 个吧！</span>`;
+    } else if (step === 'taken') {
+      board.innerHTML = `
+        <div class="explore-pile pile-center">
+          <div class="pile-title">取走 <span class="hl-num">${q.num2}</span> 个后还剩下：</div>
+          <div class="item-group">
+            <div class="tens-boxes">${this._renderBoxes(remainTens)}</div>
+            <div class="ones-items">${this._renderItems('🍎', remainOnes)}</div>
+          </div>
+        </div>
+      `;
+      if (btnUnpack) btnUnpack.classList.add('hidden');
+      if (btnTake) {
+        btnTake.classList.add('done', 'hidden');
+        btnTake.disabled = true;
+        btnTake.innerHTML = `✅ 已取走 ${q.num2} 个`;
+      }
+      if (bubble) bubble.innerHTML = `<span>数一数剩下的苹果，选个答案吧！</span>`;
+    } else if (step === 'completed') {
+      board.innerHTML = `
+        <div class="explore-pile pile-center">
+          <div class="pile-title" style="color:#16a34a; font-weight:800;">🎉 算对啦！还剩下：</div>
+          <div class="item-group">
+            <div class="tens-boxes">${this._renderBoxes(remainTens)}</div>
+            <div class="ones-items">${this._renderItems('🍎', remainOnes)}</div>
+          </div>
+        </div>
+      `;
+      if (btnUnpack) btnUnpack.classList.add('hidden');
+      if (btnTake) btnTake.classList.add('hidden');
+      const toolsBar = document.querySelector('.explore-tools-bar');
+      if (toolsBar) toolsBar.classList.add('hidden');
+      const btnHelp = document.getElementById('btn-tool-help');
+      if (btnHelp) btnHelp.disabled = true;
+      const squirrel = document.getElementById('explore-sub-squirrel');
+      if (squirrel) {
+        squirrel.innerHTML = '🐿️🎉';
+        squirrel.classList.add('celebrating');
+      }
+      if (bubble) bubble.innerHTML = `<span>太棒啦！</span>`;
+    }
+  }
+
+  completeExploreSubtraction() {
+    if (!this.exploreData) return;
+    this.exploreData.locked = true;
+    this.exploreData.step = 'completed';
+    this._updateExploreSubDisplay();
+  }
+
+  // ================= 乘法：烤饼干 独立探索 =================
+  _renderMultiplicationExplore(q) {
+    const rows = q.num1;
+    const cols = q.num2;
+
+    this.narration.innerHTML = `<span class="story-text">每排 <span class="hl-num">${cols}</span> 块，摆 <span class="hl-num">${rows}</span> 排。一共几块？</span>`;
+
+    this.exploreData = {
+      q,
+      rows,
+      cols,
+      filledRows: 0,
+      step: 'initial', // 'initial' | 'progress' | 'completed'
+      locked: false
+    };
+
+    this.container.innerHTML = `
+      <div class="explore-mul-stage math-explore-stage">
+        <div class="explore-header-row">
+          <div class="squirrel-mascot" id="explore-mul-mascot" aria-label="小熊大厨">🐻</div>
+          <div class="explore-bubble" id="explore-bubble" role="status" aria-live="polite">
+            <span>一起来摆饼干吧！</span>
+          </div>
+        </div>
+
+        <div class="explore-display-board" id="explore-mul-board"></div>
+
+        <div class="explore-tools-bar">
+          <button type="button" class="btn-explore-tool" id="btn-tool-mul-addrow" aria-label="摆一排">
+            🍪 摆一排 (第 1 排)
+          </button>
+          <button type="button" class="btn-explore-tool btn-tool-help" id="btn-tool-help" aria-label="帮帮我">
+            💡 帮帮我
+          </button>
+        </div>
+      </div>
+    `;
+
+    const btnAddRow = document.getElementById('btn-tool-mul-addrow');
+    const btnHelp = document.getElementById('btn-tool-help');
+
+    if (btnAddRow) {
+      btnAddRow.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked) return;
+        if (this.exploreData.filledRows >= this.exploreData.rows) return;
+
+        this.exploreData.filledRows++;
+        if (window.soundEngine) window.soundEngine.playRowScan(this.exploreData.filledRows - 1);
+        this._updateExploreMulDisplay();
+      });
+    }
+
+    if (btnHelp) {
+      btnHelp.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked) return;
+        if (window.soundEngine) window.soundEngine.playHint();
+        this.showExploreHint();
+      });
+    }
+
+    this._updateExploreMulDisplay();
+  }
+
+  _updateExploreMulDisplay() {
+    if (!this.exploreData) return;
+    const board = document.getElementById('explore-mul-board');
+    const btnAddRow = document.getElementById('btn-tool-mul-addrow');
+    const bubble = document.getElementById('explore-bubble');
+    if (!board) return;
+
+    const { rows, cols, filledRows, step } = this.exploreData;
+
+    let gridHtml = '';
+    for (let r = 0; r < rows; r++) {
+      const isFilled = r < filledRows || step === 'completed';
+      gridHtml += `<div class="cookie-tray-row ${isFilled ? 'scanned-active' : 'unfilled-row'}" id="mul-explore-row-${r}">`;
+      gridHtml += `<span class="row-label">第${r + 1}排</span>`;
+      gridHtml += `<div class="cookie-slots-group">`;
+      for (let c = 0; c < cols; c++) {
+        if (isFilled) {
+          gridHtml += `<span class="cookie-item ${step === 'completed' ? 'baked' : ''}">🍪</span>`;
+        } else {
+          gridHtml += `<span class="cookie-slot-empty">⚪</span>`;
+        }
+      }
+      gridHtml += `</div></div>`;
+    }
+
+    board.innerHTML = `
+      <div class="mul-explore-tray">
+        <div class="tray-header">
+          <span class="badge-accent">${rows} 排 × 每排 ${cols} 块 (已摆 ${filledRows}/${rows} 排)</span>
+        </div>
+        <div class="cookie-grid">${gridHtml}</div>
+      </div>
+    `;
+
+    if (step === 'completed') {
+      if (btnAddRow) btnAddRow.classList.add('hidden');
+      const toolsBar = document.querySelector('.explore-tools-bar');
+      if (toolsBar) toolsBar.classList.add('hidden');
+      const btnHelp = document.getElementById('btn-tool-help');
+      if (btnHelp) btnHelp.disabled = true;
+      const mascot = document.getElementById('explore-mul-mascot');
+      if (mascot) {
+        mascot.innerHTML = '🐻🎉';
+        mascot.classList.add('celebrating');
+      }
+      if (bubble) bubble.innerHTML = `<span>全烤好啦！真香！</span>`;
+    } else if (filledRows >= rows) {
+      if (btnAddRow) {
+        btnAddRow.classList.add('done', 'hidden');
+        btnAddRow.disabled = true;
+      }
+      if (bubble) bubble.innerHTML = `<span>${rows}排全部摆好啦！选个答案吧！</span>`;
+    } else {
+      if (btnAddRow) {
+        btnAddRow.classList.remove('hidden', 'done');
+        btnAddRow.disabled = false;
+        btnAddRow.innerHTML = `🍪 摆一排 (第 ${filledRows + 1} 排)`;
+      }
+      if (bubble) {
+        if (filledRows === 0) {
+          bubble.innerHTML = `<span>点击“摆一排”，摆出第 1 排饼干吧！</span>`;
+        } else {
+          bubble.innerHTML = `<span>已摆 ${filledRows} 排，继续摆下一排吧！</span>`;
+        }
+      }
+    }
+  }
+
+  completeExploreMultiplication() {
+    if (!this.exploreData) return;
+    this.exploreData.locked = true;
+    this.exploreData.step = 'completed';
+    this.exploreData.filledRows = this.exploreData.rows;
+    this._updateExploreMulDisplay();
+  }
+
+  // ================= 除法：动物野餐 独立探索 =================
+  _renderDivisionExplore(q) {
+    const total = q.num1;
+    const animalCount = q.num2;
+    const quotient = q.answer;
+
+    this.narration.innerHTML = `<span class="story-text"><span class="hl-num">${total}</span> 个水果，分给 <span class="hl-num">${animalCount}</span> 位朋友。</span>`;
+
+    this.exploreData = {
+      q,
+      total,
+      animalCount,
+      quotient,
+      sharedCount: 0, // 每人分得个数
+      step: 'initial', // 'initial' | 'progress' | 'completed'
+      locked: false
+    };
+
+    this.container.innerHTML = `
+      <div class="explore-div-stage math-explore-stage">
+        <div class="explore-header-row">
+          <div class="squirrel-mascot" id="explore-div-mascot" aria-label="野餐大厨">🧺</div>
+          <div class="explore-bubble" id="explore-bubble" role="status" aria-live="polite">
+            <span>一起来分水果吧！</span>
+          </div>
+        </div>
+
+        <div class="explore-display-board" id="explore-div-board"></div>
+
+        <div class="explore-tools-bar">
+          <button type="button" class="btn-explore-tool" id="btn-tool-div-deal" aria-label="每人分一个">
+            🍎 每人分一个
+          </button>
+          <button type="button" class="btn-explore-tool btn-tool-help" id="btn-tool-help" aria-label="帮帮我">
+            💡 帮帮我
+          </button>
+        </div>
+      </div>
+    `;
+
+    const btnDeal = document.getElementById('btn-tool-div-deal');
+    const btnHelp = document.getElementById('btn-tool-help');
+
+    if (btnDeal) {
+      btnDeal.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked) return;
+        if (this.exploreData.sharedCount >= this.exploreData.quotient) return;
+
+        this.exploreData.sharedCount++;
+        if (window.soundEngine) window.soundEngine.playDealFruit();
+        this._updateExploreDivDisplay();
+      });
+    }
+
+    if (btnHelp) {
+      btnHelp.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked) return;
+        if (window.soundEngine) window.soundEngine.playHint();
+        this.showExploreHint();
+      });
+    }
+
+    this._updateExploreDivDisplay();
+  }
+
+  _updateExploreDivDisplay() {
+    if (!this.exploreData) return;
+    const board = document.getElementById('explore-div-board');
+    const btnDeal = document.getElementById('btn-tool-div-deal');
+    const bubble = document.getElementById('explore-bubble');
+    if (!board) return;
+
+    const { total, animalCount, quotient, sharedCount, step } = this.exploreData;
+    const currentShared = (step === 'completed') ? quotient : sharedCount;
+    const poolRemaining = Math.max(0, total - currentShared * animalCount);
+
+    const animals = ['🐰 小兔', '🐻 小熊', '🦊 小狐', '🐼 熊猫', '🐵 小猴', '🐯 小虎', '🐶 小狗', '🐱 小猫', '🐨 考拉'];
+
+    let platesHtml = '';
+    for (let i = 0; i < animalCount; i++) {
+      let fruitsHtml = '';
+      if (currentShared === 0) {
+        fruitsHtml = '<span class="plate-empty-dish">🍽️ 空盘</span>';
+      } else {
+        fruitsHtml = `<span class="plate-fruits">${'🍎'.repeat(currentShared)}</span><span class="plate-badge">${currentShared}个</span>`;
+      }
+
+      platesHtml += `
+        <div class="div-explore-card ${currentShared > 0 ? 'card-has-fruits' : ''}">
+          <div class="animal-avatar">${animals[i % animals.length]}</div>
+          <div class="div-plate-dish">${fruitsHtml}</div>
+        </div>
+      `;
+    }
+
+    board.innerHTML = `
+      <div class="div-explore-wrap">
+        <div class="picnic-basket-pool">
+          <span class="basket-title">🧺 水果篮还剩：<strong class="hl-num">${poolRemaining}</strong> 个</span>
+          <div class="basket-fruits-sample">
+            ${'🍎'.repeat(Math.min(poolRemaining, 8))}
+            ${poolRemaining > 8 ? '<span class="pool-more">...</span>' : ''}
+          </div>
+        </div>
+
+        <div class="div-friends-grid">
+          ${platesHtml}
+        </div>
+      </div>
+    `;
+
+    if (step === 'completed') {
+      if (btnDeal) btnDeal.classList.add('hidden');
+      const toolsBar = document.querySelector('.explore-tools-bar');
+      if (toolsBar) toolsBar.classList.add('hidden');
+      const btnHelp = document.getElementById('btn-tool-help');
+      if (btnHelp) btnHelp.disabled = true;
+      const mascot = document.getElementById('explore-div-mascot');
+      if (mascot) {
+        mascot.innerHTML = '🧺🎉';
+        mascot.classList.add('celebrating');
+      }
+      if (bubble) bubble.innerHTML = `<span>分得公平又开心！</span>`;
+    } else if (sharedCount >= quotient) {
+      if (btnDeal) {
+        btnDeal.classList.add('done', 'hidden');
+        btnDeal.disabled = true;
+      }
+      if (bubble) bubble.innerHTML = `<span>水果刚好分完！每人有几个？选个答案吧！</span>`;
+    } else {
+      if (btnDeal) {
+        btnDeal.classList.remove('hidden', 'done');
+        btnDeal.disabled = false;
+        btnDeal.innerHTML = `🍎 每人分一个 (各得 ${sharedCount + 1} 个)`;
+      }
+      if (bubble) {
+        if (sharedCount === 0) {
+          bubble.innerHTML = `<span>点击“每人分一个”，开始平均分发水果吧！</span>`;
+        } else {
+          bubble.innerHTML = `<span>盘子里各有 ${sharedCount} 个，继续分一个吧！</span>`;
+        }
+      }
+    }
+  }
+
+  completeExploreDivision() {
+    if (!this.exploreData) return;
+    this.exploreData.locked = true;
+    this.exploreData.step = 'completed';
+    this.exploreData.sharedCount = this.exploreData.quotient;
+    this._updateExploreDivDisplay();
   }
 
   // ================= 答对后触发慢速全流程动态演算 =================

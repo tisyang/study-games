@@ -1,5 +1,5 @@
 /**
- * 乐学萌岛 - 英语探索岛：情境救急小剧场题库
+ * 乐学萌岛 - 英语探索岛：日常互助小帮手题库
  * 设计哲学：零中文翻译，纯英文语感，靠视觉情境、声音语气与生活常识建立直接联结
  */
 
@@ -8,171 +8,181 @@ const ENGLISH_STORY_DATABASE = [
     id: 'e1',
     scene: 'rain_bunny',
     title: 'Rainy Day',
-    // 简短韵律口语（专为小学二年级零基础调校，3~5词短句）
-    crisisSpeech: "Oh no! It is raining! Bunny is cold. Help Bunny!",
-    thankYouSpeech: "Thank you! An umbrella! Bunny is warm and dry!",
-    // 危机视觉场景
-    sceneDesc: '🌧️ 狂风大雨倾盆而下，小兔子抱臂发抖',
+    crisisSpeech: "The red umbrella, please.",
+    thankYouSpeech: "Thank you! I'm dry now.",
     actor: '🐰',
-    environment: '🌧️ 🌧️ 🌧️',
-    correctTool: '☂️',
-    options: ['☂️', '🍦', '🥾'], // 雨伞 / 冰淇淋 / 靴子
-    toolLabels: ['Umbrella', 'Ice cream', 'Boots'],
-    solvedAnim: 'umbrella_open'
+    contextIcon: '🌧️',
+    correctTool: 'red-umbrella',
+    options: [
+      { value: 'red-umbrella', label: 'Red umbrella', kind: 'umbrella', color: 'red' },
+      { value: 'blue-umbrella', label: 'Blue umbrella', kind: 'umbrella', color: 'blue' },
+      { value: 'yellow-umbrella', label: 'Yellow umbrella', kind: 'umbrella', color: 'yellow' }
+    ]
   },
   {
     id: 'e2',
-    scene: 'hot_lion',
-    title: 'Hot Summer',
-    crisisSpeech: "Phew! It is so hot! Lion is thirsty. Help Lion!",
-    thankYouSpeech: "Cold water! Slurp, slurp! Lion feels so cool!",
-    sceneDesc: '☀️ 烈日炎炎，小狮子大口喘气满头大汗',
+    scene: 'thirsty_lion',
+    title: 'Thirsty Lion',
+    crisisSpeech: "I'm thirsty. Water, please.",
+    thankYouSpeech: "Thank you! That's better.",
     actor: '🦁',
-    environment: '☀️ ☀️ ☀️',
-    correctTool: '🧊',
-    options: ['🧊', '🧣', '🪨'], // 冰水 / 围巾 / 石头
-    toolLabels: ['Cold water', 'Scarf', 'Rock'],
-    solvedAnim: 'drink_cool'
+    contextIcon: '☀️',
+    correctTool: 'water',
+    options: [
+      { value: 'water', label: 'Water', kind: 'beverage', color: 'water' },
+      { value: 'milk', label: 'Milk', kind: 'beverage', color: 'milk' },
+      { value: 'juice', label: 'Juice', kind: 'beverage', color: 'juice' }
+    ]
   },
   {
     id: 'e3',
-    scene: 'dark_room',
-    title: 'Dark Night',
-    crisisSpeech: "It is night. It is dark! Bear is scared. Help Bear!",
-    thankYouSpeech: "A bright lamp! Click! The room is cozy and bright!",
-    sceneDesc: '🌙 漆黑的夜晚，小熊揉着眼睛害怕黑暗',
+    scene: 'dark_bear',
+    title: 'Reading Bear',
+    crisisSpeech: "The lamp, please.",
+    thankYouSpeech: "Thank you! I can see!",
     actor: '🐻',
-    environment: '🌌 🌙 ⭐',
-    correctTool: '💡',
-    options: ['💡', '🥄', '🧦'], // 台灯 / 勺子 / 袜子
-    toolLabels: ['Lamp', 'Spoon', 'Socks'],
-    solvedAnim: 'light_on'
+    contextIcon: '🌙',
+    correctTool: 'lamp',
+    options: [
+      { value: 'lamp', label: 'Lamp', kind: 'lamp' },
+      { value: 'book', label: 'Book', kind: 'emoji', icon: '📖' },
+      { value: 'ball', label: 'Ball', kind: 'emoji', icon: '⚽' }
+    ]
   },
   {
     id: 'e4',
-    scene: 'hungry_puppy',
-    title: 'Hungry Puppy',
-    crisisSpeech: "Woof, woof! Puppy is hungry. What can Puppy eat?",
-    thankYouSpeech: "Yum, yum! A big bone! Thank you, my good friend!",
-    sceneDesc: '🐕 肚子饿得咕噜叫的小狗，眼巴巴望着前方',
-    actor: '🐕',
-    environment: '🥣 🐾 💭',
-    correctTool: '🦴',
-    options: ['🦴', '🧼', '✏️'], // 骨头 / 肥皂 / 铅笔
-    toolLabels: ['Bone', 'Soap', 'Pencil'],
-    solvedAnim: 'eat_bone'
+    scene: 'snack_bunny',
+    title: 'Snack Time',
+    crisisSpeech: "An apple, please.",
+    thankYouSpeech: "Thank you! Yum!",
+    actor: '🐰',
+    contextIcon: '🧺',
+    correctTool: 'apple',
+    options: [
+      { value: 'apple', label: 'Apple', kind: 'emoji', icon: '🍎' },
+      { value: 'banana', label: 'Banana', kind: 'emoji', icon: '🍌' },
+      { value: 'bread', label: 'Bread', kind: 'emoji', icon: '🍞' }
+    ]
   },
   {
     id: 'e5',
-    scene: 'muddy_pig',
-    title: 'Muddy Piggy',
-    crisisSpeech: "Look at Piggy! Mud, mud, mud! Piggy is dirty. Clean Piggy!",
-    thankYouSpeech: "Splish, splash! Clean soap! Piggy is clean and happy!",
-    sceneDesc: '🐷 身上沾满泥巴斑点的小粉猪',
+    scene: 'clean_pig',
+    title: 'Wash Hands',
+    crisisSpeech: "Soap, please.",
+    thankYouSpeech: "Thank you! Nice and clean.",
     actor: '🐷',
-    environment: '💩 💦 🐾',
-    correctTool: '🧼',
-    options: ['🧼', '🍰', '🎈'], // 肥皂 / 蛋糕 / 气球
-    toolLabels: ['Soap', 'Cake', 'Balloon'],
-    solvedAnim: 'bubble_wash'
+    contextIcon: '🫧',
+    correctTool: 'soap',
+    options: [
+      { value: 'soap', label: 'Soap', kind: 'emoji', icon: '🧼' },
+      { value: 'towel', label: 'Towel', kind: 'towel' },
+      { value: 'brush', label: 'Brush', kind: 'emoji', icon: '🪥' }
+    ]
   },
   {
     id: 'e6',
-    scene: 'high_bananas',
-    title: 'High Bananas',
-    crisisSpeech: "Look, yellow bananas! Too high! Monkey cannot reach!",
-    thankYouSpeech: "Aha, a ladder! Monkey got the bananas! Yummy, yummy!",
-    sceneDesc: '🐵 树下蹦蹦跳跳却够不着香蕉的小猴子',
+    scene: 'monkey_banana',
+    title: 'Sweet Fruit',
+    crisisSpeech: "The yellow banana, please.",
+    thankYouSpeech: "Thank you! A yellow banana.",
     actor: '🐵',
-    environment: '🌴 🍌 🍌',
-    correctTool: '🪜',
-    options: ['🪜', '🪥', '✂️'], // 梯子 / 牙刷 / 剪刀
-    toolLabels: ['Ladder', 'Toothbrush', 'Scissors'],
-    solvedAnim: 'climb_ladder'
+    contextIcon: '🌴',
+    correctTool: 'yellow-banana',
+    options: [
+      { value: 'yellow-banana', label: 'Yellow banana', kind: 'banana', color: 'yellow' },
+      { value: 'green-banana', label: 'Green banana', kind: 'banana', color: 'green' },
+      { value: 'red-banana', label: 'Red banana', kind: 'banana', color: 'red' }
+    ]
   },
   {
     id: 'e7',
-    scene: 'freezing_penguin',
-    title: 'Freezing Penguin',
-    crisisSpeech: "Brrr! It is freezing cold! Penguin is shivering. Help Penguin!",
-    thankYouSpeech: "A warm red scarf! So cozy and warm! Thank you!",
-    sceneDesc: '❄️ 狂风大雪中直打哆嗦的小企鹅',
+    scene: 'cold_penguin',
+    title: 'Warm Clothes',
+    crisisSpeech: "My red scarf, please.",
+    thankYouSpeech: "Thank you! I'm warm now.",
     actor: '🐧',
-    environment: '❄️ 🌬️ ❄️',
-    correctTool: '🧣',
-    options: ['🧣', '🕶️', '🍉'], // 红围巾 / 墨镜 / 西瓜
-    toolLabels: ['Warm scarf', 'Sunglasses', 'Watermelon'],
-    solvedAnim: 'wear_scarf'
+    contextIcon: '❄️',
+    correctTool: 'red-scarf',
+    options: [
+      { value: 'red-scarf', label: 'Red scarf', kind: 'scarf', color: 'red' },
+      { value: 'blue-scarf', label: 'Blue scarf', kind: 'scarf', color: 'blue' },
+      { value: 'yellow-scarf', label: 'Yellow scarf', kind: 'scarf', color: 'yellow' }
+    ]
   },
   {
     id: 'e8',
-    scene: 'thirsty_duck',
-    title: 'Thirsty Duck',
-    crisisSpeech: "Quack, quack! Sunny and hot! Little Duck is so thirsty!",
-    thankYouSpeech: "Gulp, gulp! Clean water! Little Duck can swim happily!",
-    sceneDesc: '🦆 喉咙干渴、伸长脖子的小黄鸭',
+    scene: 'duck_snack',
+    title: 'Duck Snacks',
+    crisisSpeech: "Two apples, please.",
+    thankYouSpeech: "Thank you! One, two!",
     actor: '🦆',
-    environment: '🌾 ☀️ 💨',
-    correctTool: '💧',
-    options: ['💧', '⚽', '🪨'], // 清水 / 足球 / 石子
-    toolLabels: ['Water', 'Football', 'Stones'],
-    solvedAnim: 'drink_water'
+    contextIcon: '🌾',
+    correctTool: 'two-apples',
+    options: [
+      { value: 'one-apple', label: 'One apple', kind: 'apples', count: 1 },
+      { value: 'two-apples', label: 'Two apples', kind: 'apples', count: 2 },
+      { value: 'three-apples', label: 'Three apples', kind: 'apples', count: 3 }
+    ]
   },
   {
     id: 'e9',
-    scene: 'sleepy_cat',
-    title: 'Sleepy Cat',
-    crisisSpeech: "Yawn! Little Kitty is sleepy. Kitty wants to sleep!",
-    thankYouSpeech: "Purr, purr! A soft bed! Good night, Little Kitty!",
-    sceneDesc: '🐱 困得直打哈欠、趴在地上的小猫咪',
+    scene: 'cat_bedtime',
+    title: 'Bedtime Toy',
+    crisisSpeech: "My teddy bear, please.",
+    thankYouSpeech: "Thank you! My teddy bear.",
     actor: '🐱',
-    environment: '🧶 🥱 💤',
-    correctTool: '🛏️',
-    options: ['🛏️', '🔨', '🚗'], // 软小床 / 铁锤 / 小汽车
-    toolLabels: ['Cozy bed', 'Hammer', 'Toy car'],
-    solvedAnim: 'sleep_bed'
+    contextIcon: '🛏️',
+    correctTool: 'teddy',
+    options: [
+      { value: 'teddy', label: 'Teddy bear', kind: 'emoji', icon: '🧸' },
+      { value: 'car', label: 'Toy car', kind: 'emoji', icon: '🚗' },
+      { value: 'ball', label: 'Ball', kind: 'emoji', icon: '⚽' }
+    ]
   },
   {
     id: 'e10',
-    scene: 'messy_room',
-    title: 'Messy Toys',
-    crisisSpeech: "Oh dear! Toys on the floor! The room is messy. Clean up!",
-    thankYouSpeech: "A toy box! All toys inside! The room is neat and tidy!",
-    sceneDesc: '🧸 地上散落着积木与娃娃，乱糟糟的房间',
+    scene: 'dog_tidy',
+    title: 'Tidy Up',
+    crisisSpeech: "The box, please.",
+    thankYouSpeech: "Thank you! Let's tidy up.",
     actor: '🐕',
-    environment: '🧸 🚗 🧩',
-    correctTool: '📦',
-    options: ['📦', '🪴', '🫖'], // 收纳箱 / 花盆 / 茶壶
-    toolLabels: ['Toy box', 'Plant pot', 'Teapot'],
-    solvedAnim: 'pack_box'
+    contextIcon: '🧩',
+    correctTool: 'box',
+    options: [
+      { value: 'box', label: 'Box', kind: 'emoji', icon: '📦' },
+      { value: 'basket', label: 'Basket', kind: 'emoji', icon: '🧺' },
+      { value: 'bag', label: 'Bag', kind: 'emoji', icon: '🎒' }
+    ]
   },
   {
     id: 'e11',
-    scene: 'birthday_candles',
-    title: 'Birthday Party',
-    crisisSpeech: "Happy birthday! A sweet cake! But candles have no fire!",
-    thankYouSpeech: "Fire! Candles are lit! One, two, three, blow! Hooray!",
-    sceneDesc: '🎂 生日蛋糕上的彩色蜡烛还没有被点燃',
+    scene: 'girl_birthday',
+    title: 'Party Balloons',
+    crisisSpeech: "Three balloons, please.",
+    thankYouSpeech: "Thank you! One, two, three!",
     actor: '👧',
-    environment: '🎂 🎈 🥳',
-    correctTool: '🔥',
-    options: ['🔥', '🥄', '🧦'], // 火柴火苗 / 勺子 / 袜子
-    toolLabels: ['Fire', 'Spoon', 'Socks'],
-    solvedAnim: 'light_candle'
+    contextIcon: '🎂',
+    correctTool: 'three-balloons',
+    options: [
+      { value: 'one-balloon', label: 'One balloon', kind: 'balloons', count: 1 },
+      { value: 'two-balloons', label: 'Two balloons', kind: 'balloons', count: 2 },
+      { value: 'three-balloons', label: 'Three balloons', kind: 'balloons', count: 3 }
+    ]
   },
   {
     id: 'e12',
-    scene: 'flying_kite',
+    scene: 'girl_kite',
     title: 'Fly a Kite',
-    crisisSpeech: "A colorful kite! But no wind today! Kite cannot fly!",
-    thankYouSpeech: "Whoosh! Fresh wind! The kite is flying high!",
-    sceneDesc: '🪁 草地上拿着风筝等待起飞的小女孩',
+    crisisSpeech: "The blue kite, please.",
+    thankYouSpeech: "Thank you! My blue kite.",
     actor: '👧',
-    environment: '🪁 🌱 ☁️',
-    correctTool: '💨',
-    options: ['💨', '🪨', '📦'], // 阵阵春风 / 大石头 / 纸箱
-    toolLabels: ['Gentle wind', 'Heavy rock', 'Cardboard box'],
-    solvedAnim: 'kite_soar'
+    contextIcon: '☁️',
+    correctTool: 'blue-kite',
+    options: [
+      { value: 'red-kite', label: 'Red kite', kind: 'kite', color: 'red' },
+      { value: 'blue-kite', label: 'Blue kite', kind: 'kite', color: 'blue' },
+      { value: 'yellow-kite', label: 'Yellow kite', kind: 'kite', color: 'yellow' }
+    ]
   }
 ];
 
