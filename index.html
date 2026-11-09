@@ -20,159 +20,158 @@
         <div id="combo-badge" class="badge-item combo" style="display: none;" title="连续答对">🔥 <span id="combo-count">0</span>连击</div>
         <button id="btn-toggle-sfx" class="icon-btn" title="开关音效">🔔</button>
         <button id="btn-toggle-bgm" class="icon-btn" title="开关背景音乐">🎵</button>
-        <a href="https://github.com/tisyang/study-games" target="_blank" rel="noopener noreferrer" class="icon-btn" title="GitHub 源码仓库 (作者: tisyang)">
-          <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-        </a>
       </div>
     </header>
 
     <!-- 视图 1: 乐学萌岛·一级总大厅 (学科岛屿分类) -->
     <main id="view-main-lobby" class="view">
       <div class="hero-banner">
-        <h1>🌟 乐学萌岛 🏝️</h1>
-        <p>快乐点击学知识，每天进步一点点！</p>
+        <h1>今天想玩什么？</h1>
       </div>
 
       <div class="island-grid">
-        <!-- 学科 1: 趣味数学岛 -->
-        <div class="island-card math" id="card-goto-math">
-          <div class="island-badge">🧮 算术大冒险</div>
-          <span class="island-icon">🧮</span>
-          <div class="island-title">趣味数学岛</div>
-          <div class="island-desc">100以内加减法 · 九九乘除法 · 动态具象演算沙盒</div>
-          <div class="island-tags">
-            <span class="sub-tag">➕ 进位加法</span>
-            <span class="sub-tag">➖ 退位减法</span>
-            <span class="sub-tag">✖️ 乘法方阵</span>
-            <span class="sub-tag">➗ 公平除法</span>
+        <!-- 入口 1: 数学 - 动物小帮手 (松鼠与苹果) -->
+        <button type="button" class="island-card math" id="card-goto-math" aria-label="数学：动物小帮手">
+          <span class="island-badge">数学</span>
+          <div class="island-scene math-scene" aria-hidden="true">
+            <svg class="scene-illustration" viewBox="0 0 220 120" preserveAspectRatio="xMidYMid meet">
+              <rect width="220" height="120" rx="16" fill="#e0f2fe"/>
+              <ellipse cx="170" cy="28" rx="20" ry="12" fill="#ffffff" opacity="0.85"/>
+              <ellipse cx="185" cy="24" rx="16" ry="10" fill="#ffffff" opacity="0.85"/>
+              <path d="M-10 120 Q50 70 120 85 T230 75 L230 120 Z" fill="#bbf7d0"/>
+              <path d="M-10 120 Q70 92 140 88 T230 96 L230 120 Z" fill="#86efac"/>
+              <rect x="36" y="55" width="12" height="45" rx="4" fill="#a16207"/>
+              <circle cx="42" cy="45" r="28" fill="#22c55e"/>
+              <circle cx="26" cy="50" r="18" fill="#16a34a"/>
+              <circle cx="58" cy="50" r="18" fill="#15803d"/>
+              <circle cx="32" cy="40" r="5" fill="#ef4444"/>
+              <circle cx="48" cy="35" r="5" fill="#ef4444"/>
+              <circle cx="40" cy="55" r="5" fill="#ef4444"/>
+              <circle cx="54" cy="48" r="5" fill="#ef4444"/>
+              <path d="M152 92 L176 92 L172 106 L156 106 Z" fill="#b45309"/>
+              <path d="M154 92 C154 82 174 82 174 92" stroke="#92400e" stroke-width="2" fill="none"/>
+              <circle cx="160" cy="90" r="4.5" fill="#ef4444"/>
+              <circle cx="168" cy="90" r="4.5" fill="#ef4444"/>
+              <circle cx="164" cy="84" r="4.5" fill="#ef4444"/>
+              <text x="110" y="98" font-size="44" text-anchor="middle">🐿️</text>
+              <text x="132" y="88" font-size="22" text-anchor="middle">🍎</text>
+            </svg>
           </div>
-          <button class="btn-enter-island">进入数学岛 ➔</button>
-        </div>
+          <span class="island-title">动物小帮手</span>
+        </button>
 
-        <!-- 学科 2: 语文智慧岛 -->
-        <div class="island-card chinese" id="card-goto-chinese">
-          <div class="island-badge">📖 国学与诗词</div>
-          <span class="island-icon">📖</span>
-          <div class="island-title">语文智慧岛</div>
-          <div class="island-desc">32个寓言成语 · 32首课标必背古诗 · 拼音伴读与发音</div>
-          <div class="island-tags">
-            <span class="sub-tag">🎭 成语小剧场</span>
-            <span class="sub-tag">🎨 诗情画意集</span>
-            <span class="sub-tag">🔤 声调拼音</span>
-            <span class="sub-tag">🔊 语音朗读</span>
+        <!-- 入口 2: 语文 - 故事与古诗 (故事绘本) -->
+        <button type="button" class="island-card chinese" id="card-goto-chinese" aria-label="语文：故事与古诗">
+          <span class="island-badge">语文</span>
+          <div class="island-scene chinese-scene" aria-hidden="true">
+            <svg class="scene-illustration" viewBox="0 0 220 120" preserveAspectRatio="xMidYMid meet">
+              <rect width="220" height="120" rx="16" fill="#f3e8ff"/>
+              <path d="M-10 120 Q60 75 130 90 T230 78 L230 120 Z" fill="#e9d5ff"/>
+              <path d="M-10 120 Q80 95 150 90 T230 98 L230 120 Z" fill="#d8b4fe"/>
+              <path d="M42 22 A18 18 0 1 0 54 44 A14 14 0 1 1 42 22 Z" fill="#fde047"/>
+              <path d="M165 24 Q168 28 172 28 Q168 28 165 32 Q165 28 161 28 Q165 28 165 24 Z" fill="#eab308"/>
+              <path d="M190 42 Q192 45 195 45 Q192 45 190 48 Q190 45 187 45 Q190 45 190 42 Z" fill="#f59e0b"/>
+              <path d="M60 98 Q110 92 110 92 Q110 92 160 98 L168 76 Q110 70 110 70 Q110 70 52 76 Z" fill="#a855f7" opacity="0.3"/>
+              <text x="110" y="88" font-size="46" text-anchor="middle">📖</text>
+              <text x="156" y="68" font-size="26" text-anchor="middle">🎨</text>
+              <text x="68" y="72" font-size="24" text-anchor="middle">✨</text>
+              <text x="110" y="46" font-size="22" text-anchor="middle">🌸</text>
+            </svg>
           </div>
-          <button class="btn-enter-island">进入语文岛 ➔</button>
-        </div>
+          <span class="island-title">故事与古诗</span>
+        </button>
 
-        <!-- 学科 3: 英语探索岛 -->
-        <div class="island-card english" id="card-goto-english">
-          <div class="island-badge">🔤 语感救急大冒险</div>
-          <span class="island-icon">🔤</span>
-          <div class="island-title">英语探索岛</div>
-          <div class="island-desc">零翻译浸润 · 纯正英文原声 · 情境救急英雄大冒险</div>
-          <div class="island-tags">
-            <span class="sub-tag">🆘 救急小英雄</span>
-            <span class="sub-tag">🎧 纯正美音</span>
-            <span class="sub-tag">🎯 视听直接联结</span>
-            <span class="sub-tag">🚫 告别死记硬背</span>
+        <!-- 入口 3: 英语 - 动物求助啦 (雨中的兔子) -->
+        <button type="button" class="island-card english" id="card-goto-english" aria-label="英语：动物求助啦">
+          <span class="island-badge">英语</span>
+          <div class="island-scene english-scene" aria-hidden="true">
+            <svg class="scene-illustration" viewBox="0 0 220 120" preserveAspectRatio="xMidYMid meet">
+              <rect width="220" height="120" rx="16" fill="#ccfbf1"/>
+              <path d="M-10 120 Q60 82 130 92 T230 84 L230 120 Z" fill="#99f6e4"/>
+              <path d="M-10 120 Q80 96 150 94 T230 100 L230 120 Z" fill="#5eead4"/>
+              <ellipse cx="60" cy="30" rx="26" ry="14" fill="#94a3b8" opacity="0.8"/>
+              <ellipse cx="80" cy="25" rx="20" ry="12" fill="#cbd5e1" opacity="0.9"/>
+              <ellipse cx="44" cy="32" rx="16" ry="10" fill="#cbd5e1" opacity="0.9"/>
+              <line x1="45" y1="50" x2="40" y2="60" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="65" y1="48" x2="60" y2="58" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="82" y1="52" x2="77" y2="62" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="160" y1="36" x2="155" y2="48" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="180" y1="42" x2="175" y2="54" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+              <text x="110" y="98" font-size="44" text-anchor="middle">🐰</text>
+              <text x="136" y="66" font-size="34" text-anchor="middle">☂️</text>
+              <text x="75" y="80" font-size="22" text-anchor="middle">💧</text>
+            </svg>
           </div>
-          <button class="btn-enter-island">进入英语岛 ➔</button>
-        </div>
-
-        <!-- 学科 4: 益智逻辑岛 (筹备中) -->
-        <div class="island-card locked">
-          <div class="island-badge">筹备中 🚧</div>
-          <span class="island-icon">🧩</span>
-          <div class="island-title">益智思维岛</div>
-          <div class="island-desc">空间对称、找规律与趣味数学数独大闯关</div>
-          <button class="btn-enter-island disabled">正在建造中...</button>
-        </div>
+          <span class="island-title">动物求助啦</span>
+        </button>
       </div>
     </main>
 
     <!-- 视图 2: 二级学科专区大厅 (具体游戏模式选择) -->
     <main id="view-subject-lobby" class="view hidden">
       <div class="subject-lobby-header">
-        <button id="btn-back-main" class="icon-btn" title="返回乐园总大厅">←</button>
+        <button id="btn-back-main" class="icon-btn" title="返回主页">←</button>
         <div class="subject-title-box">
-          <h2 id="subject-lobby-title">🧮 趣味数学岛</h2>
-          <p id="subject-lobby-desc">挑选喜欢的关卡，开始大冒险吧！</p>
+          <h2 id="subject-lobby-title">数学岛</h2>
+          <p id="subject-lobby-desc" class="hidden"></p>
         </div>
       </div>
 
       <!-- 数学关卡卡片网格 -->
       <div class="portal-grid" id="grid-math-modes">
         <!-- 100以内加法 -->
-        <div class="portal-card add" data-mode="add">
-          <span class="card-icon">➕</span>
-          <div class="card-title">进位加法森林</div>
-          <div class="card-desc">100以内两位数加法，攻克满十进一！</div>
-          <span class="card-tag">果园装箱</span>
-        </div>
+        <button type="button" class="portal-card add" data-mode="add">
+          <span class="card-icon">🍎</span>
+          <div class="card-title">收苹果</div>
+        </button>
 
         <!-- 100以内减法 -->
-        <div class="portal-card sub" data-mode="sub">
-          <span class="card-icon">➖</span>
-          <div class="card-title">退位减法溪流</div>
-          <div class="card-desc">个位不够借一当十，轻松掌握破十法！</div>
-          <span class="card-tag">松鼠拆箱</span>
-        </div>
+        <button type="button" class="portal-card sub" data-mode="sub">
+          <span class="card-icon">📦</span>
+          <div class="card-title">松鼠拆箱</div>
+        </button>
 
         <!-- 表内乘法 -->
-        <div class="portal-card mul" data-mode="mul">
-          <span class="card-icon">✖️</span>
-          <div class="card-title">九九乘法城堡</div>
-          <div class="card-desc">一一得一到九九八十一，口诀滚瓜烂熟！</div>
-          <span class="card-tag">曲奇方阵</span>
-        </div>
+        <button type="button" class="portal-card mul" data-mode="mul">
+          <span class="card-icon">🍪</span>
+          <div class="card-title">烤饼干</div>
+        </button>
 
         <!-- 表内除法 -->
-        <div class="portal-card div" data-mode="div">
-          <span class="card-icon">➗</span>
-          <div class="card-title">算术除法海湾</div>
-          <div class="card-desc">乘除好伙伴，想乘法口诀快速求商！</div>
-          <span class="card-tag">公平野餐</span>
-        </div>
+        <button type="button" class="portal-card div" data-mode="div">
+          <span class="card-icon">🍉</span>
+          <div class="card-title">分水果</div>
+        </button>
 
         <!-- 综合大挑战 -->
-        <div class="portal-card mix" data-mode="mix">
+        <button type="button" class="portal-card mix" data-mode="mix">
           <span class="card-icon">🌈</span>
-          <div class="card-title">全能算术大挑战</div>
-          <div class="card-desc">加减乘除随机出题，快来看看你能得几颗星！</div>
-          <span class="card-tag">小勇士首选</span>
-        </div>
+          <div class="card-title">算术挑战</div>
+        </button>
       </div>
 
       <!-- 语文关卡卡片网格 -->
       <div class="portal-grid hidden" id="grid-chinese-modes">
-        <!-- 语文模块 1: 成语小剧场 -->
-        <div class="portal-card idiom" data-mode="idiom">
+        <!-- 语文模块 1: 成语故事 -->
+        <button type="button" class="portal-card idiom" data-mode="idiom">
           <span class="card-icon">🎭</span>
-          <div class="card-title">成语小剧场</div>
-          <div class="card-desc">32个寓言成语，看动画像素画识成语，字字带拼音！</div>
-          <span class="card-tag">拼音·朗读·寓意</span>
-        </div>
+          <div class="card-title">成语故事</div>
+        </button>
 
-        <!-- 语文模块 2: 诗情画意集 -->
-        <div class="portal-card poem" data-mode="poem">
+        <!-- 语文模块 2: 画中找诗 -->
+        <button type="button" class="portal-card poem" data-mode="poem">
           <span class="card-icon">🎨</span>
-          <div class="card-title">诗情画意集</div>
-          <div class="card-desc">32首课标必背经典古诗，画中寻诗填词，伴读诗意！</div>
-          <span class="card-tag">拼音·画卷·名篇</span>
-        </div>
+          <div class="card-title">画中找诗</div>
+        </button>
       </div>
 
       <!-- 英语关卡卡片网格 -->
       <div class="portal-grid hidden" id="grid-english-modes">
-        <!-- 英语模块 1: 情境救急小剧场 -->
-        <div class="portal-card english-story" data-mode="english_story">
-          <span class="card-icon">🆘</span>
-          <div class="card-title">情境救急小剧场</div>
-          <div class="card-desc">小动物遇到困难啦！听原声、看场景，选出最神奇的救援工具！</div>
-          <span class="card-tag">零翻译·沉浸语感</span>
-        </div>
+        <!-- 英语模块 1: 帮帮小动物 -->
+        <button type="button" class="portal-card english-story" data-mode="english_story">
+          <span class="card-icon">🐾</span>
+          <div class="card-title">帮帮小动物</div>
+        </button>
       </div>
     </main>
 
@@ -180,13 +179,13 @@
     <main id="view-quiz" class="view hidden">
       <div class="quiz-header">
         <div class="quiz-mode-title" id="quiz-title">
-          <span>➕ 进位加法森林</span>
+          <span>收苹果</span>
         </div>
         <div class="badge-item" id="quiz-progress">第 1 / 10 题</div>
       </div>
 
       <!-- 倒计时进度条 -->
-      <div class="timer-bar-container">
+      <div class="timer-bar-container" id="timer-bar-container">
         <div id="timer-bar" class="timer-bar-fill"></div>
       </div>
 
@@ -214,6 +213,11 @@
         <button class="option-btn btn-2" data-idx="2">64</button>
         <button class="option-btn btn-3" data-idx="3">75</button>
       </div>
+
+      <!-- 探索模式主动推进按键 -->
+      <div id="quiz-advance-box" class="quiz-advance-box hidden">
+        <button type="button" id="btn-next-question" class="btn-advance-action">下一车 ➔</button>
+      </div>
     </main>
 
     <!-- 弹窗 1: 智慧小锦囊 (错多或超时触发) -->
@@ -239,7 +243,7 @@
         <div class="result-stat-row">
           <div class="stat-item">
             <span class="val" id="summary-correct">10/10</span>
-            <span class="lbl">答对题数</span>
+            <span class="lbl">完成题数</span>
           </div>
           <div class="stat-item">
             <span class="val" id="summary-combo">5</span>

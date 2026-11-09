@@ -16,6 +16,7 @@ class VisualEnlightenmentEngine {
     this.activeTimers.forEach(t => clearTimeout(t));
     this.activeTimers = [];
     this.currentCallback = null;
+    this.exploreData = null;
     if (this.container) this.container.innerHTML = '';
   }
 
@@ -35,9 +36,14 @@ class VisualEnlightenmentEngine {
   }
 
   // 根据题目类型与数据渲染初始动画舞台
-  render(q) {
+  render(q, options = {}) {
     this.clear();
     if (!this.container || !this.narration) return;
+
+    if (options.isExplore && q.type === 'add') {
+      this._renderAdditionExplore(q);
+      return;
+    }
 
     // 更新故事叙述，将所有数字自动包裹醒目大字号鲜艳药丸胶囊
     const formattedStory = (q.story || '').replace(/(\d+)/g, '<span class="hl-num">$1</span>');
@@ -62,6 +68,253 @@ class VisualEnlightenmentEngine {
         this._renderDivisionInitial(q);
         break;
     }
+  }
+
+  // ================= 任务02: ➕ 加法果园独立探索样板 =================
+  _renderAdditionExplore(q) {
+    this.narration.innerHTML = `<span class="story-text">合起来有多少个苹果？</span>`;
+
+    const tens1 = Math.floor(q.num1 / 10);
+    const ones1 = q.num1 % 10;
+    const tens2 = Math.floor(q.num2 / 10);
+    const ones2 = q.num2 % 10;
+    const totalTens = tens1 + tens2;
+    const totalOnes = ones1 + ones2;
+    const isCarry = totalOnes >= 10;
+    const packedTens = totalTens + 1;
+    const packedOnes = totalOnes - 10;
+
+    this.exploreData = {
+      q,
+      tens1, ones1,
+      tens2, ones2,
+      totalTens, totalOnes,
+      isCarry,
+      packedTens, packedOnes,
+      step: 'initial', // 'initial' | 'merged' | 'packed' | 'completed'
+      locked: false
+    };
+
+    this.container.innerHTML = `
+      <div class="explore-orchard-stage">
+        <div class="explore-header-row">
+          <div class="squirrel-mascot" id="explore-squirrel" aria-label="小松鼠">🐿️</div>
+          <div class="explore-bubble" id="explore-bubble" role="status" aria-live="polite">
+            <span>帮我收苹果吧！</span>
+          </div>
+        </div>
+
+        <div class="explore-display-board" id="explore-display-board"></div>
+
+        <div class="explore-tools-bar">
+          <button type="button" class="btn-explore-tool" id="btn-tool-merge" aria-label="合在一起">
+            🧺 合在一起
+          </button>
+          <button type="button" class="btn-explore-tool hidden" id="btn-tool-pack" aria-label="装满一箱">
+            📦 装满一箱
+          </button>
+          <button type="button" class="btn-explore-tool btn-tool-help" id="btn-tool-help" aria-label="帮帮我">
+            💡 帮帮我
+          </button>
+        </div>
+      </div>
+    `;
+
+    const btnMerge = document.getElementById('btn-tool-merge');
+    const btnPack = document.getElementById('btn-tool-pack');
+    const btnHelp = document.getElementById('btn-tool-help');
+
+    if (btnMerge) {
+      btnMerge.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked || this.exploreData.step !== 'initial') return;
+        if (window.soundEngine) window.soundEngine.playClick();
+        this.exploreData.step = 'merged';
+        this._updateExploreDisplay();
+      });
+    }
+
+    if (btnPack) {
+      btnPack.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked || this.exploreData.step !== 'merged' || !this.exploreData.isCarry) return;
+        if (window.soundEngine) window.soundEngine.playPackBox();
+        this.exploreData.step = 'packed';
+        this._updateExploreDisplay();
+      });
+    }
+
+    if (btnHelp) {
+      btnHelp.addEventListener('click', () => {
+        if (!this.exploreData || this.exploreData.locked) return;
+        if (window.soundEngine) window.soundEngine.playHint();
+        this.showExploreHint();
+      });
+    }
+
+    this._updateExploreDisplay();
+  }
+
+  _updateExploreDisplay() {
+    if (!this.exploreData) return;
+    const board = document.getElementById('explore-display-board');
+    const btnMerge = document.getElementById('btn-tool-merge');
+    const btnPack = document.getElementById('btn-tool-pack');
+    const bubble = document.getElementById('explore-bubble');
+    if (!board || !btnMerge || !btnPack) return;
+
+    const { q, tens1, ones1, tens2, ones2, totalTens, totalOnes, isCarry, packedTens, packedOnes, step } = this.exploreData;
+
+    if (step === 'initial') {
+      board.innerHTML = `
+        <div class="explore-piles-wrap">
+          <div class="explore-pile pile-left">
+            <div class="pile-title"><span class="pile-num">${q.num1}</span></div>
+            <div class="item-group">
+              <div class="tens-boxes">${this._renderBoxes(tens1)}</div>
+              <div class="ones-items">${this._renderItems('🍎', ones1)}</div>
+            </div>
+          </div>
+          <div class="explore-plus-sign">+</div>
+          <div class="explore-pile pile-right">
+            <div class="pile-title"><span class="pile-num">${q.num2}</span></div>
+            <div class="item-group">
+              <div class="tens-boxes">${this._renderBoxes(tens2)}</div>
+              <div class="ones-items">${this._renderItems('🍎', ones2)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      btnMerge.classList.remove('done', 'hidden');
+      btnMerge.disabled = false;
+      btnMerge.innerHTML = '🧺 合在一起';
+      btnPack.classList.add('hidden');
+      if (bubble) bubble.innerHTML = `<span>帮我收苹果吧！</span>`;
+    } else if (step === 'merged') {
+      let onesHtml = '';
+      if (isCarry) {
+        onesHtml = `
+          <div class="ten-pack-zone">
+            <span class="pack-zone-tip">10 个 → 1 箱</span>
+            <div class="ten-pack-frame">
+              ${Array(10).fill('<div class="grid-slot"><span class="unit-item">🍎</span></div>').join('')}
+            </div>
+            <div class="ones-items frame-remain">
+              ${this._renderItems('🍎', totalOnes - 10)}
+            </div>
+          </div>
+        `;
+      } else {
+        onesHtml = `
+          <div class="ones-items">${this._renderItems('🍎', totalOnes)}</div>
+        `;
+      }
+
+      board.innerHTML = `
+        <div class="explore-merged-wrap">
+          <div class="merged-content">
+            <div class="item-group">
+              <div class="tens-boxes">${this._renderBoxes(totalTens)}</div>
+              ${onesHtml}
+            </div>
+          </div>
+        </div>
+      `;
+      btnMerge.classList.add('done', 'hidden');
+      btnMerge.disabled = true;
+      btnMerge.innerHTML = '🧺 已合在一起';
+      if (isCarry) {
+        btnPack.classList.remove('hidden', 'done');
+        btnPack.disabled = false;
+        btnPack.innerHTML = '📦 装满一箱';
+        if (bubble) bubble.innerHTML = `<span>十个装一箱</span>`;
+      } else {
+        btnPack.classList.add('hidden');
+        if (bubble) bubble.innerHTML = `<span>数一数苹果吧</span>`;
+      }
+    } else if (step === 'packed') {
+      board.innerHTML = `
+        <div class="explore-merged-wrap">
+          <div class="merged-content">
+            <div class="item-group">
+              <div class="tens-boxes">
+                ${this._renderBoxes(totalTens)}
+                <div class="tens-box new-packed" title="新装满的整箱">📦<span class="box-label">10</span></div>
+              </div>
+              <div class="ones-items">${this._renderItems('🍎', packedOnes)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      btnMerge.classList.add('hidden');
+      btnPack.classList.add('done', 'hidden');
+      btnPack.disabled = true;
+      btnPack.innerHTML = '✅ 已装满一箱';
+      if (bubble) bubble.innerHTML = `<span>选个答案吧</span>`;
+    } else if (step === 'completed') {
+      const finalTens = isCarry ? packedTens : totalTens;
+      const finalOnes = isCarry ? packedOnes : totalOnes;
+      board.innerHTML = `
+        <div class="explore-merged-wrap">
+          <div class="merged-content">
+            <div class="item-group">
+              <div class="tens-boxes">${this._renderBoxes(finalTens)}</div>
+              <div class="ones-items">${this._renderItems('🍎', finalOnes)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      btnMerge.classList.add('hidden');
+      btnMerge.disabled = true;
+      btnPack.classList.add('hidden');
+      btnPack.disabled = true;
+      const toolsBar = document.querySelector('.explore-tools-bar');
+      if (toolsBar) toolsBar.classList.add('hidden');
+      const btnHelp = document.getElementById('btn-tool-help');
+      if (btnHelp) btnHelp.disabled = true;
+      const squirrel = document.getElementById('explore-squirrel');
+      if (squirrel) {
+        squirrel.innerHTML = '🐿️🎉';
+        squirrel.classList.add('celebrating');
+      }
+      if (bubble) bubble.innerHTML = `<span>装好啦！</span>`;
+    }
+  }
+
+  setExploreHint(text, highlightSelector) {
+    const bubble = document.getElementById('explore-bubble');
+    if (bubble) {
+      bubble.innerHTML = `<span>${text}</span>`;
+      bubble.classList.remove('pulse-attention');
+      void bubble.offsetWidth;
+      bubble.classList.add('pulse-attention');
+    }
+    if (highlightSelector) {
+      const target = document.querySelector(highlightSelector);
+      if (target) {
+        target.classList.remove('pulse-attention');
+        void target.offsetWidth;
+        target.classList.add('pulse-attention');
+        this._registerTimer(() => target.classList.remove('pulse-attention'), 1500);
+      }
+    }
+  }
+
+  showExploreHint() {
+    if (!this.exploreData) return;
+    const { step, isCarry } = this.exploreData;
+    if (step === 'initial') {
+      this.setExploreHint('合在一起看看 🧺', '#btn-tool-merge');
+    } else if (step === 'merged' && isCarry) {
+      this.setExploreHint('十个装一箱 📦', '#btn-tool-pack');
+    } else {
+      this.setExploreHint('数一数苹果吧');
+    }
+  }
+
+  completeExploreAddition() {
+    if (!this.exploreData) return;
+    this.exploreData.locked = true;
+    this.exploreData.step = 'completed';
+    this._updateExploreDisplay();
   }
 
   // ================= 答对后触发慢速全流程动态演算 =================
