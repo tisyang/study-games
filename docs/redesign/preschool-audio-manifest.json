@@ -163,6 +163,206 @@
       "duration": 5.184
     },
     {
+      "id": "fireLearn",
+      "text": "火，火苗的火。点一下火字，看看小火苗。",
+      "asset": "assets/audio/preschool/fireLearn.mp3",
+      "bytes": 55680,
+      "sha256": "84abe0d4d329661411e9211fc3b923e3d8a7c4f7ac205d3fdbf8c69746a7f414",
+      "duration": 6.96
+    },
+    {
+      "id": "fireName",
+      "text": "火，火苗的火。",
+      "asset": "assets/audio/preschool/fireName.mp3",
+      "bytes": 22848,
+      "sha256": "bd25d717f11af9fd825bd821f042ea3a97290c67b69c5e545ebe8efd97e1f58a",
+      "duration": 2.856
+    },
+    {
+      "id": "fireQuiz",
+      "text": "灶台上的火在烧水。哪个字表示火？",
+      "asset": "assets/audio/preschool/fireQuiz.mp3",
+      "bytes": 41280,
+      "sha256": "120b368643a53a07328c7a16b4909f23b6069ecfac14d4bbe49c811760648b8d",
+      "duration": 5.16
+    },
+    {
+      "id": "treeLearn",
+      "text": "木，树木的木。点一下木字，让小树长起来。",
+      "asset": "assets/audio/preschool/treeLearn.mp3",
+      "bytes": 53568,
+      "sha256": "80520ba0210c41981508af7b2afdb11f180b5fbc77cbb85ef8a5e9f0578edf54",
+      "duration": 6.696
+    },
+    {
+      "id": "treeName",
+      "text": "木，树木的木。",
+      "asset": "assets/audio/preschool/treeName.mp3",
+      "bytes": 20928,
+      "sha256": "3f93efd940538766bf6174138719de7cbd50911c6da91103f72ba2a63386e369",
+      "duration": 2.616
+    },
+    {
+      "id": "treeQuiz",
+      "text": "小熊走进树林。哪个字表示树木？",
+      "asset": "assets/audio/preschool/treeQuiz.mp3",
+      "bytes": 38976,
+      "sha256": "45dfbe051444ce12ae57f1e38a9545026e09f6903fd4e3f9d3f193c45d9092f4",
+      "duration": 4.872
+    },
+    {
+      "id": "cowLearn",
+      "text": "牛，小牛的牛。点一下牛字，请小牛出来。",
+      "asset": "assets/audio/preschool/cowLearn.mp3",
+      "bytes": 52224,
+      "sha256": "d36037e741d9476de32ab03669f926def1ceedf20160c4cd6acbdd5c0e107301",
+      "duration": 6.528
+    },
+    {
+      "id": "cowName",
+      "text": "牛，小牛的牛。",
+      "asset": "assets/audio/preschool/cowName.mp3",
+      "bytes": 21696,
+      "sha256": "971ad89dce84e539f00b06d913abac38ec38500813f9cd5e7d00cc1c5600fa39",
+      "duration": 2.712
+    },
+    {
+      "id": "cowQuiz",
+      "text": "农场里有一头牛。找一找牛字。",
+      "asset": "assets/audio/preschool/cowQuiz.mp3",
+      "bytes": 37056,
+      "sha256": "b2c75165a31617970cbcb4be288825f6e1f938b37385ac61b64b8e3183de5582",
+      "duration": 4.632
+    },
+    {
+      "id": "sheepLearn",
+      "text": "羊，小羊的羊。点一下羊字，请小羊出来。",
+      "asset": "assets/audio/preschool/sheepLearn.mp3",
+      "bytes": 51840,
+      "sha256": "3dfc130ae05fd0ad343b12c0fdea19636e822e4552034545c490abe211fc6a48",
+      "duration": 6.48
+    },
+    {
+      "id": "sheepName",
+      "text": "羊，小羊的羊。",
+      "asset": "assets/audio/preschool/sheepName.mp3",
+      "bytes": 21504,
+      "sha256": "609d21325255048c8ce89e95be5f57b82a7f26f29f23413b5d9a7d85a32d0a7f",
+      "duration": 2.688
+    },
+    {
+      "id": "sheepQuiz",
+      "text": "小羊正在吃草。找一找羊字。",
+      "asset": "assets/audio/preschool/sheepQuiz.mp3",
+      "bytes": 34944,
+      "sha256": "125ad714d6d9f7e49bb9c86ba38558372b98ca2fa7e8aca28f1b3a5acadf4c2a",
+      "duration": 4.368
+    },
+    {
+      "id": "horseLearn",
+      "text": "马，小马的马。点一下马字，请小马出来。",
+      "asset": "assets/audio/preschool/horseLearn.mp3",
+      "bytes": 50496,
+      "sha256": "720e5de3126913477c52dd774432c2d913d0fb6a864e886ab08fabc25dc63290",
+      "duration": 6.312
+    },
+    {
+      "id": "horseName",
+      "text": "马，小马的马。",
+      "asset": "assets/audio/preschool/horseName.mp3",
+      "bytes": 20352,
+      "sha256": "7e93065d98467ae1cbfce3625f6fcd6722bfd90d9fc4dfbe8bcc611ef6c1615a",
+      "duration": 2.544
+    },
+    {
+      "id": "horseQuiz",
+      "text": "小马准备出发了。找一找马字。",
+      "asset": "assets/audio/preschool/horseQuiz.mp3",
+      "bytes": 31872,
+      "sha256": "f92b3683650d838b9ddc383d6f7761b271b2a322a544ede4c6f41f41f2c012d9",
+      "duration": 3.984
+    },
+    {
+      "id": "doorLearn",
+      "text": "门，大门的门。点一下门字，把门打开。",
+      "asset": "assets/audio/preschool/doorLearn.mp3",
+      "bytes": 48000,
+      "sha256": "a9b99f1a4697a4218782e7aa1ae147241d7ab47e988631c73165a2d70079d6e1",
+      "duration": 6
+    },
+    {
+      "id": "doorName",
+      "text": "门，大门的门。",
+      "asset": "assets/audio/preschool/doorName.mp3",
+      "bytes": 20352,
+      "sha256": "ccfb4c2a3f58fad59eec583b6193282eabd2c900614d8c79d2d595661bcec055",
+      "duration": 2.544
+    },
+    {
+      "id": "doorQuiz",
+      "text": "小熊回家了，要从这里进去。找一找门字。",
+      "asset": "assets/audio/preschool/doorQuiz.mp3",
+      "bytes": 48768,
+      "sha256": "81bbb255d42b2d5b4514443055c8320730d8f5492adb12e64a49ddd1cb26b370",
+      "duration": 6.096
+    },
+    {
+      "id": "mouthLearn",
+      "text": "口，就是嘴巴。点一下口字，小朋友张开嘴。",
+      "asset": "assets/audio/preschool/mouthLearn.mp3",
+      "bytes": 53376,
+      "sha256": "dae1610d4c2f2570e494d6b49f82d571f76a29495a78a67ae0796b5dbb6f12e9",
+      "duration": 6.672
+    },
+    {
+      "id": "mouthName",
+      "text": "口，就是嘴巴。",
+      "asset": "assets/audio/preschool/mouthName.mp3",
+      "bytes": 19584,
+      "sha256": "0e7f3fb974512d65cbc277496b4a32d689aa2583de635d13088af0992c5dce3a",
+      "duration": 2.448
+    },
+    {
+      "id": "mouthQuiz",
+      "text": "吃苹果要张开嘴巴。哪个字表示嘴巴？",
+      "asset": "assets/audio/preschool/mouthQuiz.mp3",
+      "bytes": 43200,
+      "sha256": "0d05299799e502eb3c604245574c470d32dcbaabf0fca937c457650af09faaab",
+      "duration": 5.4
+    },
+    {
+      "id": "handLearn",
+      "text": "手，小手的手。点一下手字，挥挥小手。",
+      "asset": "assets/audio/preschool/handLearn.mp3",
+      "bytes": 51648,
+      "sha256": "38154660ef4def06c81c55a9e8e255fbcc0def9556f6ff9f19ccfee1170d73f0",
+      "duration": 6.456
+    },
+    {
+      "id": "handName",
+      "text": "手，小手的手。",
+      "asset": "assets/audio/preschool/handName.mp3",
+      "bytes": 21888,
+      "sha256": "6890ba225d653a143f89bb32994eec92b9bd5c84ea85603645137b02611b6e12",
+      "duration": 2.736
+    },
+    {
+      "id": "handQuiz",
+      "text": "拍皮球要用到小手。找一找手字。",
+      "asset": "assets/audio/preschool/handQuiz.mp3",
+      "bytes": 39360,
+      "sha256": "02c861f99b5bcbe374ebd94c2818ead005ce69f55e593742800bf49290477cca",
+      "duration": 4.92
+    },
+    {
+      "id": "letterGroups",
+      "text": "汉字藏在自然里、小动物身上，还有我们身边。选一个地方，认识三个字吧。",
+      "asset": "assets/audio/preschool/letterGroups.mp3",
+      "bytes": 84864,
+      "sha256": "009671dea01b8efada2966e54e4cb00484f0195e98598246a873ab06c6a3a562",
+      "duration": 10.608
+    },
+    {
       "id": "retryLetter",
       "text": "再试试。也可以点再看一次，看看这个字。",
       "asset": "assets/audio/preschool/retryLetter.mp3",
@@ -227,5 +427,5 @@
       "duration": 1.008
     }
   ],
-  "verification": "All files match SHA256 and decode in local Chromium; text matches PRESCHOOL_AUDIO."
+  "verification": "All 53 files match program text and SHA256 and decode in local Chromium."
 }

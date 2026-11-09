@@ -20,6 +20,31 @@ const PRESCHOOL_AUDIO = {
   mountainLearn: '山，大山的山。点一下山字，让大山出现。',
   mountainName: '山，大山的山。',
   mountainQuiz: '小熊去爬山。找一找表示大山的字。',
+  fireLearn: '火，火苗的火。点一下火字，看看小火苗。',
+  fireName: '火，火苗的火。',
+  fireQuiz: '灶台上的火在烧水。哪个字表示火？',
+  treeLearn: '木，树木的木。点一下木字，让小树长起来。',
+  treeName: '木，树木的木。',
+  treeQuiz: '小熊走进树林。哪个字表示树木？',
+  cowLearn: '牛，小牛的牛。点一下牛字，请小牛出来。',
+  cowName: '牛，小牛的牛。',
+  cowQuiz: '农场里有一头牛。找一找牛字。',
+  sheepLearn: '羊，小羊的羊。点一下羊字，请小羊出来。',
+  sheepName: '羊，小羊的羊。',
+  sheepQuiz: '小羊正在吃草。找一找羊字。',
+  horseLearn: '马，小马的马。点一下马字，请小马出来。',
+  horseName: '马，小马的马。',
+  horseQuiz: '小马准备出发了。找一找马字。',
+  doorLearn: '门，大门的门。点一下门字，把门打开。',
+  doorName: '门，大门的门。',
+  doorQuiz: '小熊回家了，要从这里进去。找一找门字。',
+  mouthLearn: '口，就是嘴巴。点一下口字，小朋友张开嘴。',
+  mouthName: '口，就是嘴巴。',
+  mouthQuiz: '吃苹果要张开嘴巴。哪个字表示嘴巴？',
+  handLearn: '手，小手的手。点一下手字，挥挥小手。',
+  handName: '手，小手的手。',
+  handQuiz: '拍皮球要用到小手。找一找手字。',
+  letterGroups: '汉字藏在自然里、小动物身上，还有我们身边。选一个地方，认识三个字吧。',
   retryLetter: '再试试。也可以点再看一次，看看这个字。',
   rightLetter: '找到了！这个字在这里也用得上。',
   finish: '三个小任务都完成啦！休息一下，或者再玩一次吧。',
@@ -38,11 +63,27 @@ document.addEventListener('DOMContentLoaded', () => {
     { a: 2, b: 2, scene: 'picnic', voice: 'picnic', remember: true }
   ];
   const letters = [
-    { word: '日', scene: 'sun', voice: 'sun', label: '太阳' },
-    { word: '月', scene: 'moon', voice: 'moon', label: '月亮' },
-    { word: '水', scene: 'water', voice: 'water', label: '流水' },
-    { word: '山', scene: 'mountain', voice: 'mountain', label: '大山' }
+    { word: '日', group: 'nature', scene: 'sun', voice: 'sun', label: '太阳', heading: '让太阳升起来', question: '哪个字表示太阳？' },
+    { word: '月', group: 'nature', scene: 'moon', voice: 'moon', label: '月亮', heading: '让月亮出来', question: '晚上，天上有什么？' },
+    { word: '水', group: 'nature', scene: 'water', voice: 'water', label: '流水', heading: '让小河流起来', question: '浇花需要哪个字？' },
+    { word: '山', group: 'nature', scene: 'mountain', voice: 'mountain', label: '大山', heading: '让大山出现', question: '小熊走到哪里？' },
+    { word: '火', group: 'nature', scene: 'fire', voice: 'fire', label: '火苗', heading: '看看小火苗', question: '烧水用到哪个字？' },
+    { word: '木', group: 'nature', scene: 'tree', voice: 'tree', label: '树木', heading: '让小树长起来', question: '树林里藏着哪个字？' },
+    { word: '牛', group: 'animals', scene: 'cow', voice: 'cow', label: '小牛', heading: '请小牛出来', question: '谁在农场里？' },
+    { word: '羊', group: 'animals', scene: 'sheep', voice: 'sheep', label: '小羊', heading: '请小羊出来', question: '谁在吃青草？' },
+    { word: '马', group: 'animals', scene: 'horse', voice: 'horse', label: '小马', heading: '请小马出来', question: '谁要出发啦？' },
+    { word: '门', group: 'life', scene: 'door', voice: 'door', label: '大门', heading: '把门打开', question: '小熊从哪里进家？' },
+    { word: '口', group: 'life', scene: 'mouth', voice: 'mouth', label: '嘴巴', heading: '张开小嘴巴', question: '哪个字表示嘴巴？' },
+    { word: '手', group: 'life', scene: 'hand', voice: 'hand', label: '小手', heading: '挥挥小手', question: '拍球用到哪个字？' }
   ];
+  const letterGroups = [
+    { id: 'nature', title: '看自然', icon: '🌳', words: '日 月 水 山 火 木' },
+    { id: 'animals', title: '小动物', icon: '🐮', words: '牛 羊 马' },
+    { id: 'life', title: '我身边', icon: '👋', words: '门 口 手' }
+  ];
+  const seenKey = 'kids_preschool_letters_seen';
+  const seenWords = new Set((localStorage.getItem(seenKey) || '').split(''));
+  let letterGroup = 'nature';
   const animals = ['🐰', '🐱', '🐶', '🐼', '🐸'];
   let mode = null, index = 0, boarded = 0, correct = false;
   let arrived = [];
@@ -100,8 +141,27 @@ document.addEventListener('DOMContentLoaded', () => {
   function start(nextMode) {
     mode = nextMode;
     index = 0;
-    // 首轮固定认识日、月、水；重玩也允许遇到山。
-    if (mode === 'letters') letterTasks = letters.slice(0, 3);
+    if (mode === 'letters') return showLetterGroups();
+    nextTask();
+  }
+
+  function showLetterGroups() {
+    window.speechEngine.stop();
+    title.textContent = '汉字小世界';
+    progress.textContent = '';
+    content.innerHTML = `<div class="ps-task-line"><h3 tabindex="-1">去哪里找汉字？</h3>${listen('letterGroups')}</div>
+      <div class="ps-group-grid">${letterGroups.map(group => `<button type="button" class="ps-game-card" data-action="letter-group" data-group="${group.id}">
+        <span aria-hidden="true">${group.icon}</span><strong>${group.title}</strong><small>${group.words}</small></button>`).join('')}</div>`;
+    say('letterGroups');
+    focusHeading();
+  }
+
+  function startLetterRound(group) {
+    letterGroup = group;
+    const pool = letters.filter(l => l.group === group);
+    // 只有答对才记为已玩过；优先新字，剩余位置才安排复习。
+    letterTasks = [...pool.filter(l => !seenWords.has(l.word)), ...shuffle(pool.filter(l => seenWords.has(l.word)))].slice(0, 3);
+    index = 0;
     nextTask();
   }
 
@@ -117,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderMath();
       say(mathTasks[index].voice);
     } else {
-      choices = shuffle([letterTasks[index], ...shuffle(letters.filter(l => l !== letterTasks[index])).slice(0, 2)]);
+      choices = shuffle([letterTasks[index], ...shuffle(letters.filter(l => l.group === letterGroup && l !== letterTasks[index])).slice(0, 2)]);
       renderLetters();
       say(`${letterTasks[index].voice}Learn`);
     }
@@ -179,12 +239,57 @@ document.addEventListener('DOMContentLoaded', () => {
     </svg>`;
   }
 
+  function letterScene(t, active, variant) {
+    if (['sun', 'moon', 'water', 'mountain'].includes(t.scene)) return landscape(t.scene, active, variant);
+    const animal = t.group === 'animals';
+    const tree = '<rect x="270" y="140" width="25" height="100" rx="8" fill="#9a6845"/><path d="M282 180 L245 145 M285 165 L325 130" stroke="#9a6845" stroke-width="15" stroke-linecap="round"/><circle cx="280" cy="95" r="55" fill="#6fa97b"/><circle cx="240" cy="125" r="35" fill="#86bd80"/><circle cx="325" cy="120" r="40" fill="#5e9e71"/>';
+    const flame = '<path d="M300 38 C305 105 366 105 359 173 C355 222 245 232 239 173 C234 131 273 110 267 77 C289 95 293 109 290 125 C321 111 315 78 300 38Z" fill="#f49b46"/><path d="M300 122 C299 150 335 166 321 193 C302 221 268 199 274 177 C279 158 292 149 300 122Z" fill="#ffe178"/>';
+    let subject = '';
+    if (t.scene === 'tree') subject = variant ? `<g transform="translate(-120 35) scale(.8)">${tree}</g>${tree}<g transform="translate(200 30) scale(.8)">${tree}</g>` : tree;
+    if (t.scene === 'fire') subject = variant ? `<rect x="180" y="209" width="240" height="28" rx="8" fill="#ab8871"/><g transform="translate(100 140) scale(.65 .35)">${flame}</g><rect x="235" y="110" width="140" height="68" rx="18" fill="#8da5ae"/><path d="M228 112 H383 M245 110 Q305 80 367 110" fill="none" stroke="#627e87" stroke-width="9"/>` : flame;
+    if (animal && t.scene !== 'horse') {
+      const wool = t.scene === 'sheep';
+      const cow = t.scene === 'cow';
+      const bodyColor = '#fffaf0';
+      subject = `<path d="M205 180 V235 M250 185 V238 M325 185 V238 M365 180 V235" stroke="${cow ? '#685c52' : '#8b684d'}" stroke-width="17" stroke-linecap="round"/>
+        <path d="M182 150 Q148 145 158 182" fill="none" stroke="${bodyColor}" stroke-width="12" stroke-linecap="round"/>
+        <ellipse cx="275" cy="155" rx="100" ry="55" fill="${bodyColor}" stroke="#9d856b" stroke-width="3"/>
+        ${cow ? '<ellipse cx="240" cy="137" rx="27" ry="30" fill="#586062"/><ellipse cx="300" cy="175" rx="22" ry="28" fill="#586062"/><path d="M363 73 L355 49 M403 72 L416 48" stroke="#bc9a6c" stroke-width="12" stroke-linecap="round"/>' : ''}
+        ${wool ? '<g fill="#fffaf0" stroke="#d4c8b4" stroke-width="2"><circle cx="200" cy="130" r="28"/><circle cx="235" cy="108" r="30"/><circle cx="280" cy="105" r="31"/><circle cx="325" cy="115" r="30"/><circle cx="325" cy="182" r="29"/><circle cx="275" cy="197" r="27"/><circle cx="227" cy="188" r="28"/></g>' : ''}
+        <ellipse cx="383" cy="112" rx="${wool ? 35 : 43}" ry="${wool ? 43 : 49}" fill="${wool ? '#8c7c69' : bodyColor}" stroke="#9d856b" stroke-width="3"/>
+        <ellipse cx="344" cy="96" rx="20" ry="10" fill="${bodyColor}"/><ellipse cx="425" cy="96" rx="20" ry="10" fill="${bodyColor}"/>
+        <circle cx="370" cy="104" r="5" fill="#403a32"/><circle cx="397" cy="104" r="5" fill="#403a32"/>
+        <ellipse cx="384" cy="137" rx="29" ry="17" fill="${cow ? '#e9b0a1' : '#d3b292'}"/><circle cx="374" cy="135" r="3" fill="#685443"/><circle cx="394" cy="135" r="3" fill="#685443"/>`;
+    }
+    if (t.scene === 'horse') subject = `<path d="M212 180 L203 236 M248 184 L252 236 M317 181 L310 236 M352 177 L366 233" stroke="#a77550" stroke-width="16" stroke-linecap="round"/>
+      <path d="M183 146 Q146 135 148 188 L139 209" fill="none" stroke="#72513b" stroke-width="16" stroke-linecap="round"/>
+      <ellipse cx="275" cy="155" rx="98" ry="52" fill="#be8a5d"/>
+      <path d="M316 164 L337 78 Q348 54 373 66 L391 146Z" fill="#be8a5d"/>
+      <path d="M340 73 Q354 57 371 66 L360 78 L354 98 L348 117 L335 147 L326 141Z" fill="#72513b"/>
+      <path d="M364 69 L361 36 L380 60 M384 63 L392 30 L402 72" fill="#be8a5d" stroke="#936243" stroke-width="3"/>
+      <path d="M360 77 Q366 48 391 62 L430 111 Q444 128 425 141 L382 123 L361 101Z" fill="#be8a5d"/>
+      <ellipse cx="421" cy="123" rx="22" ry="16" fill="#dabb94" transform="rotate(20 421 123)"/>
+      <circle cx="388" cy="82" r="5" fill="#41382e"/><circle cx="430" cy="120" r="3" fill="#685443"/>
+      <path d="M415 135 L426 138" stroke="#936243" stroke-width="3" stroke-linecap="round"/>`;
+    if (t.scene === 'door') subject = `${variant ? '<path d="M155 105 L300 28 L445 105" fill="#d48e77"/>' : ''}<rect x="215" y="65" width="170" height="175" rx="8" fill="#f3ddaf" stroke="#a97950" stroke-width="12"/>
+      ${active ? '<path d="M222 71 L313 100 V231 L222 234Z" fill="#be905d" stroke="#92643e" stroke-width="4"/>' : '<rect x="224" y="74" width="152" height="158" fill="#be905d"/>'}<circle cx="${active ? 292 : 352}" cy="157" r="7" fill="#ffe299"/>`;
+    if (t.scene === 'mouth') subject = `<circle cx="300" cy="132" r="92" fill="#f6c99f"/><path d="M215 107 Q202 23 301 26 Q398 24 389 102 Q355 65 321 73 Q278 47 215 107Z" fill="#705643"/><circle cx="269" cy="123" r="7" fill="#44382c"/><circle cx="332" cy="123" r="7" fill="#44382c"/>
+      ${active ? '<ellipse cx="300" cy="173" rx="27" ry="23" fill="#9b4d4f"/><path d="M281 185 Q300 170 319 185" fill="#ed9190"/>' : '<path d="M279 168 Q300 183 321 168" fill="none" stroke="#9b4d4f" stroke-width="6" stroke-linecap="round"/>'}
+      ${variant ? '<path d="M380 169 C359 144 332 170 346 195 C356 222 378 214 383 209 C398 224 419 208 424 188 C432 157 403 149 380 169Z" fill="#df7862"/><path d="M383 165 L387 148" stroke="#7d6d43" stroke-width="6"/>' : ''}`;
+    if (t.scene === 'hand') subject = `<path d="M250 227 L230 174 C220 153 235 143 247 156 L260 175 L260 80 C260 60 282 60 282 80 V135 L286 57 C287 38 308 38 308 58 V135 L313 70 C314 51 335 52 335 72 V140 L341 100 C345 81 365 86 363 105 L355 198 Q351 226 327 240 H266Z" fill="#f0be91" stroke="#c99169" stroke-width="4"/>
+      ${variant ? '<circle cx="410" cy="204" r="36" fill="#79afc8"/><path d="M374 204 H446 M410 168 Q386 204 410 240" fill="none" stroke="#d8eff6" stroke-width="5"/>' : ''}`;
+    return `<svg class="ps-landscape ${active ? 'ps-scene-active' : ''}" viewBox="0 0 600 270" role="img" aria-label="${variant ? '新场景中的' : ''}${t.label}">
+      <rect width="600" height="270" rx="24" fill="${variant ? '#e5f3f4' : '#f5f0df'}"/>
+      <path d="M0 232 Q170 186 310 224 T600 214 V270 H0Z" fill="#bad7ab"/>
+      ${animal && variant ? '<path d="M70 145 V225 M140 145 V225 M470 145 V225 M540 145 V225 M60 170 H175 M435 170 H550 M60 199 H175 M435 199 H550" stroke="#c39e76" stroke-width="10" stroke-linecap="round"/>' : ''}
+      <g class="ps-scene-subject" opacity="${active ? 1 : 0.15}">${subject}</g>
+      </svg>`;
+  }
+
   function renderLetters() {
     const t = letterTasks[index];
-    const headings = { sun: '让太阳升起来', moon: '让月亮出来', water: '让小河流起来', mountain: '让大山出现' };
-    const questions = { sun: '哪个字表示太阳？', moon: '哪个字表示月亮？', water: '浇花需要哪个字？', mountain: '爬山用到哪个字？' };
-    content.innerHTML = `<div class="ps-task-line"><h3 tabindex="-1">${correct ? '找到了！' : quiz ? questions[t.scene] : headings[t.scene]}</h3>${listen(`${t.voice}${quiz ? 'Quiz' : 'Learn'}`)}</div>
-      <div class="ps-letter-scene">${landscape(t.scene, quiz || lessonSeen, quiz)}</div>
+    content.innerHTML = `<div class="ps-task-line"><h3 tabindex="-1">${correct ? '找到了！' : quiz ? t.question : t.heading}</h3>${listen(`${t.voice}${quiz ? 'Quiz' : 'Learn'}`)}</div>
+      <div class="ps-letter-scene">${letterScene(t, quiz || lessonSeen, quiz)}</div>
       ${!quiz ? `<button type="button" class="ps-teach-glyph" data-action="learn" aria-label="认识${t.word}">${t.word}</button>
         ${lessonSeen ? '<button type="button" class="ps-next" data-action="quiz">换个地方找找 ➜</button>' : '<p class="ps-feedback">点一下这个字</p>'}` : `
         <div class="ps-choices ps-word-choices">${choices.map(l => `<button type="button" class="ps-word-choice ${correct && l === t ? 'ps-right' : ''}" data-action="word" data-word="${l.word}" ${correct ? 'disabled' : ''}>${l.word}</button>`).join('')}</div>
@@ -196,7 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.speechEngine.stop();
     progress.textContent = '3 / 3';
     content.innerHTML = `<div class="ps-finish"><span aria-hidden="true">🐻 🌼</span><h3 tabindex="-1">三个任务都完成啦！</h3>
-      <button type="button" class="ps-next" data-action="replay">再玩一次 ↻</button>
+      <button type="button" class="ps-next" data-action="replay">${mode === 'letters' ? '继续认识 ➜' : '再玩一次 ↻'}</button>
+      ${mode === 'letters' ? '<button type="button" class="ps-help" data-action="letter-groups">换一组汉字</button>' : ''}
       <button type="button" class="ps-help" data-action="lobby">休息一下</button></div>`;
     say('finish');
     focusHeading();
@@ -209,9 +315,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (action === 'listen') return say(currentVoice);
     if (action === 'start-math') return start('math');
     if (action === 'start-letters') return start('letters');
+    if (action === 'letter-groups' && mode === 'letters') return showLetterGroups();
+    if (action === 'letter-group' && mode === 'letters' && letterGroups.some(g => g.id === button.dataset.group)) return startLetterRound(button.dataset.group);
     if (action === 'lobby') return lobby();
     if (action === 'replay') {
-      if (mode === 'letters') { letterTasks = shuffle(letters).slice(0, 3); index = 0; return nextTask(); }
+      if (mode === 'letters') return startLetterRound(letterGroup);
       return start(mode);
     }
     if (action === 'next' && correct && index < 3) {
@@ -253,7 +361,11 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (action === 'quiz' && lessonSeen && !quiz) { quiz = true; renderLetters(); say(`${letterTasks[index].voice}Quiz`); focusHeading(); }
       else if (action === 'review' && quiz && !correct) { quiz = false; renderLetters(); say(`${letterTasks[index].voice}Learn`); focusControl('[data-action="learn"]'); }
       else if (action === 'word' && quiz && !correct) {
-        if (button.dataset.word === letterTasks[index].word) { correct = true; renderLetters(); say('rightLetter'); focusControl('[data-action="next"]'); }
+        if (button.dataset.word === letterTasks[index].word) {
+          seenWords.add(letterTasks[index].word);
+          localStorage.setItem(seenKey, [...seenWords].join(''));
+          correct = true; renderLetters(); say('rightLetter'); focusControl('[data-action="next"]');
+        }
         else { content.querySelector('.ps-feedback').textContent = '再试试，也可以再看一次'; say('retryLetter'); }
       }
     }

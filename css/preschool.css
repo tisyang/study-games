@@ -39,6 +39,9 @@
 .ps-game-card > .ps-glyph-preview { font-size: 52px; }
 .ps-game-card strong { font-size: 30px; }
 .ps-game-card small { font-size: 22px; }
+.ps-group-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.ps-group-grid .ps-game-card { min-height: 250px; }
+.ps-group-grid small { line-height: 1.8; text-align: center; }
 .ps-task-line { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
 .ps-task-line h3 { font-size: 30px; line-height: 1.5; }
 .ps-task-line h3:focus, .ps-finish h3:focus { outline: none; }
@@ -97,6 +100,8 @@
   .preschool-entry strong { font-size: 26px; }
   .preschool-entry small { font-size: 16px; }
   .ps-game-grid { grid-template-columns: 1fr; gap: 20px; }
+  .ps-group-grid { grid-template-columns: 1fr; }
+  .ps-group-grid .ps-game-card { min-height: 170px; gap: 10px; }
   .ps-game-card { min-height: 210px; gap: 12px; }
   .preschool-top { gap: 10px; }
   .preschool-top h2 { font-size: 24px; }
